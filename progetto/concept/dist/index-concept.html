@@ -1,0 +1,138 @@
+<title>Concept El Gammal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Pagina di scelta: tre schede concept affiancate, poi il confronto e il consiglio. Colori del logo. */
+:root{
+  --paper:#EDEFEF; --surface:#FFFFFF; --ink:#292D30; --muted:#596066; --line:#CDD2D4;
+  --bronze:#6E5E49; --bronze-soft:#8B7962; --tint:#E6E0D7;
+  --a:#E7E6E2; --b:#1F2326; --c:#F6F6F4;
+  --f-d:"Archivo","Arial Narrow",Arial,sans-serif; --f-b:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#1B1E20;--surface:#24282B;--ink:#ECEAE6;--muted:#A9AFB3;--line:#3A4044;--bronze:#C9B79D;--bronze-soft:#B7A58C;--tint:#352F27;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#1B1E20;--surface:#24282B;--ink:#ECEAE6;--muted:#A9AFB3;--line:#3A4044;--bronze:#C9B79D;--bronze-soft:#B7A58C;--tint:#352F27;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--f-b);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1160px;margin:0 auto;padding-block:48px 96px;display:grid;gap:64px}
+h1,h2,h3{font-family:var(--f-d);margin:0;line-height:1.05;text-wrap:balance}
+h1{font-size:clamp(2.2rem,5.5vw,3.8rem);font-weight:900;font-stretch:80%;text-transform:uppercase}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:800;font-stretch:85%;text-transform:uppercase}
+h3{font-size:1.5rem;font-weight:800;font-stretch:90%}
+p{margin:0}
+.label{font:500 .78rem/1.3 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--bronze)}
+.read{max-width:65ch}
+.head{display:grid;gap:18px;border-bottom:3px solid var(--ink);padding-bottom:32px}
+.note{background:var(--tint);border-left:4px solid var(--bronze-soft);padding:16px 20px;max-width:75ch}
+.cards{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);display:grid;grid-template-rows:auto 1fr;min-width:0}
+.card.rec{border:2px solid var(--bronze-soft)}
+.swatch{height:150px;display:grid;align-content:end;padding:18px;gap:6px;position:relative}
+.sw-a{background:var(--a);color:#292D30;background-image:radial-gradient(ellipse at 85% 30%,rgba(255,244,225,.9),transparent 55%),repeating-linear-gradient(100deg,rgba(0,0,0,.035) 0 3px,transparent 3px 9px)}
+.sw-b{background:var(--b);color:#ECEAE6;background-image:linear-gradient(rgba(183,165,140,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(183,165,140,.09) 1px,transparent 1px);background-size:24px 24px}
+.sw-c{background:var(--c);color:#292D30;background-image:radial-gradient(rgba(120,108,92,.35) 1px,transparent 1.5px);background-size:13px 11px}
+.swatch .big{font:900 2rem/1 var(--f-d);font-stretch:80%;text-transform:uppercase}
+.swatch .rec-tag{position:absolute;top:14px;left:14px;background:#6E5E49;color:#fff;font:500 .74rem/1 var(--f-m);letter-spacing:.06em;text-transform:uppercase;padding:6px 8px}
+.body{padding:22px;display:grid;gap:14px;align-content:start}
+.body dl{margin:0;display:grid;gap:10px}
+.body dt{font:500 .72rem/1.2 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.body dd{margin:0}
+.open{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 20px;background:#6E5E49;color:#fff;font:700 1rem var(--f-b);text-decoration:none;border-radius:2px;margin-top:6px}
+.open:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line)}
+th{font:500 .74rem/1.2 var(--f-m);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font-weight:700;width:18%}
+tr:last-child td{border-bottom:0}
+.verdict{background:var(--ink);color:var(--paper);padding:36px clamp(20px,5vw,48px);display:grid;gap:16px}
+.verdict .label{color:var(--bronze-soft)}
+.verdict p{max-width:70ch}
+.common{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.common div{background:var(--surface);border:1px solid var(--line);padding:18px;display:grid;gap:6px}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="label">Fase 3 · Concept · El Gammal Impresa Edile</span>
+    <h1>Tre direzioni per il sito</h1>
+    <p class="read">Ognuna è una home completa e animata. Aprila sul computer e sul telefono e scorrila fino in fondo. Le note blu tratteggiate spiegano lo scopo di ogni sezione e l'animazione; si nascondono con il bottone "Note" in alto.</p>
+    <div class="note"><p><strong>Foto, recensioni e numeri di telefono sono spazi segnati</strong>, non contenuti veri: nessun dato è inventato. Dove una frase va confermata dal cliente c'è un'etichetta arancione.</p></div>
+  </header>
+
+  <section class="cards" aria-label="I tre concept">
+    <article class="card rec">
+      <div class="swatch sw-a"><span class="rec-tag">Consigliato</span><span class="label" style="color:#4A5055">Concept A</span><span class="big">Luce radente</span></div>
+      <div class="body">
+        <p><strong>"Pareti perfette, anche alla luce radente."</strong></p>
+        <dl>
+          <div><dt>Idea firma</dt><dd>Un muro illuminato di lato, come fanno i professionisti per trovare i difetti. Scorrendo, le ombre spariscono: il muro "viene rasato". Col dito si sposta la lampada.</dd></div>
+          <div><dt>Movimento</dt><dd>Lento e preciso, come una mano che liscia.</dd></div>
+          <div><dt>A chi parla</dt><dd>A tutti, con un tono da specialista.</dd></div>
+        </dl>
+        <a class="open" href="concept-a.html">Apri il concept A</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="swatch sw-b"><span class="label" style="color:#B7A58C">Concept B</span><span class="big">Strato per strato</span></div>
+      <div class="body">
+        <p><strong>"Dal primo mattone all'ultima mano di colore."</strong></p>
+        <dl>
+          <div><dt>Idea firma</dt><dd>La sezione di un muro che si costruisce mentre scorri: mattoni, intonaco, rasatura, pittura, cartongesso, facciata. Ogni strato è un servizio.</dd></div>
+          <div><dt>Movimento</dt><dd>Deciso e meccanico, a scatti, come un cantiere.</dd></div>
+          <div><dt>A chi parla</dt><dd>A chi vuole capire il lavoro: privati, amministratori, aziende.</dd></div>
+        </dl>
+        <a class="open" href="concept-b.html">Apri il concept B</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="swatch sw-c"><span class="label" style="color:#4A5055">Concept C</span><span class="big">Cantiere pulito</span></div>
+      <div class="body">
+        <p><strong>"Ristrutturiamo casa tua. La polvere va via con noi."</strong></p>
+        <dl>
+          <div><dt>Idea firma</dt><dd>Una stanza coperta di polvere. Scorrendo, una passata la porta via e l'orologio arriva alle 18:00, fine giornata.</dd></div>
+          <div><dt>Movimento</dt><dd>Morbido e caldo, come una casa.</dd></div>
+          <div><dt>A chi parla</dt><dd>Soprattutto alle famiglie che ristrutturano casa.</dd></div>
+        </dl>
+        <a class="open" href="concept-c.html">Apri il concept C</a>
+      </div>
+    </article>
+  </section>
+
+  <section style="display:grid;gap:20px">
+    <span class="label">Confronto</span>
+    <h2>Punti forti e rischi</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>A · Luce radente</th><th>B · Strato per strato</th><th>C · Cantiere pulito</th></tr></thead>
+        <tbody>
+          <tr><td>Punti forti</td><td>Mostra la specialità (le superfici) con una prova vera del mestiere. Regala un trucco utile (la prova della torcia). Elegante, si ricorda.</td><td>Spiega da solo perché conviene un'impresa che fa tutto. La muratura viene per prima. Il cronoprogramma e i cartelli di cantiere danno serietà.</td><td>Il più emotivo: parla alla paura numero uno dei privati. Il più facile da capire per tutti.</td></tr>
+          <tr><td>Rischi</td><td>Ha bisogno di foto ravvicinate molto belle per mantenere la promessa "perfette".</td><td>Scuro e tecnico: può sembrare freddo a una famiglia. Gli spessori degli strati vanno confermati.</td><td>Si regge tutto sulla pulizia, che oggi non è garantita per iscritto. Se una recensione dice il contrario, la promessa crolla. Meno adatto ai condomini.</td></tr>
+          <tr><td>Contro i concorrenti</td><td>Nessuno in zona è specialista delle superfici. Arcobaleno ha la polizza, noi la prova visiva.</td><td>Azzurra dice "unico referente"; B lo fa vedere, strato per strato.</td><td>Della pulizia in zona parla solo Edilcasa, e solo nelle recensioni.</td></tr>
+          <tr><td>Telefono</td><td>Muro sotto al titolo, si tocca e si sposta la luce.</td><td>La sezione resta in alto e gli strati scorrono sotto.</td><td>Barra di contatto rotonda, foto da scorrere col pollice.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="verdict">
+    <span class="label">Il mio consiglio</span>
+    <h2>Concept A, con la sezione degli strati del B per i servizi</h2>
+    <p>A è l'unico che trasforma la specialità del cliente in un'immagine che si ricorda: la luce radente non la usa nessuno ed è un gesto vero del mestiere. Ma la sua pagina servizi è un elenco classico. La sezione "strato per strato" del concept B racconta i servizi meglio di qualsiasi elenco e mette la muratura al primo posto, come chiede il brief.</p>
+    <p>Dal concept C terrei la riga "E se l'impresa sparisce? Siamo a Sesto dal 2005": è vera e risponde a una paura reale.</p>
+  </section>
+
+  <section style="display:grid;gap:20px">
+    <span class="label">Uguale in tutti e tre</span>
+    <h2>Le regole che non cambiano</h2>
+    <div class="common">
+      <div><strong>Logo e colori</strong><p>Antracite e bronzo del logo. Il bronzo scuro è usato solo per i bottoni.</p></div>
+      <div><strong>Contatto a un tocco</strong><p>Sul telefono la barra con Chiama, WhatsApp e Sopralluogo è sempre in basso.</p></div>
+      <div><strong>"Gratis" vicino a ogni bottone</strong><p>Sopralluogo e preventivo gratuiti, confermati dal cliente.</p></div>
+      <div><strong>Modulo corto</strong><p>Nome, contatto e due righe. Nel sito vero la richiesta arriva con scritto "(dal sito)".</p></div>
+      <div><strong>Niente di inventato</strong><p>Recensioni, foto e lavori all'estero sono spazi pronti, da riempire con il materiale vero.</p></div>
+      <div><strong>Movimento sobrio</strong><p>Le animazioni si fermano fuori schermo e con "riduci movimento" la pagina resta ferma e completa.</p></div>
+    </div>
+  </section>
+</div>

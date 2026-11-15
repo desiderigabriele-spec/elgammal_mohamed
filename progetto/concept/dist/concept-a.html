@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concept A · Luce radente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800;900&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Concept A · Luce radente. Muro d'intonaco come superficie del sito; la luce radente è la firma. */
+:root{
+  --plaster:#E7E6E2; --plaster-2:#F3F2EF; --ink:#292D30; --ink-2:#4A5055; --line:#CBCAC4;
+  --bronze:#6E5E49; --bronze-l:#B7A58C; --night:#1E2124; --night-2:#2A2E31; --on-night:#ECEAE6; --on-night-2:#B9BDC0;
+  --logo-ink:#292D30; --logo-accent:#8B7962;
+  --note:#1F47D6; --note-bg:#EEF2FF;
+  --f-d:"Schibsted Grotesk","Arial Narrow",Arial,sans-serif;
+  --f-b:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --ease:cubic-bezier(.22,.61,.21,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--plaster);color:var(--ink);font:400 17px/1.55 var(--f-b);-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-d);margin:0;line-height:1.05;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.4rem,5.6vw,4.4rem);font-weight:500}
+h2{font-size:clamp(2rem,4vw,3.1rem);font-weight:500}
+h1 b,h2 b{font-weight:900}
+h3{font-size:1.3rem;font-weight:800}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gutter);padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 .8rem/1.2 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.read{max-width:60ch}
+section{padding-block:80px}
+@media (min-width:900px){section{padding-block:128px}}
+
+/* barra di revisione (non fa parte del sito) */
+.review{background:#111;color:#fff;font:500 .82rem/1.3 var(--f-m);}
+.review .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding-block:8px}
+.review a,.review button{color:#fff;font:inherit;background:none;border:1px solid #555;border-radius:2px;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
+.nota{display:block;border:1.5px dashed var(--note);background:var(--note-bg);color:#14287A;font:500 .82rem/1.45 var(--f-m);padding:12px 14px;margin-bottom:32px;max-width:72ch}
+.nota b{color:var(--note)}
+.no-notes .nota{display:none}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--plaster) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.logo{height:44px;width:auto;display:block}
+.menu{display:none;gap:4px;align-items:center}
+.menu a{text-decoration:none;font-weight:600;padding:12px 14px;min-height:44px;display:inline-flex;align-items:center}
+.menu a:hover{text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;font:700 1rem/1 var(--f-b);text-decoration:none;border:2px solid transparent;cursor:pointer;border-radius:2px;transition:transform .25s var(--ease),background .25s}
+.btn-p{background:var(--bronze);color:#fff}
+.btn-p:hover{background:#5E503D}
+.btn-s{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-s:hover{background:var(--ink);color:var(--plaster)}
+.btn:active{transform:translateY(1px)}
+.btn-sm{min-height:44px;padding:0 16px;font-size:.95rem}
+.burger{min-width:44px;min-height:44px;border:1px solid var(--line);background:var(--plaster-2);font:700 .9rem var(--f-b);padding:0 12px;cursor:pointer}
+@media (min-width:960px){.menu{display:flex}.burger{display:none}}
+.drawer{border-top:1px solid var(--line);background:var(--plaster-2)}
+.drawer a{display:flex;min-height:52px;align-items:center;font-weight:700;text-decoration:none;border-bottom:1px solid var(--line)}
+
+/* hero */
+.hero{padding-block:32px 64px}
+@media (min-width:900px){.hero{padding-block:48px 96px}}
+.hero-grid{display:grid;gap:32px;align-items:center}
+@media (min-width:960px){.hero-grid{grid-template-columns:1fr 1.05fr;gap:56px}}
+.hero-copy{display:grid;gap:24px;min-width:0}
+.hero-copy .lead{font-size:1.15rem;color:var(--ink-2);max-width:46ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.reassure{font:500 .85rem/1.4 var(--f-m);color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px}
+.reassure span::before{content:"";display:inline-block;width:8px;height:8px;background:var(--bronze-l);margin-right:8px;vertical-align:1px}
+.wall{position:relative;aspect-ratio:4/3;max-height:520px;width:100%;background:#DCDAD5;overflow:hidden;border:1px solid var(--line);touch-action:pan-y}
+@media (max-width:959px){.wall{aspect-ratio:16/10}}
+.wall canvas{width:100%;height:100%;display:block}
+.wall .tag{position:absolute;left:12px;bottom:12px;background:var(--plaster-2);font:500 .78rem/1.3 var(--f-m);padding:8px 10px;border:1px solid var(--line)}
+.wall .meter{position:absolute;right:12px;top:12px;background:var(--plaster-2);border:1px solid var(--line);padding:8px 10px;font:500 .78rem/1 var(--f-m);display:flex;gap:10px;align-items:center}
+.wall .meter i{display:block;width:72px;height:6px;background:var(--line);position:relative}
+.wall .meter i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--m,100%);background:var(--ink)}
+
+/* la prova */
+.dark{background:var(--night);color:var(--on-night)}
+.dark .eyebrow{color:var(--on-night-2)}
+.dark .nota{background:#E9EEFF}
+.test{display:grid;gap:48px}
+@media (min-width:960px){.test{grid-template-columns:1fr 1fr;align-items:center}}
+.steps-3{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps-3 li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:20px 0;border-top:1px solid #3A3F43;counter-increment:s}
+.steps-3 li::before{content:counter(s);font:900 2rem/1 var(--f-d);color:var(--bronze-l)}
+.steps-3 p{color:var(--on-night-2)}
+.steps-3 strong{color:var(--on-night)}
+.beam{width:100%;height:auto;display:block}
+.beam .ray{transform-origin:30px 252px;transform:rotate(-14deg);transition:transform 1.4s var(--ease)}
+.beam.on .ray{transform:rotate(0)}
+
+/* servizi */
+.svc-head{display:grid;gap:16px;margin-bottom:48px}
+.svc{display:grid;gap:16px}
+@media (min-width:900px){.svc{grid-template-columns:repeat(3,1fr)}}
+.fam{display:grid;gap:16px;align-content:start}
+.fam > .eyebrow{padding-bottom:8px;border-bottom:2px solid var(--ink)}
+.card{background:var(--plaster-2);border:1px solid var(--line);padding:24px;display:grid;gap:10px;text-decoration:none;position:relative;overflow:hidden;min-height:44px}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);transform:translateX(-120%);transition:transform .9s var(--ease);pointer-events:none}
+.card:hover::after{transform:translateX(120%)}
+.card p{color:var(--ink-2)}
+.card .go{font:700 .95rem var(--f-b);color:var(--bronze)}
+.card.base{background:var(--ink);color:var(--on-night);border-color:var(--ink);padding:32px 28px}
+.card.base p{color:var(--on-night-2)}
+.card.base .go{color:var(--bronze-l)}
+.card.base h3{font-size:1.9rem}
+.card.base .badge{justify-self:start;font:500 .75rem/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;background:var(--bronze-l);color:var(--ink);padding:6px 8px}
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* metodo */
+.method{display:grid;gap:40px}
+@media (min-width:960px){.method{grid-template-columns:.9fr 1.1fr}}
+.track{list-style:none;margin:0;padding:0 0 0 32px;position:relative;display:grid;gap:32px}
+.track::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.track::after{content:"";position:absolute;left:7px;top:6px;width:2px;height:calc(var(--p,1) * (100% - 12px));background:var(--bronze)}
+.track li{position:relative;display:grid;gap:6px}
+.track li::before{content:"";position:absolute;left:-31px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--plaster);border:2px solid var(--bronze)}
+.track .free{display:inline-block;font:500 .75rem/1 var(--f-m);text-transform:uppercase;letter-spacing:.08em;background:var(--bronze);color:#fff;padding:5px 7px;margin-left:8px;vertical-align:3px}
+.track p{color:var(--ink-2)}
+
+/* lavori */
+.works-head{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end;margin-bottom:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border:1px solid var(--ink);background:transparent;font:600 .95rem var(--f-b);cursor:pointer;border-radius:999px;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--plaster)}
+.ba{position:relative;aspect-ratio:16/9;width:100%;max-width:100%;overflow:hidden;border:1px solid var(--line);margin-bottom:16px}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;font:500 .85rem/1.4 var(--f-m);color:var(--ink-2)}
+.ph-before{background:repeating-linear-gradient(135deg,#D3D0C9 0 2px,#DEDBD5 2px 14px);place-items:center start;padding-left:6%}
+.ph-after{background:#F1F0ED;clip-path:inset(0 0 0 var(--x,50%));place-items:center end;padding-right:6%}
+.ph span{background:var(--plaster-2);padding:8px 12px;border:1px solid var(--line)}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--ink);pointer-events:none}
+.ba .handle::after{content:"◀ ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--ink);color:var(--plaster);font:700 .8rem var(--f-b);padding:12px 10px;white-space:nowrap}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:900px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tile{aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#D9D6D0 0 2px,#E3E1DC 2px 12px);border:1px solid var(--line);display:flex;align-items:flex-end;padding:12px}
+.tile span{background:var(--plaster-2);font:500 .78rem/1.3 var(--f-m);padding:6px 8px;border:1px solid var(--line)}
+
+/* estero */
+.far{display:grid;gap:40px}
+@media (min-width:960px){.far{grid-template-columns:1fr 1fr;align-items:start}}
+.places{list-style:none;margin:0;padding:0;border-top:1px solid #3A3F43}
+.places li{display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid #3A3F43;font:500 clamp(1.3rem,2.6vw,1.9rem)/1.1 var(--f-d)}
+.places li small{font:500 .8rem/1.3 var(--f-m);color:var(--on-night-2);text-align:right;align-self:center}
+.places li.home{color:var(--bronze-l)}
+.todo{font:500 .85rem/1.4 var(--f-m);color:#FFD7A8}
+
+/* recensioni */
+.reviews{border:2px dashed var(--line);padding:40px 24px;display:grid;gap:12px;justify-items:start;background:var(--plaster-2)}
+.reviews p{color:var(--ink-2)}
+
+/* contatto */
+.contact{display:grid;gap:48px}
+@media (min-width:960px){.contact{grid-template-columns:1.1fr .9fr}}
+.contact h2{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+.big-wa{display:grid;gap:16px;align-content:start}
+form{display:grid;gap:16px;background:var(--plaster-2);border:1px solid var(--line);padding:24px}
+label{display:grid;gap:6px;font-weight:600}
+input,textarea{font:400 1rem var(--f-b);padding:12px 14px;min-height:48px;border:1px solid #8E9296;background:#fff;color:var(--ink);border-radius:2px;width:100%}
+textarea{min-height:96px;resize:vertical}
+.form-ok{font:500 .9rem/1.4 var(--f-m);color:var(--bronze)}
+.placeholder{background:#FFE9C7;color:#5A3700;padding:0 4px;font-family:var(--f-m);font-size:.9em}
+
+footer{background:var(--night);color:var(--on-night-2);padding-block:56px 120px;font-size:.95rem}
+footer .wrap{display:grid;gap:24px}
+@media (min-width:900px){footer{padding-block:64px}footer .wrap{grid-template-columns:1.2fr 1fr 1fr}}
+footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
+footer strong{color:var(--on-night)}
+
+/* barra mobile */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:1px;background:var(--line);padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid var(--line)}
+.dock a{background:var(--plaster-2);min-height:56px;display:flex;align-items:center;justify-content:center;font:700 .95rem var(--f-b);text-decoration:none}
+.dock a.main{background:var(--bronze);color:#fff}
+@media (min-width:960px){.dock{display:none}}
+</style>
+</head>
+<body class="js-off">
+<div class="review">
+  <div class="wrap">
+    <span>CONCEPT A · LUCE RADENTE · bozza da approvare</span>
+    <span style="display:flex;gap:8px;flex-wrap:wrap"><a href="./">← Tutti i concept</a><button id="toggle-notes" type="button" aria-pressed="true">Note: visibili</button></span>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#" aria-label="El Gammal, torna all'inizio"><svg xmlns="http://www.w3.org/2000/svg" viewBox="95 159 1370 705" class="logo" role="img" aria-label="El Gammal, impresa edile"><path style="fill:var(--logo-ink)" d="M372 547V316L803 199L923 263V352L991 334L1255 383V547H1223V412L991 367L923 386V547H892V286L803 239L405 343V547Z"/><path style="fill:var(--logo-ink)" d="M469 395L525 385V457L469 467Z M568 379L625 369V445L568 453Z M668 362L726 352V431L668 440Z M1017 432L1070 440V505L1017 499Z M1114 445L1165 452V514L1114 507Z"/><path style="fill:var(--logo-accent)" d="M803 239L892 286V547H803Z"/><path style="fill:var(--logo-ink)" fill-rule="evenodd" d="M1228,765 1228,819 1265,819 1265,810 1240,810 1239,809 1239,797 1240,796 1262,796 1262,787 1240,787 1239,786 1239,775 1240,774 1265,774 1265,765ZM1150,765 1150,819 1186,819 1186,810 1162,810 1161,809 1161,765ZM1091,765 1091,819 1102,819 1102,765ZM997,765 997,819 1023,819 1024,818 1027,818 1028,817 1030,817 1031,816 1034,815 1036,813 1037,813 1042,807 1042,806 1044,803 1044,800 1045,799 1045,785 1044,784 1044,781 1043,780 1042,777 1040,775 1040,774 1036,770 1035,770 1028,766 1025,766 1024,765ZM1008,774 1021,774 1022,775 1024,775 1025,776 1028,777 1033,783 1033,784 1034,785 1034,787 1035,788 1035,795 1034,796 1034,799 1033,800 1032,803 1028,807 1027,807 1024,809 1021,809 1020,810 1008,810 1007,809 1007,775ZM912,765 912,819 949,819 949,810 923,810 922,809 922,797 923,796 946,796 946,788 945,787 923,787 922,786 922,775 923,774 949,774 949,765ZM796,765 796,767 794,770 794,772 792,775 792,777 789,782 789,784 787,787 787,789 785,792 784,797 783,798 783,799 782,800 782,802 779,807 779,809 778,810 778,812 776,815 776,817 775,818 775,819 786,819 786,818 787,817 787,815 789,812 789,810 792,807 813,807 816,812 816,814 818,817 818,819 830,819 828,816 828,814 826,811 826,809 823,804 823,802 821,799 821,797 820,796 820,795 819,794 819,792 816,787 816,785 814,782 814,780 812,777 812,775 810,772 810,770 809,769 808,766 807,765ZM802,778 804,781 804,783 806,786 806,788 808,791 808,793 809,794 809,796 810,797 809,798 796,798 795,799 794,798 794,796 795,795 795,794 796,793 796,791 798,788 798,786 799,785 800,780ZM611,765 611,819 648,819 648,810 623,810 621,808 622,807 622,797 623,796 645,796 645,787 623,787 621,785 621,784 622,783 622,775 623,774 648,774 648,765ZM524,765 524,819 534,819 534,800 535,799 542,799 547,805 548,808 554,816 555,819 568,819 565,815 565,814 563,812 563,811 561,809 561,808 559,806 559,805 557,803 557,802 555,799 555,798 556,797 559,796 563,792 563,791 565,788 565,785 566,784 566,780 565,779 565,776 564,775 564,773 559,768 558,768 553,765ZM534,775 535,774 549,774 550,775 551,775 554,778 554,779 555,780 555,784 554,785 554,786 550,790 535,790 534,789ZM473,766 471,766 470,765 442,765 442,819 453,819 453,801 454,800 470,800 471,799 473,799 474,798 477,797 481,793 481,792 483,789 483,784 484,783 484,781 483,780 483,777 482,776 482,774 480,772 480,771 478,769 477,769ZM453,775 454,774 467,774 468,775 469,775 472,778 472,779 473,780 473,785 472,786 472,787 469,790 468,790 467,791 454,791 453,790ZM339,765 339,819 349,819 350,818 349,817 349,816 350,815 349,814 349,806 350,805 350,788 349,787 350,786 351,786 352,787 353,790 359,798 359,799 360,800 361,803 363,805 364,808 370,808 370,807 372,805 373,802 375,800 376,797 378,795 378,794 384,786 385,787 385,819 396,819 396,765 385,765 385,766 381,771 380,774 376,779 375,782 371,787 370,790 367,793 364,789 364,788 362,786 361,783 359,781 358,778 356,776 355,773 353,771 353,770 350,766 350,765ZM280,765 280,819 291,819 291,765ZM708,764 707,765 705,765 701,768 700,768 696,773 696,776 695,777 695,783 696,784 696,786 697,787 697,788 701,792 702,792 705,794 707,794 708,795 711,795 712,796 714,796 715,797 718,797 719,798 722,799 724,801 724,802 725,803 725,805 724,806 724,807 721,810 719,810 718,811 711,811 710,810 708,810 706,808 705,808 702,805 702,804 701,803 693,809 694,810 694,811 699,816 700,816 705,819 709,819 710,820 720,820 721,819 724,819 725,818 728,817 734,811 734,809 735,808 735,798 734,797 734,796 729,791 728,791 723,788 720,788 719,787 717,787 716,786 713,786 712,785 710,785 706,781 706,777 709,774 710,774 711,773 719,773 720,774 723,775 727,779 728,779 734,773 734,772 730,768 729,768 724,765 722,765 721,764ZM1310,565 1310,723 1424,723 1424,684 1351,684 1350,683 1350,565ZM1197,565 1197,566 1196,567 1196,569 1195,570 1195,571 1193,574 1193,576 1191,579 1191,581 1190,582 1190,583 1188,586 1188,588 1186,591 1186,593 1184,596 1184,598 1181,603 1181,605 1179,608 1179,610 1177,613 1177,615 1174,620 1174,622 1172,625 1172,627 1170,630 1170,632 1168,635 1168,637 1165,642 1165,644 1163,647 1163,649 1161,652 1161,654 1158,659 1158,661 1156,664 1156,666 1153,671 1153,673 1151,676 1151,678 1149,681 1149,683 1147,686 1147,688 1145,691 1145,693 1142,698 1142,700 1140,703 1139,708 1136,713 1136,715 1135,716 1135,718 1133,721 1133,723 1173,723 1174,718 1176,715 1176,713 1177,712 1177,711 1178,710 1178,708 1180,705 1181,700 1183,697 1183,695 1185,693 1243,693 1246,697 1246,699 1248,702 1249,707 1251,710 1251,712 1253,715 1254,720 1256,723 1297,723 1295,720 1295,718 1294,717 1294,715 1292,712 1291,707 1288,702 1288,700 1286,697 1286,695 1284,692 1284,690 1282,687 1282,685 1280,682 1280,680 1278,677 1278,675 1276,672 1276,670 1274,667 1274,665 1271,660 1271,658 1269,655 1269,653 1267,650 1267,648 1264,643 1264,641 1262,638 1262,636 1260,633 1260,631 1257,626 1257,624 1255,621 1255,619 1253,616 1253,614 1250,609 1250,607 1249,606 1249,605 1248,604 1248,602 1245,597 1245,595 1243,592 1243,590 1241,587 1241,585 1238,580 1238,578 1236,575 1236,573 1233,568 1233,566 1232,565ZM1214,613 1217,618 1217,620 1219,623 1220,628 1221,629 1221,630 1222,631 1222,633 1224,636 1224,638 1225,639 1226,644 1227,645 1227,646 1228,647 1228,649 1230,652 1230,654 1231,655 1231,657 1232,658 1232,659 1231,660 1197,660 1196,659 1196,658 1198,655 1199,650 1201,647 1201,645 1203,642 1204,637 1206,634 1207,629 1209,626 1209,624 1211,621 1211,619 1212,618 1212,617 1213,616 1213,614ZM963,565 963,723 1001,723 1001,641 1002,640 1004,642 1004,643 1006,645 1006,646 1008,648 1008,649 1011,652 1011,653 1013,655 1013,656 1015,658 1015,659 1017,661 1017,662 1019,664 1019,665 1021,667 1021,668 1024,671 1024,672 1026,674 1026,675 1028,677 1028,678 1030,680 1030,681 1033,684 1033,685 1035,687 1035,688 1037,690 1037,691 1039,693 1039,694 1041,696 1041,697 1045,697 1046,694 1048,692 1048,691 1050,689 1050,688 1052,686 1052,685 1054,683 1054,682 1056,680 1056,679 1059,676 1059,675 1061,673 1061,672 1063,670 1063,669 1065,667 1065,666 1068,663 1068,662 1070,660 1070,659 1072,657 1072,656 1075,653 1075,652 1077,650 1077,649 1079,647 1079,646 1085,639 1086,640 1086,723 1124,723 1124,565 1090,565 1090,566 1087,569 1087,570 1082,576 1082,577 1080,579 1080,580 1078,582 1078,583 1075,586 1075,587 1073,589 1073,590 1071,592 1071,593 1069,595 1069,596 1066,599 1066,600 1064,602 1064,603 1062,605 1062,606 1060,608 1060,609 1058,611 1058,612 1055,615 1055,616 1053,618 1053,619 1051,621 1051,622 1049,624 1049,625 1047,627 1047,628 1044,632 1043,632 1042,631 1042,630 1039,627 1039,626 1037,624 1037,623 1035,621 1035,620 1033,618 1033,617 1031,615 1031,614 1028,611 1028,610 1026,608 1026,607 1024,605 1024,604 1021,601 1021,600 1019,598 1019,597 1017,595 1017,594 1015,592 1015,591 1013,589 1013,588 1011,586 1011,585 1008,582 1008,581 1006,579 1006,578 1004,576 1004,575 1002,573 1002,572 1000,570 1000,569 997,565ZM775,565 775,723 814,723 814,640 815,639 817,641 817,642 819,644 819,645 822,648 822,649 824,651 824,652 826,654 826,655 828,657 828,658 830,660 830,661 833,664 833,665 835,667 835,668 837,670 837,671 839,673 839,674 842,677 842,678 844,680 844,681 846,683 846,684 849,687 849,688 851,690 851,691 853,693 853,694 855,696 855,697 859,697 859,696 861,694 861,693 863,691 863,690 865,688 865,687 867,685 867,684 870,681 870,680 872,678 872,677 874,675 874,674 876,672 876,671 878,669 878,668 881,665 881,664 883,662 883,661 885,659 885,658 888,655 888,654 890,652 890,651 893,648 893,647 899,639 900,640 900,723 939,723 939,720 940,719 940,696 939,695 939,694 940,693 940,692 939,691 939,658 940,657 940,640 939,639 939,619 940,618 940,616 939,615 939,592 940,591 940,584 939,583 939,565 905,565 900,571 900,572 898,574 898,575 896,577 896,578 893,581 893,582 891,584 891,585 889,587 889,588 887,590 887,591 884,594 884,595 882,597 882,598 880,600 880,601 878,603 878,604 875,607 875,608 873,610 873,611 871,613 871,614 869,616 869,617 866,620 866,621 864,623 864,624 858,632 857,632 851,625 851,624 849,622 849,621 847,619 847,618 844,615 844,614 842,612 842,611 840,609 840,608 837,605 837,604 835,602 835,601 833,599 833,598 831,596 831,595 828,592 828,591 826,589 826,588 824,586 824,585 822,583 822,582 819,579 819,578 817,576 817,575 815,573 815,572 813,570 813,569 810,566 810,565ZM667,565 665,568 665,570 663,573 663,575 660,580 660,582 658,585 658,587 655,592 655,594 653,597 653,599 651,602 651,604 648,609 648,611 646,614 646,616 644,619 644,621 641,626 641,628 639,631 639,633 636,638 636,640 634,643 634,645 632,648 632,650 630,653 630,655 627,660 627,662 625,665 625,667 623,670 623,672 621,675 621,677 619,680 619,682 616,687 616,689 614,692 614,694 612,697 612,699 610,702 610,704 608,707 608,709 606,712 606,714 604,717 604,719 603,720 602,723 642,723 643,722 643,720 645,717 645,715 647,712 648,707 650,704 651,699 652,698 652,697 653,696 653,694 654,693 713,693 715,696 715,698 717,701 717,703 719,706 720,711 722,714 722,716 723,717 723,719 724,720 725,723 766,723 765,722 764,717 762,714 762,712 760,709 760,707 758,704 757,699 754,694 754,692 752,689 752,687 750,684 750,682 748,679 748,677 747,676 747,675 746,674 746,672 744,669 744,667 742,664 742,662 740,659 740,657 737,652 737,650 735,647 735,645 733,642 733,640 731,637 731,635 728,630 728,628 726,625 726,623 724,620 724,618 722,615 722,613 719,608 719,606 716,601 716,599 714,596 714,594 712,591 712,589 709,584 709,582 707,579 707,577 705,574 705,572 702,567 702,565ZM683,613 684,613 685,614 685,616 686,617 686,619 688,622 689,627 691,630 692,635 694,638 694,640 695,641 695,642 696,643 696,645 698,648 698,650 699,651 700,656 702,659 701,660 666,660 665,659 666,658 666,657 667,656 667,654 669,651 669,649 670,648 671,643 673,640 673,638 675,635 676,630 678,627 679,622 681,619 681,617 682,616 682,614ZM285,565 285,723 398,723 398,684 326,684 325,683 325,565ZM137,565 137,723 262,723 262,686 179,686 178,685 178,660 179,659 249,659 249,626 248,625 179,625 178,624 178,600 179,599 261,599 261,565ZM512,562 511,563 507,563 506,564 503,564 502,565 497,566 494,568 492,568 491,569 484,572 482,574 481,574 479,576 478,576 476,578 475,578 470,583 469,583 458,596 458,597 454,602 454,603 449,612 449,614 448,615 448,617 447,618 447,620 446,621 446,623 445,624 445,628 444,629 444,634 443,635 443,653 444,654 444,660 445,661 445,664 446,665 446,668 447,669 448,674 449,675 449,676 450,677 450,679 451,680 453,685 455,687 456,690 459,693 459,694 462,697 462,698 471,707 472,707 479,713 482,714 484,716 485,716 492,720 494,720 495,721 496,721 497,722 499,722 500,723 503,723 504,724 507,724 508,725 513,725 514,726 539,726 540,725 544,725 545,724 548,724 549,723 551,723 552,722 557,721 558,720 559,720 560,719 567,716 569,714 570,714 572,712 573,712 577,708 578,708 585,701 585,700 588,697 588,696 592,691 592,690 597,681 597,679 598,678 598,676 599,675 599,672 600,671 600,668 601,667 601,661 602,660 602,632 524,632 524,664 561,664 562,665 562,668 561,669 559,674 550,683 549,683 547,685 546,685 543,687 541,687 540,688 537,688 536,689 531,689 530,690 523,690 522,689 516,689 515,688 510,687 509,686 504,684 502,682 501,682 491,672 491,671 487,666 487,665 486,664 486,662 485,661 485,659 484,658 484,656 483,655 483,649 482,648 482,640 483,639 483,633 484,632 484,629 485,628 485,626 486,625 489,618 491,616 491,615 500,606 501,606 503,604 504,604 511,600 513,600 514,599 517,599 518,598 536,598 537,599 540,599 541,600 543,600 544,601 551,604 554,607 555,607 562,614 563,614 564,613 565,613 568,610 569,610 571,608 572,608 575,605 576,605 579,602 580,602 583,599 584,599 591,593 592,593 592,591 580,579 579,579 576,576 575,576 570,572 569,572 564,569 562,569 557,566 555,566 554,565 551,565 550,564 548,564 547,563 542,563 541,562 534,562 533,561 520,561 519,562Z"/></svg></a>
+    <nav class="menu" aria-label="Menu principale">
+      <a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#metodo">Come lavoriamo</a><a href="#estero">Dove lavoriamo</a>
+      <a class="btn btn-p btn-sm" href="#contatti">Sopralluogo gratuito</a>
+    </nav>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <div class="wrap"><a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#metodo">Come lavoriamo</a><a href="#estero">Dove lavoriamo</a><a href="#contatti">Contatti</a></div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap">
+    <aside class="nota"><b>ATTENZIONE.</b> In 3 secondi: cosa fa, dove, da quando. La luce radente è la prova che usano i professionisti per controllare un muro: di lato, ogni difetto fa ombra.<br><b>Animazione firma:</b> all'apertura una lampada attraversa il muro e le ombre dei difetti si vedono. Scorrendo, le ombre spariscono: il muro "viene rasato". Con il dito o il mouse si sposta la lampada. Si ferma quando non si vede; con "riduci movimento" resta un'immagine ferma.</aside>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Impresa edile · Sesto San Giovanni · dal 2005</span>
+        <h1>Pareti <b>perfette</b>, anche alla luce radente.</h1>
+        <p class="lead">Rasature, facciate, cartongesso e muratura a Sesto San Giovanni e Milano. <strong>Un'impresa sola</strong>, dal sopralluogo alla consegna.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href="#contatti">Richiedi il sopralluogo gratuito</a>
+          <a class="btn btn-s" href="#contatti">Mandaci una foto su WhatsApp</a>
+        </div>
+        <p class="reassure"><span>Sopralluogo gratuito</span><span>Preventivo gratuito</span><span>Lavori anche all'estero</span></p>
+      </div>
+      <div class="wall" id="wall">
+        <canvas id="wallc" aria-label="Un muro illuminato di lato: scorrendo la pagina le ombre dei difetti spariscono." role="img"></canvas>
+        <div class="meter" aria-hidden="true">ombre <i id="meter"></i></div>
+        <div class="tag">Sposta la luce col dito o col mouse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="prova">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · reciprocità.</b> Prima di chiedere qualcosa, regaliamo un trucco utile: chi lo prova a casa sua si ricorda di noi. Risponde alla ricerca "come capire se una rasatura è fatta bene".<br><b>Animazione:</b> il raggio di luce si abbassa sul muro quando la sezione entra nello schermo.</aside>
+    <div class="test">
+      <div style="display:grid;gap:24px">
+        <span class="eyebrow">La prova della torcia</span>
+        <h2>Come capire se un muro è <b>fatto bene</b>. In un minuto.</h2>
+        <ol class="steps-3">
+          <li><p><strong>Spegni la luce</strong> della stanza, meglio di sera.</p></li>
+          <li><p><strong>Appoggia una torcia al muro</strong>, quasi parallela alla parete.</p></li>
+          <li><p><strong>Guarda le ombre.</strong> Ogni ombra è un'onda, un buco o una giunta. Un muro ben rasato resta uniforme.</p></li>
+        </ol>
+        <p style="color:var(--on-night-2)">Fallo su ogni lavoro, anche sul nostro.</p>
+      </div>
+      <svg class="beam" id="beam" viewBox="0 0 520 320" role="img" aria-label="Disegno: una torcia appoggiata al muro proietta un fascio radente; i rilievi del muro fanno ombra.">
+        <rect x="0" y="0" width="520" height="320" fill="#2A2E31"/>
+        <path d="M40 270 C90 266 120 262 150 268 S210 276 240 266 S300 258 330 268 S400 274 430 266 S490 262 500 268 L500 300 L40 300 Z" fill="#3A3F43"/>
+        <text x="40" y="60" fill="#ECEAE6" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="22" font-weight="800">Torcia appoggiata al muro</text>
+        <text x="40" y="88" fill="#B9BDC0" font-family="IBM Plex Mono,monospace" font-size="13">il fascio sfiora la parete, quasi parallelo</text>
+        <g class="ray"><path d="M40 246 L520 196 L520 262 L40 258 Z" fill="#B7A58C" opacity=".28"/><rect x="0" y="241" width="44" height="20" rx="4" fill="#B7A58C"/></g>
+        <g fill="#0E1012"><path d="M166 266 l58 0 l-40 -7z"/><path d="M262 265 l70 0 l-48 -8z"/><path d="M352 267 l62 0 l-42 -6z"/></g>
+        <text x="40" y="300" dy="16" fill="#B9BDC0" font-family="IBM Plex Mono,monospace" font-size="12">muro visto di lato: le ombre allungano i difetti</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="servizi">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · carico cognitivo + effetto Von Restorff.</b> Sette servizi divisi in 3 famiglie, così si capisce subito. La muratura è l'unica scheda scura: si nota per prima ed è il lavoro su cui l'impresa vuole crescere.<br><b>Animazione:</b> le schede entrano una dopo l'altra; passando sopra, una striscia di luce le attraversa.</aside>
+    <div class="svc-head">
+      <span class="eyebrow">Servizi</span>
+      <h2>Ogni superficie perfetta parte da <b>un muro dritto</b>.</h2>
+    </div>
+    <div class="svc">
+      <div class="fam">
+        <span class="eyebrow">La base</span>
+        <a class="card base reveal" href="#contatti">
+          <span class="badge">Il nostro punto di partenza</span>
+          <h3>Muratura</h3>
+          <p>Pareti nuove, aperture, chiusure, tramezzi, consolidamenti. Il muro giusto rende tutto il resto più semplice e più duraturo.</p>
+          <span class="go">Scopri la muratura →</span>
+        </a>
+      </div>
+      <div class="fam">
+        <span class="eyebrow">Le superfici</span>
+        <a class="card reveal" href="#contatti"><h3>Rasatura e lisciatura</h3><p>Pareti e soffitti lisci, dentro e fuori casa.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Facciate</h3><p>Ripristino e rifacimento per case e condomini.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Cartongesso</h3><p>Pareti, controsoffitti, nicchie e velette.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Intonaci, imbiancatura e sottofondi</h3><p>Le basi e le finiture di ogni ambiente.</p><span class="go">Vedi →</span></a>
+      </div>
+      <div class="fam">
+        <span class="eyebrow">Tutto il cantiere</span>
+        <a class="card reveal" href="#contatti"><h3>Ristrutturazioni chiavi in mano</h3><p>Un solo referente per tutti i lavori, dall'inizio alla fine.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Impianti</h3><p>Coordinati con le opere murarie, nello stesso cantiere.</p><span class="go">Vedi →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo" style="background:var(--plaster-2)">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · avversione alla perdita.</b> La paura più grande sono le sorprese. Mostriamo cosa succede e quando, e che chiedere non costa nulla. Nessuna garanzia scritta: il cliente non le ha ancora.<br><b>Animazione:</b> la linea bronzo si riempie mentre scorri, come un cantiere che avanza.</aside>
+    <div class="method">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Come lavoriamo</span>
+        <h2>Sai sempre <b>cosa succede</b> e chi chiamare.</h2>
+        <p class="read" style="color:var(--ink-2)">Un'impresa sola segue tutti i lavori. Niente artigiani da coordinare, niente rimpalli di responsabilità.</p>
+      </div>
+      <ol class="track" id="track">
+        <li><h3>Sopralluogo <span class="free">gratis</span></h3><p>Veniamo a vedere il lavoro, misuriamo e ascoltiamo cosa ti serve.</p></li>
+        <li><h3>Preventivo <span class="free">gratis</span></h3><p>Scritto voce per voce, così sai cosa compri.</p></li>
+        <li><h3>Un referente</h3><p>Una persona sola risponde per tutto il cantiere.</p></li>
+        <li><h3>Cantiere in ordine</h3><p>Lavoriamo puliti e lasciamo gli ambienti in ordine. <span class="placeholder">[da confermare col cliente: come, in pratica]</span></p></li>
+        <li><h3>Consegna</h3><p>Controlliamo insieme il lavoro finito, anche con la torcia.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="lavori">
+  <div class="wrap">
+    <aside class="nota"><b>DESIDERIO · prove visive.</b> Il prima e dopo fa immaginare il proprio muro finito. Servono foto vere del cliente: per ora ci sono spazi segnati.<br><b>Animazione:</b> il cursore prima/dopo si trascina con il dito; i filtri cambiano le foto senza ricaricare.</aside>
+    <div class="works-head">
+      <div style="display:grid;gap:12px"><span class="eyebrow">Lavori</span><h2>Prima e <b>dopo</b>.</h2></div>
+      <div class="chips" role="group" aria-label="Filtra i lavori">
+        <button class="chip" type="button" aria-pressed="true" data-f="tutti">Tutti</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="rasatura">Rasatura</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="facciate">Facciate</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="cartongesso">Cartongesso</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="muratura">Muratura</button>
+      </div>
+    </div>
+    <div class="ba" id="ba">
+      <div class="ph ph-before"><span>PRIMA · foto in arrivo</span></div>
+      <div class="ph ph-after"><span>DOPO · foto in arrivo</span></div>
+      <div class="handle" aria-hidden="true"></div>
+      <input type="range" min="0" max="100" value="50" id="ba-range" aria-label="Confronta prima e dopo">
+    </div>
+    <div class="tiles" id="tiles">
+      <div class="tile" data-t="rasatura"><span>Rasatura soggiorno · Sesto S.G.</span></div>
+      <div class="tile" data-t="facciate"><span>Facciata condominio · Milano</span></div>
+      <div class="tile" data-t="cartongesso"><span>Controsoffitto · Cinisello</span></div>
+      <div class="tile" data-t="muratura"><span>Nuova parete · Sesto S.G.</span></div>
+      <div class="tile" data-t="rasatura"><span>Rasatura esterna · Monza</span></div>
+      <div class="tile" data-t="facciate"><span>Facciata · estero</span></div>
+    </div>
+    <p style="margin-top:12px;font:500 .85rem var(--f-m);color:var(--ink-2)">Didascalie di esempio: verranno sostituite con i lavori veri.</p>
+  </div>
+</section>
+
+<section class="dark" id="estero">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · autorità.</b> Nessuna impresa della zona può dire di aver lavorato all'estero. Lo diciamo con calma, senza effetti: è la prova del livello.<br><b>Animazione:</b> nessuna, di proposito. Solo tipografia.</aside>
+    <div class="far">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Dove lavoriamo</span>
+        <h2>Da Sesto San Giovanni <b>fino all'estero</b>.</h2>
+        <p class="read" style="color:var(--on-night-2)">Lavoriamo ogni giorno a Milano e nell'hinterland. Ci hanno chiamato anche in Germania, in Francia e nei Paesi arabi: stessa cura, stesse finiture.</p>
+        <p class="todo">[Da inserire: città e tipo di lavoro all'estero, con foto]</p>
+      </div>
+      <ul class="places">
+        <li class="home">Sesto San Giovanni <small>la sede</small></li>
+        <li>Milano e hinterland <small>ogni giorno</small></li>
+        <li>Germania <small>lavori eseguiti</small></li>
+        <li>Francia <small>lavori eseguiti</small></li>
+        <li>Paesi arabi <small>lavori eseguiti</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="recensioni">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · riprova sociale.</b> Qui andranno le recensioni Google vere. Saranno anche la prova di pulizia e velocità. Finché non ci sono, lo spazio resta vuoto e nessuna recensione viene inventata.</aside>
+    <div class="reviews">
+      <span class="eyebrow">Recensioni Google</span>
+      <h2>Cosa dicono i clienti</h2>
+      <p>Le recensioni arriveranno dalla scheda Google di El Gammal, appena sarà attiva.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contatti" style="background:var(--plaster-2)">
+  <div class="wrap">
+    <aside class="nota"><b>AZIONE · piccolo primo passo.</b> Mandare una foto costa meno che chiedere un preventivo. Tre campi soli nel modulo. "Gratis" vicino a ogni bottone.</aside>
+    <div class="contact">
+      <div class="big-wa">
+        <span class="eyebrow">Contatti</span>
+        <h2>Mandaci una foto del muro. <b>Ti diciamo cosa serve.</b></h2>
+        <p class="read" style="color:var(--ink-2)">Sopralluogo e preventivo sono gratuiti. Rispondiamo su WhatsApp o al telefono.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href="#contatti">Scrivi su WhatsApp</a>
+          <a class="btn btn-s" href="#contatti">Chiama <span class="placeholder">[telefono]</span></a>
+        </div>
+      </div>
+      <form id="form" novalidate>
+        <label for="f-nome">Nome<input id="f-nome" name="nome" autocomplete="name" required></label>
+        <label for="f-contatto">Telefono o email<input id="f-contatto" name="contatto" autocomplete="tel" required></label>
+        <label for="f-msg">Che lavoro ti serve? (due righe)<textarea id="f-msg" name="msg" rows="3"></textarea></label>
+        <button class="btn btn-p" type="submit">Richiedi il sopralluogo gratuito</button>
+        <p class="form-ok" id="form-ok" hidden>Concept: il modulo non invia nulla. Nel sito vero la richiesta arriva al cliente con scritto "(dal sito)".</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="display:grid;gap:16px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="95 159 1370 705" class="logo" role="img" aria-label="El Gammal, impresa edile"><path style="fill:var(--logo-ink)" d="M372 547V316L803 199L923 263V352L991 334L1255 383V547H1223V412L991 367L923 386V547H892V286L803 239L405 343V547Z"/><path style="fill:var(--logo-ink)" d="M469 395L525 385V457L469 467Z M568 379L625 369V445L568 453Z M668 362L726 352V431L668 440Z M1017 432L1070 440V505L1017 499Z M1114 445L1165 452V514L1114 507Z"/><path style="fill:var(--logo-accent)" d="M803 239L892 286V547H803Z"/><path style="fill:var(--logo-ink)" fill-rule="evenodd" d="M1228,765 1228,819 1265,819 1265,810 1240,810 1239,809 1239,797 1240,796 1262,796 1262,787 1240,787 1239,786 1239,775 1240,774 1265,774 1265,765ZM1150,765 1150,819 1186,819 1186,810 1162,810 1161,809 1161,765ZM1091,765 1091,819 1102,819 1102,765ZM997,765 997,819 1023,819 1024,818 1027,818 1028,817 1030,817 1031,816 1034,815 1036,813 1037,813 1042,807 1042,806 1044,803 1044,800 1045,799 1045,785 1044,784 1044,781 1043,780 1042,777 1040,775 1040,774 1036,770 1035,770 1028,766 1025,766 1024,765ZM1008,774 1021,774 1022,775 1024,775 1025,776 1028,777 1033,783 1033,784 1034,785 1034,787 1035,788 1035,795 1034,796 1034,799 1033,800 1032,803 1028,807 1027,807 1024,809 1021,809 1020,810 1008,810 1007,809 1007,775ZM912,765 912,819 949,819 949,810 923,810 922,809 922,797 923,796 946,796 946,788 945,787 923,787 922,786 922,775 923,774 949,774 949,765ZM796,765 796,767 794,770 794,772 792,775 792,777 789,782 789,784 787,787 787,789 785,792 784,797 783,798 783,799 782,800 782,802 779,807 779,809 778,810 778,812 776,815 776,817 775,818 775,819 786,819 786,818 787,817 787,815 789,812 789,810 792,807 813,807 816,812 816,814 818,817 818,819 830,819 828,816 828,814 826,811 826,809 823,804 823,802 821,799 821,797 820,796 820,795 819,794 819,792 816,787 816,785 814,782 814,780 812,777 812,775 810,772 810,770 809,769 808,766 807,765ZM802,778 804,781 804,783 806,786 806,788 808,791 808,793 809,794 809,796 810,797 809,798 796,798 795,799 794,798 794,796 795,795 795,794 796,793 796,791 798,788 798,786 799,785 800,780ZM611,765 611,819 648,819 648,810 623,810 621,808 622,807 622,797 623,796 645,796 645,787 623,787 621,785 621,784 622,783 622,775 623,774 648,774 648,765ZM524,765 524,819 534,819 534,800 535,799 542,799 547,805 548,808 554,816 555,819 568,819 565,815 565,814 563,812 563,811 561,809 561,808 559,806 559,805 557,803 557,802 555,799 555,798 556,797 559,796 563,792 563,791 565,788 565,785 566,784 566,780 565,779 565,776 564,775 564,773 559,768 558,768 553,765ZM534,775 535,774 549,774 550,775 551,775 554,778 554,779 555,780 555,784 554,785 554,786 550,790 535,790 534,789ZM473,766 471,766 470,765 442,765 442,819 453,819 453,801 454,800 470,800 471,799 473,799 474,798 477,797 481,793 481,792 483,789 483,784 484,783 484,781 483,780 483,777 482,776 482,774 480,772 480,771 478,769 477,769ZM453,775 454,774 467,774 468,775 469,775 472,778 472,779 473,780 473,785 472,786 472,787 469,790 468,790 467,791 454,791 453,790ZM339,765 339,819 349,819 350,818 349,817 349,816 350,815 349,814 349,806 350,805 350,788 349,787 350,786 351,786 352,787 353,790 359,798 359,799 360,800 361,803 363,805 364,808 370,808 370,807 372,805 373,802 375,800 376,797 378,795 378,794 384,786 385,787 385,819 396,819 396,765 385,765 385,766 381,771 380,774 376,779 375,782 371,787 370,790 367,793 364,789 364,788 362,786 361,783 359,781 358,778 356,776 355,773 353,771 353,770 350,766 350,765ZM280,765 280,819 291,819 291,765ZM708,764 707,765 705,765 701,768 700,768 696,773 696,776 695,777 695,783 696,784 696,786 697,787 697,788 701,792 702,792 705,794 707,794 708,795 711,795 712,796 714,796 715,797 718,797 719,798 722,799 724,801 724,802 725,803 725,805 724,806 724,807 721,810 719,810 718,811 711,811 710,810 708,810 706,808 705,808 702,805 702,804 701,803 693,809 694,810 694,811 699,816 700,816 705,819 709,819 710,820 720,820 721,819 724,819 725,818 728,817 734,811 734,809 735,808 735,798 734,797 734,796 729,791 728,791 723,788 720,788 719,787 717,787 716,786 713,786 712,785 710,785 706,781 706,777 709,774 710,774 711,773 719,773 720,774 723,775 727,779 728,779 734,773 734,772 730,768 729,768 724,765 722,765 721,764ZM1310,565 1310,723 1424,723 1424,684 1351,684 1350,683 1350,565ZM1197,565 1197,566 1196,567 1196,569 1195,570 1195,571 1193,574 1193,576 1191,579 1191,581 1190,582 1190,583 1188,586 1188,588 1186,591 1186,593 1184,596 1184,598 1181,603 1181,605 1179,608 1179,610 1177,613 1177,615 1174,620 1174,622 1172,625 1172,627 1170,630 1170,632 1168,635 1168,637 1165,642 1165,644 1163,647 1163,649 1161,652 1161,654 1158,659 1158,661 1156,664 1156,666 1153,671 1153,673 1151,676 1151,678 1149,681 1149,683 1147,686 1147,688 1145,691 1145,693 1142,698 1142,700 1140,703 1139,708 1136,713 1136,715 1135,716 1135,718 1133,721 1133,723 1173,723 1174,718 1176,715 1176,713 1177,712 1177,711 1178,710 1178,708 1180,705 1181,700 1183,697 1183,695 1185,693 1243,693 1246,697 1246,699 1248,702 1249,707 1251,710 1251,712 1253,715 1254,720 1256,723 1297,723 1295,720 1295,718 1294,717 1294,715 1292,712 1291,707 1288,702 1288,700 1286,697 1286,695 1284,692 1284,690 1282,687 1282,685 1280,682 1280,680 1278,677 1278,675 1276,672 1276,670 1274,667 1274,665 1271,660 1271,658 1269,655 1269,653 1267,650 1267,648 1264,643 1264,641 1262,638 1262,636 1260,633 1260,631 1257,626 1257,624 1255,621 1255,619 1253,616 1253,614 1250,609 1250,607 1249,606 1249,605 1248,604 1248,602 1245,597 1245,595 1243,592 1243,590 1241,587 1241,585 1238,580 1238,578 1236,575 1236,573 1233,568 1233,566 1232,565ZM1214,613 1217,618 1217,620 1219,623 1220,628 1221,629 1221,630 1222,631 1222,633 1224,636 1224,638 1225,639 1226,644 1227,645 1227,646 1228,647 1228,649 1230,652 1230,654 1231,655 1231,657 1232,658 1232,659 1231,660 1197,660 1196,659 1196,658 1198,655 1199,650 1201,647 1201,645 1203,642 1204,637 1206,634 1207,629 1209,626 1209,624 1211,621 1211,619 1212,618 1212,617 1213,616 1213,614ZM963,565 963,723 1001,723 1001,641 1002,640 1004,642 1004,643 1006,645 1006,646 1008,648 1008,649 1011,652 1011,653 1013,655 1013,656 1015,658 1015,659 1017,661 1017,662 1019,664 1019,665 1021,667 1021,668 1024,671 1024,672 1026,674 1026,675 1028,677 1028,678 1030,680 1030,681 1033,684 1033,685 1035,687 1035,688 1037,690 1037,691 1039,693 1039,694 1041,696 1041,697 1045,697 1046,694 1048,692 1048,691 1050,689 1050,688 1052,686 1052,685 1054,683 1054,682 1056,680 1056,679 1059,676 1059,675 1061,673 1061,672 1063,670 1063,669 1065,667 1065,666 1068,663 1068,662 1070,660 1070,659 1072,657 1072,656 1075,653 1075,652 1077,650 1077,649 1079,647 1079,646 1085,639 1086,640 1086,723 1124,723 1124,565 1090,565 1090,566 1087,569 1087,570 1082,576 1082,577 1080,579 1080,580 1078,582 1078,583 1075,586 1075,587 1073,589 1073,590 1071,592 1071,593 1069,595 1069,596 1066,599 1066,600 1064,602 1064,603 1062,605 1062,606 1060,608 1060,609 1058,611 1058,612 1055,615 1055,616 1053,618 1053,619 1051,621 1051,622 1049,624 1049,625 1047,627 1047,628 1044,632 1043,632 1042,631 1042,630 1039,627 1039,626 1037,624 1037,623 1035,621 1035,620 1033,618 1033,617 1031,615 1031,614 1028,611 1028,610 1026,608 1026,607 1024,605 1024,604 1021,601 1021,600 1019,598 1019,597 1017,595 1017,594 1015,592 1015,591 1013,589 1013,588 1011,586 1011,585 1008,582 1008,581 1006,579 1006,578 1004,576 1004,575 1002,573 1002,572 1000,570 1000,569 997,565ZM775,565 775,723 814,723 814,640 815,639 817,641 817,642 819,644 819,645 822,648 822,649 824,651 824,652 826,654 826,655 828,657 828,658 830,660 830,661 833,664 833,665 835,667 835,668 837,670 837,671 839,673 839,674 842,677 842,678 844,680 844,681 846,683 846,684 849,687 849,688 851,690 851,691 853,693 853,694 855,696 855,697 859,697 859,696 861,694 861,693 863,691 863,690 865,688 865,687 867,685 867,684 870,681 870,680 872,678 872,677 874,675 874,674 876,672 876,671 878,669 878,668 881,665 881,664 883,662 883,661 885,659 885,658 888,655 888,654 890,652 890,651 893,648 893,647 899,639 900,640 900,723 939,723 939,720 940,719 940,696 939,695 939,694 940,693 940,692 939,691 939,658 940,657 940,640 939,639 939,619 940,618 940,616 939,615 939,592 940,591 940,584 939,583 939,565 905,565 900,571 900,572 898,574 898,575 896,577 896,578 893,581 893,582 891,584 891,585 889,587 889,588 887,590 887,591 884,594 884,595 882,597 882,598 880,600 880,601 878,603 878,604 875,607 875,608 873,610 873,611 871,613 871,614 869,616 869,617 866,620 866,621 864,623 864,624 858,632 857,632 851,625 851,624 849,622 849,621 847,619 847,618 844,615 844,614 842,612 842,611 840,609 840,608 837,605 837,604 835,602 835,601 833,599 833,598 831,596 831,595 828,592 828,591 826,589 826,588 824,586 824,585 822,583 822,582 819,579 819,578 817,576 817,575 815,573 815,572 813,570 813,569 810,566 810,565ZM667,565 665,568 665,570 663,573 663,575 660,580 660,582 658,585 658,587 655,592 655,594 653,597 653,599 651,602 651,604 648,609 648,611 646,614 646,616 644,619 644,621 641,626 641,628 639,631 639,633 636,638 636,640 634,643 634,645 632,648 632,650 630,653 630,655 627,660 627,662 625,665 625,667 623,670 623,672 621,675 621,677 619,680 619,682 616,687 616,689 614,692 614,694 612,697 612,699 610,702 610,704 608,707 608,709 606,712 606,714 604,717 604,719 603,720 602,723 642,723 643,722 643,720 645,717 645,715 647,712 648,707 650,704 651,699 652,698 652,697 653,696 653,694 654,693 713,693 715,696 715,698 717,701 717,703 719,706 720,711 722,714 722,716 723,717 723,719 724,720 725,723 766,723 765,722 764,717 762,714 762,712 760,709 760,707 758,704 757,699 754,694 754,692 752,689 752,687 750,684 750,682 748,679 748,677 747,676 747,675 746,674 746,672 744,669 744,667 742,664 742,662 740,659 740,657 737,652 737,650 735,647 735,645 733,642 733,640 731,637 731,635 728,630 728,628 726,625 726,623 724,620 724,618 722,615 722,613 719,608 719,606 716,601 716,599 714,596 714,594 712,591 712,589 709,584 709,582 707,579 707,577 705,574 705,572 702,567 702,565ZM683,613 684,613 685,614 685,616 686,617 686,619 688,622 689,627 691,630 692,635 694,638 694,640 695,641 695,642 696,643 696,645 698,648 698,650 699,651 700,656 702,659 701,660 666,660 665,659 666,658 666,657 667,656 667,654 669,651 669,649 670,648 671,643 673,640 673,638 675,635 676,630 678,627 679,622 681,619 681,617 682,616 682,614ZM285,565 285,723 398,723 398,684 326,684 325,683 325,565ZM137,565 137,723 262,723 262,686 179,686 178,685 178,660 179,659 249,659 249,626 248,625 179,625 178,624 178,600 179,599 261,599 261,565ZM512,562 511,563 507,563 506,564 503,564 502,565 497,566 494,568 492,568 491,569 484,572 482,574 481,574 479,576 478,576 476,578 475,578 470,583 469,583 458,596 458,597 454,602 454,603 449,612 449,614 448,615 448,617 447,618 447,620 446,621 446,623 445,624 445,628 444,629 444,634 443,635 443,653 444,654 444,660 445,661 445,664 446,665 446,668 447,669 448,674 449,675 449,676 450,677 450,679 451,680 453,685 455,687 456,690 459,693 459,694 462,697 462,698 471,707 472,707 479,713 482,714 484,716 485,716 492,720 494,720 495,721 496,721 497,722 499,722 500,723 503,723 504,724 507,724 508,725 513,725 514,726 539,726 540,725 544,725 545,724 548,724 549,723 551,723 552,722 557,721 558,720 559,720 560,719 567,716 569,714 570,714 572,712 573,712 577,708 578,708 585,701 585,700 588,697 588,696 592,691 592,690 597,681 597,679 598,678 598,676 599,675 599,672 600,671 600,668 601,667 601,661 602,660 602,632 524,632 524,664 561,664 562,665 562,668 561,669 559,674 550,683 549,683 547,685 546,685 543,687 541,687 540,688 537,688 536,689 531,689 530,690 523,690 522,689 516,689 515,688 510,687 509,686 504,684 502,682 501,682 491,672 491,671 487,666 487,665 486,664 486,662 485,661 485,659 484,658 484,656 483,655 483,649 482,648 482,640 483,639 483,633 484,632 484,629 485,628 485,626 486,625 489,618 491,616 491,615 500,606 501,606 503,604 504,604 511,600 513,600 514,599 517,599 518,598 536,598 537,599 540,599 541,600 543,600 544,601 551,604 554,607 555,607 562,614 563,614 564,613 565,613 568,610 569,610 571,608 572,608 575,605 576,605 579,602 580,602 583,599 584,599 591,593 592,593 592,591 580,579 579,579 576,576 575,576 570,572 569,572 564,569 562,569 557,566 555,566 554,565 551,565 550,564 548,564 547,563 542,563 541,562 534,562 533,561 520,561 519,562Z"/></svg><p><strong>IMPRESA EDILE EL GAMMAL MOHAMED</strong><br>Via Guglielmo Marconi 124, 20099 Sesto San Giovanni (MI)<br>P.IVA <span class="placeholder">[da ricevere]</span></p></div>
+    <div><strong>Contatti</strong><br>Telefono <span class="placeholder">[da ricevere]</span><br>WhatsApp <span class="placeholder">[da ricevere]</span><br>Email <span class="placeholder">[da ricevere]</span></div>
+    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Dal 2005</div>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Contatto rapido">
+  <a href="#contatti">Chiama</a><a href="#contatti">WhatsApp</a><a class="main" href="#contatti">Sopralluogo gratis</a>
+</nav>
+
+<script>
+document.body.classList.remove('js-off');document.documentElement.classList.add('js');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// note on/off
+const tn=document.getElementById('toggle-notes');
+tn.addEventListener('click',()=>{const off=document.body.classList.toggle('no-notes');tn.setAttribute('aria-pressed',String(!off));tn.textContent=off?'Note: nascoste':'Note: visibili';});
+
+// menu
+const bg=document.getElementById('burger'),dr=document.getElementById('drawer');
+bg.addEventListener('click',()=>{const o=dr.hidden;dr.hidden=!o;bg.setAttribute('aria-expanded',String(o));});
+dr.addEventListener('click',e=>{if(e.target.closest('a')){dr.hidden=true;bg.setAttribute('aria-expanded','false');}});
+
+// comparsa schede
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+'ms';io.observe(el);});
+const beam=document.getElementById('beam');
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)beam.classList.add('on')}),{threshold:.4}).observe(beam);
+
+// metodo: linea che si riempie
+const track=document.getElementById('track');
+function trackFill(){const r=track.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*0.75-r.top)/r.height));track.style.setProperty('--p',reduce?1:p.toFixed(3));}
+addEventListener('scroll',trackFill,{passive:true});trackFill();
+
+// prima/dopo
+const ba=document.getElementById('ba'),rg=document.getElementById('ba-range');
+rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed','false'));c.setAttribute('aria-pressed','true');
+  const f=c.dataset.f;document.querySelectorAll('#tiles .tile').forEach(t=>t.hidden=!(f==='tutti'||t.dataset.t===f));
+}));
+
+// modulo
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('form-ok').hidden=false;});
+
+// ===== Muro alla luce radente =====
+(function(){
+  const box=document.getElementById('wall'),cv=document.getElementById('wallc'),ctx=cv.getContext('2d'),meter=document.getElementById('meter');
+  const W=300,H=200; const off=document.createElement('canvas');off.width=W;off.height=H;const octx=off.getContext('2d');const img=octx.createImageData(W,H);
+  // rumore
+  function hash(x,y){let h=x*374761393+y*668265263;h=(h^(h>>13))*1274126177;return ((h^(h>>16))>>>0)/4294967295;}
+  function vnoise(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;const s=t=>t*t*(3-2*t);
+    const a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1);const u=s(xf),v=s(yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+  const hm=new Float32Array(W*H);
+  const strokes=[];for(let i=0;i<14;i++){strokes.push({cx:hash(i,7)*W,cy:hash(i,9)*H,r:40+hash(i,11)*90,w:2+hash(i,13)*3,a0:hash(i,15)*6.28,len:.6+hash(i,17)*1.2,amp:.5+hash(i,19)*.8});}
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    let h=.55*vnoise(x*.035,y*.035)+.3*vnoise(x*.09+10,y*.09)+.15*vnoise(x*.25+30,y*.25);
+    for(const s of strokes){const dx=x-s.cx,dy=y-s.cy;const ang=Math.atan2(dy,dx);let da=ang-s.a0;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)<s.len){const d=Math.hypot(dx,dy)-s.r;h+=s.amp*.22*Math.exp(-(d*d)/(s.w*s.w));}}
+    hm[y*W+x]=h;}
+  let amp=1,lamp={x:-.15,y:.35},target={x:.75,y:.35},running=false,dirty=true,intro=!reduce;
+  function render(){
+    const S=2.6*amp, Lz=16;const lx=lamp.x*W,ly=lamp.y*H;const d=img.data;
+    for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+      const i=y*W+x;const nx=-(hm[i+1]-hm[i-1])*S,ny=-(hm[i+W]-hm[i-W])*S;const nl=Math.hypot(nx,ny,1);
+      let vx=lx-x,vy=ly-y;const vl=Math.hypot(vx,vy,Lz);vx/=vl;vy/=vl;const vz=Lz/vl;
+      const lam=Math.max(0,(nx*vx+ny*vy+vz)/nl);const flat=vz;const ratio=flat>0?lam/flat:1;
+      const dist=Math.hypot(lx-x,(ly-y)*1.2)/W;const att=1/(1+dist*dist*2.2);
+      let k=.80+.20*att; k*= (0.74+0.26*Math.min(1.7,ratio));
+      const o=i*4;d[o]=Math.min(255,226*k);d[o+1]=Math.min(255,224*k);d[o+2]=Math.min(255,219*k);d[o+3]=255;}
+    octx.putImageData(img,0,0);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(off,1,1,W-2,H-2,0,0,cv.width,cv.height);
+    // alone della lampada
+    const g=ctx.createRadialGradient(lamp.x*cv.width,lamp.y*cv.height,0,lamp.x*cv.width,lamp.y*cv.height,cv.width*.35);
+    g.addColorStop(0,'rgba(255,244,225,.22)');g.addColorStop(1,'rgba(255,244,225,0)');ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
+    meter.style.setProperty('--m',Math.round(amp*100)+'%');
+  }
+  function size(){const r=box.getBoundingClientRect();const dpr=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);dirty=true;}
+  function progress(){const r=box.getBoundingClientRect();const p=Math.min(1,Math.max(0,(-r.top+ r.height*0.15)/(r.height*0.9)));return p;}
+  let t0=performance.now();
+  function loop(t){
+    if(!running)return;
+    if(intro){const k=Math.min(1,(t-t0)/1800);const e=1-Math.pow(1-k,3);lamp.x=-.15+(.78+.15)*e;if(k>=1)intro=false;dirty=true;}
+    else{const nx=lamp.x+(target.x-lamp.x)*.12,ny=lamp.y+(target.y-lamp.y)*.12;if(Math.abs(nx-lamp.x)>.001||Math.abs(ny-lamp.y)>.001){lamp.x=nx;lamp.y=ny;dirty=true;}}
+    const na=reduce?.6:1-.94*progress();if(Math.abs(na-amp)>.004){amp=na;dirty=true;}
+    if(dirty){render();dirty=false;}
+    requestAnimationFrame(loop);
+  }
+  function point(e){const r=box.getBoundingClientRect();target.x=(e.clientX-r.left)/r.width;target.y=(e.clientY-r.top)/r.height;intro=false;}
+  box.addEventListener('pointermove',point);box.addEventListener('pointerdown',point);
+  new ResizeObserver(size).observe(box);size();
+  if(reduce){lamp.x=.7;amp=.6;render();return;}
+  new IntersectionObserver(es=>es.forEach(e=>{const v=e.isIntersecting;if(v&&!running){running=true;requestAnimationFrame(loop);}else if(!v){running=false;}}),{threshold:0}).observe(box);
+})();
+</script>
+</body>
+</html>

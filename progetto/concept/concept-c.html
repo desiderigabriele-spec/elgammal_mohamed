@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concept C · Cantiere pulito</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Concept C · Cantiere pulito. Caldo e umano, parla al privato. La firma è la polvere che se ne va mentre scorri. */
+:root{
+  --bg:#F6F6F4; --bg-2:#ECEBE7; --wall:#E7E3DC; --ink:#292D30; --ink-2:#51575C; --line:#D3D1CB;
+  --bronze:#6E5E49; --bronze-l:#B7A58C; --soft:#E9E2D7; --night:#24282B;
+  --logo-ink:#292D30; --logo-accent:#8B7962;
+  --note:#1F47D6; --note-bg:#EEF2FF;
+  --f-d:"Bricolage Grotesque","Arial Rounded MT Bold",Arial,sans-serif; --f-b:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif; --f-m:"IBM Plex Mono",ui-monospace,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --soft-ease:cubic-bezier(.33,1,.68,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 18px/1.6 var(--f-b)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-d);margin:0;line-height:1.02;text-wrap:balance;font-weight:400;letter-spacing:-.02em}
+h1{font-size:clamp(2.4rem,4.6vw,4rem)}
+h2{font-size:clamp(2rem,4.2vw,3.3rem)}
+h1 b,h2 b{font-weight:800}
+h3{font-size:1.4rem;font-weight:600}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:var(--gutter);padding-right:max(16px,env(safe-area-inset-right,0px))}
+.kicker{font:600 .9rem/1.2 var(--f-b);color:var(--bronze)}
+.read{max-width:58ch;color:var(--ink-2)}
+section{padding-block:80px}
+@media (min-width:900px){section{padding-block:128px}}
+
+.review{background:#111;color:#fff;font:500 .82rem/1.3 var(--f-m)}
+.review .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding-block:8px}
+.review a,.review button{color:#fff;font:inherit;background:none;border:1px solid #555;border-radius:2px;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
+.nota{display:block;border:1.5px dashed var(--note);background:var(--note-bg);color:#14287A;font:500 .82rem/1.45 var(--f-m);padding:12px 14px;margin-bottom:32px;max-width:72ch}
+.nota b{color:var(--note)}
+.no-notes .nota{display:none}
+
+.top{position:sticky;top:0;z-index:20;background:rgba(246,246,244,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.logo{height:44px;width:auto;display:block}
+.menu{display:none;gap:4px;align-items:center}
+.menu a{text-decoration:none;font-weight:600;padding:12px 14px;min-height:44px;display:inline-flex;align-items:center}
+@media (min-width:960px){.menu{display:flex}.burger{display:none}}
+.burger{min-width:44px;min-height:44px;border:1px solid var(--line);background:#fff;font:700 .9rem var(--f-b);padding:0 14px;cursor:pointer;border-radius:999px}
+.drawer{border-top:1px solid var(--line);background:#fff}
+.drawer a{display:flex;min-height:52px;align-items:center;font-weight:700;text-decoration:none;border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 26px;font:700 1rem/1 var(--f-b);text-decoration:none;border:2px solid transparent;cursor:pointer;border-radius:999px;transition:transform .4s var(--soft-ease),background .3s}
+.btn-p{background:var(--bronze);color:#fff}
+.btn-p:hover{background:#5E503D;transform:translateY(-2px)}
+.btn-s{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-s:hover{background:var(--ink);color:#fff}
+.btn-sm{min-height:44px;padding:0 18px;font-size:.95rem}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+
+/* hero con scena */
+.hero{padding-block:0}
+.hero-scroll{height:165vh;position:relative}
+.hero-stick{position:sticky;top:68px;min-height:calc(100vh - 68px);display:grid;align-content:start;padding-block:40px}
+.hero-grid{display:grid;gap:28px;align-items:center}
+@media (min-width:960px){.hero-grid{grid-template-columns:1fr 1.1fr;gap:56px}}
+.hero-copy{display:grid;gap:22px;min-width:0}
+.hero-copy .lead{font-size:1.15rem;color:var(--ink-2);max-width:44ch}
+.scene{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:5/4;max-height:min(560px,62vh);width:100%;background:var(--wall)}
+@media (max-width:959px){.scene{aspect-ratio:16/10;max-height:none}}
+.scene svg,.scene canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.clock{position:absolute;right:14px;top:14px;background:#fff;border-radius:999px;padding:8px 14px;font:600 1rem var(--f-m);display:flex;gap:8px;align-items:center;box-shadow:0 1px 0 var(--line)}
+.clock i{width:10px;height:10px;border-radius:50%;background:var(--bronze-l)}
+.scene .tag{position:absolute;left:14px;bottom:14px;background:#fff;border-radius:999px;padding:6px 12px;font:500 .75rem var(--f-m);color:var(--ink-2)}
+@media (max-width:959px){.hero-scroll{height:auto}.hero-stick{position:static;min-height:0;padding-block:24px 64px}}
+
+/* paure */
+.fears{display:grid;gap:16px}
+@media (min-width:900px){.fears{grid-template-columns:repeat(3,1fr)}}
+.fear{background:#fff;border-radius:20px;padding:28px;display:grid;gap:14px;align-content:start;border:1px solid var(--line)}
+.fear .q{font:400 1.35rem/1.25 var(--f-d)}
+.fear .a{color:var(--ink-2)}
+.fear .a strong{color:var(--ink)}
+.fear .mark{width:36px;height:4px;background:var(--bronze-l);border-radius:2px}
+
+/* giornata */
+.day{display:grid;gap:40px}
+@media (min-width:960px){.day{grid-template-columns:.8fr 1.2fr;gap:64px}}
+.dial-wrap{position:sticky;top:96px;align-self:start;display:grid;gap:16px;justify-items:start}
+@media (max-width:959px){.dial-wrap{position:static}}
+.dial{width:min(260px,60vw);height:auto}
+.dial .hand{transform-origin:100px 100px;transition:transform .9s var(--soft-ease)}
+@media (prefers-reduced-motion:reduce){.dial .hand{transition:none}}
+.hours{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.hour{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;gap:8px;transition:border-color .4s,background .4s}
+.hour.act{border-color:var(--bronze-l);background:#FBFAF7}
+.hour time{font:600 1.1rem var(--f-m);color:var(--bronze)}
+.hour p{color:var(--ink-2)}
+.ph-note{font:500 .82rem/1.4 var(--f-m);background:#FFE9C7;color:#5A3700;padding:2px 6px;border-radius:4px}
+
+/* servizi */
+.svc{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.svc li{border-bottom:1px solid var(--line)}
+.svc a{display:grid;grid-template-columns:1fr auto;gap:8px 24px;padding:22px 8px;text-decoration:none;align-items:center;transition:padding .4s var(--soft-ease),background .4s}
+.svc a:hover{padding-left:20px;background:var(--bg-2)}
+.svc h3{font-size:clamp(1.4rem,2.6vw,2rem);font-weight:400}
+.svc p{color:var(--ink-2);grid-column:1}
+.svc .arrow{grid-row:1/span 2;grid-column:2;font:400 1.6rem var(--f-d)}
+.svc li.base a{background:var(--night);color:#fff;border-radius:20px;padding:32px 28px;margin-block:12px}
+.svc li.base p{color:#C4C8CB}
+.svc li.base h3{font-weight:800}
+.svc li.base .badge{justify-self:start;font:600 .8rem var(--f-b);background:var(--bronze-l);color:var(--ink);border-radius:999px;padding:4px 10px}
+
+/* lavori */
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:min(82%,420px);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;overscroll-behavior-x:contain}
+.rail article{scroll-snap-align:start;display:grid;gap:10px}
+.rail .ph{aspect-ratio:4/5;border-radius:20px;background:repeating-linear-gradient(135deg,#DDD9D2 0 2px,#E8E5DF 2px 12px);display:grid;place-items:center;font:500 .8rem var(--f-m);color:var(--ink-2);text-align:center;padding:16px}
+.rail p{color:var(--ink-2)}
+
+/* estero */
+.far{background:var(--night);color:#fff;border-radius:32px;padding:clamp(32px,6vw,72px);display:grid;gap:28px}
+.far .read{color:#C4C8CB}
+.far .kicker{color:var(--bronze-l)}
+.words{display:flex;flex-wrap:wrap;gap:8px 28px;font:400 clamp(1.8rem,4.4vw,3.4rem)/1.05 var(--f-d)}
+.words span:first-child{font-weight:800;color:var(--bronze-l)}
+.todo{font:500 .85rem/1.4 var(--f-m);color:#FFD7A8}
+
+.reviews{border:2px dashed var(--line);border-radius:24px;padding:40px 24px;display:grid;gap:12px}
+.reviews p{color:var(--ink-2)}
+
+.contact{display:grid;gap:40px}
+@media (min-width:960px){.contact{grid-template-columns:1fr 1fr}}
+form{display:grid;gap:16px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px}
+label{display:grid;gap:6px;font-weight:600}
+input,textarea{font:400 1rem var(--f-b);padding:12px 16px;min-height:50px;border:1px solid #8E9296;background:#fff;color:var(--ink);border-radius:14px;width:100%}
+textarea{min-height:100px}
+.form-ok{font:500 .9rem/1.4 var(--f-m);color:var(--bronze)}
+.placeholder{background:#FFE9C7;color:#5A3700;padding:0 4px;font:500 .9em var(--f-m);border-radius:3px}
+
+footer{background:var(--night);color:#C4C8CB;padding-block:56px 120px;font-size:.95rem}
+footer .wrap{display:grid;gap:24px}
+@media (min-width:900px){footer{padding-block:64px}footer .wrap{grid-template-columns:1.2fr 1fr 1fr}}
+footer strong{color:#fff}
+footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
+
+.dock{position:fixed;left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom,0px));z-index:30;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:6px;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:999px;padding:6px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.dock a{min-height:48px;display:flex;align-items:center;justify-content:center;font:700 .95rem var(--f-b);text-decoration:none;border-radius:999px}
+.dock a.main{background:var(--bronze);color:#fff}
+@media (min-width:960px){.dock{display:none}}
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="wrap">
+    <span>CONCEPT C · CANTIERE PULITO · bozza da approvare</span>
+    <span style="display:flex;gap:8px;flex-wrap:wrap"><a href="./">← Tutti i concept</a><button id="toggle-notes" type="button" aria-pressed="true">Note: visibili</button></span>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#" aria-label="El Gammal, torna all'inizio">%%LOGO%%</a>
+    <nav class="menu" aria-label="Menu principale">
+      <a href="#giornata">Come lavoriamo</a><a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#estero">Dove</a>
+      <a class="btn btn-p btn-sm" href="#contatti">Sopralluogo gratuito</a>
+    </nav>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <div class="wrap"><a href="#giornata">Come lavoriamo</a><a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#estero">Dove lavoriamo</a><a href="#contatti">Contatti</a></div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap" style="padding-top:24px">
+    <aside class="nota"><b>ATTENZIONE · la paura del privato.</b> Parte dalla cosa che le persone temono di più quando ristrutturano casa: vivere nella polvere. La promessa è concreta e si vede.<br><b>Animazione firma:</b> la stanza è coperta di polvere. Scorrendo, una passata la porta via da sinistra a destra e l'orologio va dalle 17:30 alle 18:00, fine giornata. La polvere galleggia piano quando sei fermo. Si ferma fuori schermo; con "riduci movimento" la stanza è già pulita.<br><b>Rischio:</b> il cliente non ha impegni scritti sulla pulizia. Va confermato come lavora davvero.</aside>
+  </div>
+  <div class="hero-scroll" id="hero-scroll">
+    <div class="hero-stick">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="kicker">Impresa edile a Sesto San Giovanni, dal 2005</span>
+            <h1>Ristrutturiamo casa tua. <b>La polvere va via con noi.</b></h1>
+            <p class="lead">Muratura, rasature, cartongesso, facciate e ristrutturazioni chiavi in mano a Milano e dintorni. Un'impresa sola, un cantiere in ordine.</p>
+            <div class="ctas"><a class="btn btn-p" href="#contatti">Sopralluogo gratuito</a><a class="btn btn-s" href="#contatti">Scrivici su WhatsApp</a></div>
+          </div>
+          <div class="scene" id="scene">
+            <svg viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="500" height="400" fill="#E7E3DC"/>
+              <rect x="0" y="300" width="500" height="100" fill="#CFC6B8"/>
+              <path d="M0 300 H500" stroke="#B7AC9B" stroke-width="3"/>
+              <rect x="300" y="70" width="140" height="170" fill="#F4F1EA" stroke="#292D30" stroke-width="4"/>
+              <path d="M370 70 V240 M300 155 H440" stroke="#292D30" stroke-width="3"/>
+              <path d="M300 240 L250 300 H390 L440 240 Z" fill="#F4F1EA" opacity=".55"/>
+              <rect x="60" y="190" width="150" height="110" rx="10" fill="#8B7962"/>
+              <rect x="70" y="175" width="130" height="40" rx="10" fill="#A28F76"/>
+              <rect x="60" y="300" width="10" height="16" fill="#292D30"/><rect x="200" y="300" width="10" height="16" fill="#292D30"/>
+              <path d="M120 70 V120" stroke="#292D30" stroke-width="2"/><path d="M100 120 H140 L132 140 H108 Z" fill="#292D30"/>
+            </svg>
+            <canvas id="dust" role="img" aria-label="Polvere sulla stanza che sparisce mentre scorri la pagina."></canvas>
+            <div class="clock" aria-hidden="true"><i></i><span id="clock">17:30</span></div>
+            <span class="tag">Illustrazione · foto reale in arrivo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="paure" style="background:var(--bg-2)">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · avversione alla perdita.</b> Diamo un nome alle tre paure che si leggono nelle recensioni dei concorrenti, e rispondiamo a ognuna con un fatto vero.<br><b>Animazione:</b> nessuna. Tono calmo, frasi brevi.</aside>
+    <div style="display:grid;gap:16px;margin-bottom:40px"><span class="kicker">Lo sappiamo</span><h2>Ristrutturare fa paura. <b>Ecco perché non deve.</b></h2></div>
+    <div class="fears">
+      <article class="fear"><span class="mark"></span><p class="q">"E se i lavori non finiscono mai?"</p><p class="a"><strong>Un solo referente</strong> e un programma chiaro prima di iniziare. Sai chi viene e cosa fa.</p></article>
+      <article class="fear"><span class="mark"></span><p class="q">"E se vivo per mesi nella polvere?"</p><p class="a"><strong>Lavoriamo puliti.</strong> Proteggiamo quello che resta e riordiniamo. <span class="placeholder">[da confermare col cliente]</span></p></article>
+      <article class="fear"><span class="mark"></span><p class="q">"E se l'impresa sparisce?"</p><p class="a"><strong>Siamo a Sesto San Giovanni dal 2005</strong>, in Via Marconi 124. Ci trovi sempre.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="giornata">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA.</b> Raccontiamo una giornata di cantiere: chi legge si immagina dentro casa sua, senza sorprese.<br><b>Animazione:</b> la lancetta dell'orologio avanza mentre scorri le ore.<br><b>Attenzione:</b> orari e abitudini sono un esempio. Vanno scritti con il cliente, solo se veri.</aside>
+    <div class="day">
+      <div class="dial-wrap">
+        <span class="kicker">Come lavoriamo</span>
+        <h2>Una giornata <b>nel tuo cantiere</b>.</h2>
+        <svg class="dial" viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="92" fill="#fff" stroke="#292D30" stroke-width="4"/>
+          <g stroke="#292D30" stroke-width="3"><path d="M100 14v14M186 100h-14M100 186v-14M14 100h14"/></g>
+          <line class="hand" id="hand" x1="100" y1="100" x2="100" y2="34" stroke="#6E5E49" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="7" fill="#292D30"/>
+        </svg>
+        <span class="ph-note">Esempio da validare con il cliente</span>
+      </div>
+      <ol class="hours">
+        <li class="hour" data-h="7.5"><time>07:30</time><h3>Arriviamo e proteggiamo</h3><p>Copriamo pavimenti e mobili che restano nella stanza.</p></li>
+        <li class="hour" data-h="9"><time>09:00</time><h3>Muratura e impianti</h3><p>Pareti, aperture, tracce. Il lavoro più pesante si fa la mattina.</p></li>
+        <li class="hour" data-h="13"><time>13:00</time><h3>Intonaci, rasature, cartongesso</h3><p>Le superfici prendono forma, strato dopo strato.</p></li>
+        <li class="hour" data-h="17.5"><time>17:30</time><h3>Riordiniamo</h3><p>Macerie via, attrezzi in ordine, polvere tolta.</p></li>
+        <li class="hour" data-h="18"><time>18:00</time><h3>La casa è di nuovo tua</h3><p>Fino a domattina.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="servizi" style="background:var(--bg-2)">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · effetto Von Restorff.</b> Un elenco semplice, facile sul telefono. La muratura è l'unica riga scura e grande: si nota per prima.<br><b>Animazione:</b> passando sopra, la riga si sposta morbida verso destra.</aside>
+    <div style="display:grid;gap:16px;margin-bottom:32px"><span class="kicker">Servizi</span><h2>Tutto quello che serve, <b>dalle fondamenta al colore</b>.</h2></div>
+    <ul class="svc">
+      <li class="base"><a href="#contatti"><span class="badge">Il nostro punto di partenza</span><h3>Muratura</h3><p>Pareti nuove, aperture, tramezzi, consolidamenti.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Rasatura e lisciatura</h3><p>Pareti e soffitti lisci, dentro e fuori.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Facciate</h3><p>Per case e condomini.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Cartongesso</h3><p>Pareti, controsoffitti, nicchie.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Ristrutturazioni chiavi in mano</h3><p>Un referente per tutti i lavori.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Impianti</h3><p>Coordinati con le opere murarie.</p><span class="arrow">→</span></a></li>
+      <li><a href="#contatti"><h3>Intonaci, imbiancatura e sottofondi</h3><p>Le basi e le finiture di ogni stanza.</p><span class="arrow">→</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="lavori">
+  <div class="wrap">
+    <aside class="nota"><b>DESIDERIO.</b> Una fila di foto da scorrere col pollice, come sul telefono. Ogni foto con una frase sola. Foto vere in arrivo.</aside>
+    <div style="display:grid;gap:16px;margin-bottom:32px"><span class="kicker">Lavori</span><h2>Case <b>finite</b>.</h2></div>
+    <div class="rail" tabindex="0" aria-label="Lavori, scorri di lato">
+      <article><div class="ph">FOTO · soggiorno rasato<br>in arrivo</div><p>Soggiorno, Sesto San Giovanni <span class="placeholder">[esempio]</span></p></article>
+      <article><div class="ph">FOTO · bagno ristrutturato<br>in arrivo</div><p>Bagno, Milano <span class="placeholder">[esempio]</span></p></article>
+      <article><div class="ph">FOTO · facciata<br>in arrivo</div><p>Facciata condominio <span class="placeholder">[esempio]</span></p></article>
+      <article><div class="ph">FOTO · controsoffitto<br>in arrivo</div><p>Ufficio, cartongesso <span class="placeholder">[esempio]</span></p></article>
+    </div>
+  </div>
+</section>
+
+<section id="estero" style="padding-top:0">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · autorità.</b> Un blocco scuro che interrompe il ritmo chiaro della pagina: si nota. Nessun concorrente della zona ha lavorato all'estero.</aside>
+    <div class="far">
+      <span class="kicker">Dove lavoriamo</span>
+      <h2>Ogni giorno a Milano. <b>Ci hanno chiamato anche da lontano.</b></h2>
+      <div class="words"><span>Sesto San Giovanni</span><span>Milano</span><span>Germania</span><span>Francia</span><span>Paesi arabi</span></div>
+      <p class="read">La stessa cura in casa tua a Cinisello e in un cantiere all'estero.</p>
+      <p class="todo">[Da inserire: città e lavori all'estero, con foto]</p>
+    </div>
+  </div>
+</section>
+
+<section id="recensioni" style="padding-top:0">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · riprova sociale.</b> Qui le recensioni Google vere: saranno loro la prova della pulizia. Vuoto finché non arrivano.</aside>
+    <div class="reviews"><span class="kicker">Recensioni Google</span><h2>Cosa dicono i clienti</h2><p>Le recensioni arriveranno dalla scheda Google di El Gammal, appena sarà attiva.</p></div>
+  </div>
+</section>
+
+<section id="contatti" style="background:var(--bg-2)">
+  <div class="wrap">
+    <aside class="nota"><b>AZIONE · piccolo primo passo.</b> "Raccontaci" invece di "compila": più umano. Tre campi soli.</aside>
+    <div class="contact">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="kicker">Contatti</span>
+        <h2>Raccontaci <b>casa tua</b>.</h2>
+        <p class="read">Sopralluogo e preventivo sono gratuiti. Se preferisci, mandaci una foto su WhatsApp: ti diciamo subito cosa serve.</p>
+        <div class="ctas"><a class="btn btn-p" href="#contatti">WhatsApp</a><a class="btn btn-s" href="#contatti">Chiama <span class="placeholder">[telefono]</span></a></div>
+      </div>
+      <form id="form" novalidate>
+        <label for="f-nome">Come ti chiami?<input id="f-nome" autocomplete="name"></label>
+        <label for="f-contatto">Telefono o email<input id="f-contatto" autocomplete="tel"></label>
+        <label for="f-msg">Cosa vuoi sistemare?<textarea id="f-msg" rows="3"></textarea></label>
+        <button class="btn btn-p" type="submit">Richiedi il sopralluogo gratuito</button>
+        <p class="form-ok" id="form-ok" hidden>Concept: il modulo non invia nulla. Nel sito vero la richiesta arriva al cliente con scritto "(dal sito)".</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="display:grid;gap:16px">%%LOGO%%<p><strong>IMPRESA EDILE EL GAMMAL MOHAMED</strong><br>Via Guglielmo Marconi 124, 20099 Sesto San Giovanni (MI)<br>P.IVA <span class="placeholder">[da ricevere]</span></p></div>
+    <div><strong>Contatti</strong><br>Telefono <span class="placeholder">[da ricevere]</span><br>WhatsApp <span class="placeholder">[da ricevere]</span><br>Email <span class="placeholder">[da ricevere]</span></div>
+    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Dal 2005</div>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Contatto rapido"><a href="#contatti">Chiama</a><a href="#contatti">WhatsApp</a><a class="main" href="#contatti">Sopralluogo</a></nav>
+
+<script>
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const tn=document.getElementById('toggle-notes');
+tn.addEventListener('click',()=>{const off=document.body.classList.toggle('no-notes');tn.setAttribute('aria-pressed',String(!off));tn.textContent=off?'Note: nascoste':'Note: visibili';});
+const bg=document.getElementById('burger'),dr=document.getElementById('drawer');
+bg.addEventListener('click',()=>{const o=dr.hidden;dr.hidden=!o;bg.setAttribute('aria-expanded',String(o));});
+dr.addEventListener('click',e=>{if(e.target.closest('a')){dr.hidden=true;bg.setAttribute('aria-expanded','false');}});
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('form-ok').hidden=false;});
+
+// orologio della giornata
+const hand=document.getElementById('hand');
+function setHour(h){hand.style.transform=`rotate(${(h%12)*30}deg)`;}
+setHour(7.5);
+const ho=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.hour').forEach(x=>x.classList.remove('act'));e.target.classList.add('act');setHour(+e.target.dataset.h);}}),{rootMargin:'-45% 0px -45% 0px'});
+document.querySelectorAll('.hour').forEach(h=>ho.observe(h));
+
+// polvere
+(function(){
+  const scene=document.getElementById('scene'),cv=document.getElementById('dust'),ctx=cv.getContext('2d'),clock=document.getElementById('clock'),hs=document.getElementById('hero-scroll');
+  let W=0,H=0,dpr=1,parts=[],running=false;
+  function rnd(i){const x=Math.sin(i*127.1)*43758.5453;return x-Math.floor(x);}
+  function build(){const r=scene.getBoundingClientRect();dpr=Math.min(2,devicePixelRatio||1);W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;
+    const n=Math.round(Math.min(1400,W*H/220));parts=[];for(let i=0;i<n;i++)parts.push({x:rnd(i)*W,y:rnd(i+.5)*H,s:.6+rnd(i+.7)*2.4,a:.25+rnd(i+.9)*.55,ph:rnd(i+.3)*6.28,c:rnd(i+.2)<.5?'120,108,92':'150,142,130'});}
+  function prog(){
+    if(matchMedia('(max-width:959px)').matches){const r=scene.getBoundingClientRect();return Math.min(1,Math.max(0,(innerHeight*0.55-r.top)/(r.height)));}
+    const r=hs.getBoundingClientRect();return Math.min(1,Math.max(0,-r.top/(r.height-innerHeight)));}
+  function draw(t){
+    const p=reduce?1:prog();const bx=p*(W+260)-130;
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    // velo di polvere
+    const haze=.42*(1-p);if(haze>0.005){const g=ctx.createLinearGradient(Math.max(0,bx),0,W,0);g.addColorStop(0,`rgba(214,206,194,0)`);g.addColorStop(.12,`rgba(214,206,194,${haze})`);g.addColorStop(1,`rgba(214,206,194,${haze})`);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+    for(const q of parts){let d=bx-q.x;let x=q.x,y=q.y+Math.sin(t/1400+q.ph)*2.2,a=q.a;
+      if(d>0){x=q.x+d*.92+Math.sin(q.ph)*6;a=q.a*Math.max(0,1-d/160);y-=d*.05;}
+      if(a<.01)continue;ctx.fillStyle=`rgba(${q.c},${a})`;ctx.fillRect(x,y,q.s,q.s);}
+    // la passata
+    if(p>0&&p<1){ctx.fillStyle='rgba(110,94,73,.85)';ctx.fillRect(bx,0,3,H);}
+    const mins=Math.round(30*p);clock.textContent=mins>=30?'18:00':'17:'+String(30+mins).padStart(2,'0');
+  }
+  function loop(t){if(!running)return;draw(t);requestAnimationFrame(loop);}
+  new ResizeObserver(()=>{build();draw(0);}).observe(scene);build();
+  if(reduce){draw(0);addEventListener('scroll',()=>draw(0),{passive:true});return;}
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!running){running=true;requestAnimationFrame(loop);}else if(!e.isIntersecting)running=false;})).observe(scene);
+})();
+</script>
+</body>
+</html>

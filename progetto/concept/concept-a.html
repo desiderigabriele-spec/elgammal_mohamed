@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Concept A · Luce radente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;700;800;900&family=Public+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Concept A · Luce radente. Muro d'intonaco come superficie del sito; la luce radente è la firma. */
+:root{
+  --plaster:#E7E6E2; --plaster-2:#F3F2EF; --ink:#292D30; --ink-2:#4A5055; --line:#CBCAC4;
+  --bronze:#6E5E49; --bronze-l:#B7A58C; --night:#1E2124; --night-2:#2A2E31; --on-night:#ECEAE6; --on-night-2:#B9BDC0;
+  --logo-ink:#292D30; --logo-accent:#8B7962;
+  --note:#1F47D6; --note-bg:#EEF2FF;
+  --f-d:"Schibsted Grotesk","Arial Narrow",Arial,sans-serif;
+  --f-b:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gutter:max(16px,env(safe-area-inset-left,0px));
+  --ease:cubic-bezier(.22,.61,.21,1);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--plaster);color:var(--ink);font:400 17px/1.55 var(--f-b);-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--bronze);outline-offset:3px}
+h1,h2,h3{font-family:var(--f-d);margin:0;line-height:1.05;text-wrap:balance;letter-spacing:-.015em}
+h1{font-size:clamp(2.4rem,5.6vw,4.4rem);font-weight:500}
+h2{font-size:clamp(2rem,4vw,3.1rem);font-weight:500}
+h1 b,h2 b{font-weight:900}
+h3{font-size:1.3rem;font-weight:800}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:var(--gutter);padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 .8rem/1.2 var(--f-m);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.read{max-width:60ch}
+section{padding-block:80px}
+@media (min-width:900px){section{padding-block:128px}}
+
+/* barra di revisione (non fa parte del sito) */
+.review{background:#111;color:#fff;font:500 .82rem/1.3 var(--f-m);}
+.review .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;padding-block:8px}
+.review a,.review button{color:#fff;font:inherit;background:none;border:1px solid #555;border-radius:2px;min-height:44px;padding:0 14px;display:inline-flex;align-items:center;text-decoration:none;cursor:pointer}
+.nota{display:block;border:1.5px dashed var(--note);background:var(--note-bg);color:#14287A;font:500 .82rem/1.45 var(--f-m);padding:12px 14px;margin-bottom:32px;max-width:72ch}
+.nota b{color:var(--note)}
+.no-notes .nota{display:none}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--plaster) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:68px}
+.logo{height:44px;width:auto;display:block}
+.menu{display:none;gap:4px;align-items:center}
+.menu a{text-decoration:none;font-weight:600;padding:12px 14px;min-height:44px;display:inline-flex;align-items:center}
+.menu a:hover{text-decoration:underline;text-underline-offset:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 24px;font:700 1rem/1 var(--f-b);text-decoration:none;border:2px solid transparent;cursor:pointer;border-radius:2px;transition:transform .25s var(--ease),background .25s}
+.btn-p{background:var(--bronze);color:#fff}
+.btn-p:hover{background:#5E503D}
+.btn-s{border-color:var(--ink);color:var(--ink);background:transparent}
+.btn-s:hover{background:var(--ink);color:var(--plaster)}
+.btn:active{transform:translateY(1px)}
+.btn-sm{min-height:44px;padding:0 16px;font-size:.95rem}
+.burger{min-width:44px;min-height:44px;border:1px solid var(--line);background:var(--plaster-2);font:700 .9rem var(--f-b);padding:0 12px;cursor:pointer}
+@media (min-width:960px){.menu{display:flex}.burger{display:none}}
+.drawer{border-top:1px solid var(--line);background:var(--plaster-2)}
+.drawer a{display:flex;min-height:52px;align-items:center;font-weight:700;text-decoration:none;border-bottom:1px solid var(--line)}
+
+/* hero */
+.hero{padding-block:32px 64px}
+@media (min-width:900px){.hero{padding-block:48px 96px}}
+.hero-grid{display:grid;gap:32px;align-items:center}
+@media (min-width:960px){.hero-grid{grid-template-columns:1fr 1.05fr;gap:56px}}
+.hero-copy{display:grid;gap:24px;min-width:0}
+.hero-copy .lead{font-size:1.15rem;color:var(--ink-2);max-width:46ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.reassure{font:500 .85rem/1.4 var(--f-m);color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px}
+.reassure span::before{content:"";display:inline-block;width:8px;height:8px;background:var(--bronze-l);margin-right:8px;vertical-align:1px}
+.wall{position:relative;aspect-ratio:4/3;max-height:520px;width:100%;background:#DCDAD5;overflow:hidden;border:1px solid var(--line);touch-action:pan-y}
+@media (max-width:959px){.wall{aspect-ratio:16/10}}
+.wall canvas{width:100%;height:100%;display:block}
+.wall .tag{position:absolute;left:12px;bottom:12px;background:var(--plaster-2);font:500 .78rem/1.3 var(--f-m);padding:8px 10px;border:1px solid var(--line)}
+.wall .meter{position:absolute;right:12px;top:12px;background:var(--plaster-2);border:1px solid var(--line);padding:8px 10px;font:500 .78rem/1 var(--f-m);display:flex;gap:10px;align-items:center}
+.wall .meter i{display:block;width:72px;height:6px;background:var(--line);position:relative}
+.wall .meter i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--m,100%);background:var(--ink)}
+
+/* la prova */
+.dark{background:var(--night);color:var(--on-night)}
+.dark .eyebrow{color:var(--on-night-2)}
+.dark .nota{background:#E9EEFF}
+.test{display:grid;gap:48px}
+@media (min-width:960px){.test{grid-template-columns:1fr 1fr;align-items:center}}
+.steps-3{list-style:none;margin:0;padding:0;display:grid;gap:0;counter-reset:s}
+.steps-3 li{display:grid;grid-template-columns:56px 1fr;gap:16px;padding:20px 0;border-top:1px solid #3A3F43;counter-increment:s}
+.steps-3 li::before{content:counter(s);font:900 2rem/1 var(--f-d);color:var(--bronze-l)}
+.steps-3 p{color:var(--on-night-2)}
+.steps-3 strong{color:var(--on-night)}
+.beam{width:100%;height:auto;display:block}
+.beam .ray{transform-origin:30px 252px;transform:rotate(-14deg);transition:transform 1.4s var(--ease)}
+.beam.on .ray{transform:rotate(0)}
+
+/* servizi */
+.svc-head{display:grid;gap:16px;margin-bottom:48px}
+.svc{display:grid;gap:16px}
+@media (min-width:900px){.svc{grid-template-columns:repeat(3,1fr)}}
+.fam{display:grid;gap:16px;align-content:start}
+.fam > .eyebrow{padding-bottom:8px;border-bottom:2px solid var(--ink)}
+.card{background:var(--plaster-2);border:1px solid var(--line);padding:24px;display:grid;gap:10px;text-decoration:none;position:relative;overflow:hidden;min-height:44px}
+.card::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);transform:translateX(-120%);transition:transform .9s var(--ease);pointer-events:none}
+.card:hover::after{transform:translateX(120%)}
+.card p{color:var(--ink-2)}
+.card .go{font:700 .95rem var(--f-b);color:var(--bronze)}
+.card.base{background:var(--ink);color:var(--on-night);border-color:var(--ink);padding:32px 28px}
+.card.base p{color:var(--on-night-2)}
+.card.base .go{color:var(--bronze-l)}
+.card.base h3{font-size:1.9rem}
+.card.base .badge{justify-self:start;font:500 .75rem/1 var(--f-m);letter-spacing:.08em;text-transform:uppercase;background:var(--bronze-l);color:var(--ink);padding:6px 8px}
+.reveal{opacity:1;transform:none}
+.js .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.js .reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none;transition:none}}
+
+/* metodo */
+.method{display:grid;gap:40px}
+@media (min-width:960px){.method{grid-template-columns:.9fr 1.1fr}}
+.track{list-style:none;margin:0;padding:0 0 0 32px;position:relative;display:grid;gap:32px}
+.track::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.track::after{content:"";position:absolute;left:7px;top:6px;width:2px;height:calc(var(--p,1) * (100% - 12px));background:var(--bronze)}
+.track li{position:relative;display:grid;gap:6px}
+.track li::before{content:"";position:absolute;left:-31px;top:6px;width:16px;height:16px;border-radius:50%;background:var(--plaster);border:2px solid var(--bronze)}
+.track .free{display:inline-block;font:500 .75rem/1 var(--f-m);text-transform:uppercase;letter-spacing:.08em;background:var(--bronze);color:#fff;padding:5px 7px;margin-left:8px;vertical-align:3px}
+.track p{color:var(--ink-2)}
+
+/* lavori */
+.works-head{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end;margin-bottom:32px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:0 16px;border:1px solid var(--ink);background:transparent;font:600 .95rem var(--f-b);cursor:pointer;border-radius:999px;color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--plaster)}
+.ba{position:relative;aspect-ratio:16/9;width:100%;max-width:100%;overflow:hidden;border:1px solid var(--line);margin-bottom:16px}
+.ph{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:16px;font:500 .85rem/1.4 var(--f-m);color:var(--ink-2)}
+.ph-before{background:repeating-linear-gradient(135deg,#D3D0C9 0 2px,#DEDBD5 2px 14px);place-items:center start;padding-left:6%}
+.ph-after{background:#F1F0ED;clip-path:inset(0 0 0 var(--x,50%));place-items:center end;padding-right:6%}
+.ph span{background:var(--plaster-2);padding:8px 12px;border:1px solid var(--line)}
+.ba .handle{position:absolute;top:0;bottom:0;left:var(--x,50%);width:2px;background:var(--ink);pointer-events:none}
+.ba .handle::after{content:"◀ ▶";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--ink);color:var(--plaster);font:700 .8rem var(--f-b);padding:12px 10px;white-space:nowrap}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.tiles{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:900px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tile{aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#D9D6D0 0 2px,#E3E1DC 2px 12px);border:1px solid var(--line);display:flex;align-items:flex-end;padding:12px}
+.tile span{background:var(--plaster-2);font:500 .78rem/1.3 var(--f-m);padding:6px 8px;border:1px solid var(--line)}
+
+/* estero */
+.far{display:grid;gap:40px}
+@media (min-width:960px){.far{grid-template-columns:1fr 1fr;align-items:start}}
+.places{list-style:none;margin:0;padding:0;border-top:1px solid #3A3F43}
+.places li{display:flex;justify-content:space-between;gap:16px;padding:18px 0;border-bottom:1px solid #3A3F43;font:500 clamp(1.3rem,2.6vw,1.9rem)/1.1 var(--f-d)}
+.places li small{font:500 .8rem/1.3 var(--f-m);color:var(--on-night-2);text-align:right;align-self:center}
+.places li.home{color:var(--bronze-l)}
+.todo{font:500 .85rem/1.4 var(--f-m);color:#FFD7A8}
+
+/* recensioni */
+.reviews{border:2px dashed var(--line);padding:40px 24px;display:grid;gap:12px;justify-items:start;background:var(--plaster-2)}
+.reviews p{color:var(--ink-2)}
+
+/* contatto */
+.contact{display:grid;gap:48px}
+@media (min-width:960px){.contact{grid-template-columns:1.1fr .9fr}}
+.contact h2{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+.big-wa{display:grid;gap:16px;align-content:start}
+form{display:grid;gap:16px;background:var(--plaster-2);border:1px solid var(--line);padding:24px}
+label{display:grid;gap:6px;font-weight:600}
+input,textarea{font:400 1rem var(--f-b);padding:12px 14px;min-height:48px;border:1px solid #8E9296;background:#fff;color:var(--ink);border-radius:2px;width:100%}
+textarea{min-height:96px;resize:vertical}
+.form-ok{font:500 .9rem/1.4 var(--f-m);color:var(--bronze)}
+.placeholder{background:#FFE9C7;color:#5A3700;padding:0 4px;font-family:var(--f-m);font-size:.9em}
+
+footer{background:var(--night);color:var(--on-night-2);padding-block:56px 120px;font-size:.95rem}
+footer .wrap{display:grid;gap:24px}
+@media (min-width:900px){footer{padding-block:64px}footer .wrap{grid-template-columns:1.2fr 1fr 1fr}}
+footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
+footer strong{color:var(--on-night)}
+
+/* barra mobile */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:1px;background:var(--line);padding-bottom:env(safe-area-inset-bottom,0px);border-top:1px solid var(--line)}
+.dock a{background:var(--plaster-2);min-height:56px;display:flex;align-items:center;justify-content:center;font:700 .95rem var(--f-b);text-decoration:none}
+.dock a.main{background:var(--bronze);color:#fff}
+@media (min-width:960px){.dock{display:none}}
+</style>
+</head>
+<body class="js-off">
+<div class="review">
+  <div class="wrap">
+    <span>CONCEPT A · LUCE RADENTE · bozza da approvare</span>
+    <span style="display:flex;gap:8px;flex-wrap:wrap"><a href="./">← Tutti i concept</a><button id="toggle-notes" type="button" aria-pressed="true">Note: visibili</button></span>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a href="#" aria-label="El Gammal, torna all'inizio">%%LOGO%%</a>
+    <nav class="menu" aria-label="Menu principale">
+      <a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#metodo">Come lavoriamo</a><a href="#estero">Dove lavoriamo</a>
+      <a class="btn btn-p btn-sm" href="#contatti">Sopralluogo gratuito</a>
+    </nav>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <div class="wrap"><a href="#servizi">Servizi</a><a href="#lavori">Lavori</a><a href="#metodo">Come lavoriamo</a><a href="#estero">Dove lavoriamo</a><a href="#contatti">Contatti</a></div>
+  </div>
+</header>
+
+<main>
+<section class="hero" id="top">
+  <div class="wrap">
+    <aside class="nota"><b>ATTENZIONE.</b> In 3 secondi: cosa fa, dove, da quando. La luce radente è la prova che usano i professionisti per controllare un muro: di lato, ogni difetto fa ombra.<br><b>Animazione firma:</b> all'apertura una lampada attraversa il muro e le ombre dei difetti si vedono. Scorrendo, le ombre spariscono: il muro "viene rasato". Con il dito o il mouse si sposta la lampada. Si ferma quando non si vede; con "riduci movimento" resta un'immagine ferma.</aside>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Impresa edile · Sesto San Giovanni · dal 2005</span>
+        <h1>Pareti <b>perfette</b>, anche alla luce radente.</h1>
+        <p class="lead">Rasature, facciate, cartongesso e muratura a Sesto San Giovanni e Milano. <strong>Un'impresa sola</strong>, dal sopralluogo alla consegna.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href="#contatti">Richiedi il sopralluogo gratuito</a>
+          <a class="btn btn-s" href="#contatti">Mandaci una foto su WhatsApp</a>
+        </div>
+        <p class="reassure"><span>Sopralluogo gratuito</span><span>Preventivo gratuito</span><span>Lavori anche all'estero</span></p>
+      </div>
+      <div class="wall" id="wall">
+        <canvas id="wallc" aria-label="Un muro illuminato di lato: scorrendo la pagina le ombre dei difetti spariscono." role="img"></canvas>
+        <div class="meter" aria-hidden="true">ombre <i id="meter"></i></div>
+        <div class="tag">Sposta la luce col dito o col mouse</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="prova">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · reciprocità.</b> Prima di chiedere qualcosa, regaliamo un trucco utile: chi lo prova a casa sua si ricorda di noi. Risponde alla ricerca "come capire se una rasatura è fatta bene".<br><b>Animazione:</b> il raggio di luce si abbassa sul muro quando la sezione entra nello schermo.</aside>
+    <div class="test">
+      <div style="display:grid;gap:24px">
+        <span class="eyebrow">La prova della torcia</span>
+        <h2>Come capire se un muro è <b>fatto bene</b>. In un minuto.</h2>
+        <ol class="steps-3">
+          <li><p><strong>Spegni la luce</strong> della stanza, meglio di sera.</p></li>
+          <li><p><strong>Appoggia una torcia al muro</strong>, quasi parallela alla parete.</p></li>
+          <li><p><strong>Guarda le ombre.</strong> Ogni ombra è un'onda, un buco o una giunta. Un muro ben rasato resta uniforme.</p></li>
+        </ol>
+        <p style="color:var(--on-night-2)">Fallo su ogni lavoro, anche sul nostro.</p>
+      </div>
+      <svg class="beam" id="beam" viewBox="0 0 520 320" role="img" aria-label="Disegno: una torcia appoggiata al muro proietta un fascio radente; i rilievi del muro fanno ombra.">
+        <rect x="0" y="0" width="520" height="320" fill="#2A2E31"/>
+        <path d="M40 270 C90 266 120 262 150 268 S210 276 240 266 S300 258 330 268 S400 274 430 266 S490 262 500 268 L500 300 L40 300 Z" fill="#3A3F43"/>
+        <text x="40" y="60" fill="#ECEAE6" font-family="Schibsted Grotesk,Arial,sans-serif" font-size="22" font-weight="800">Torcia appoggiata al muro</text>
+        <text x="40" y="88" fill="#B9BDC0" font-family="IBM Plex Mono,monospace" font-size="13">il fascio sfiora la parete, quasi parallelo</text>
+        <g class="ray"><path d="M40 246 L520 196 L520 262 L40 258 Z" fill="#B7A58C" opacity=".28"/><rect x="0" y="241" width="44" height="20" rx="4" fill="#B7A58C"/></g>
+        <g fill="#0E1012"><path d="M166 266 l58 0 l-40 -7z"/><path d="M262 265 l70 0 l-48 -8z"/><path d="M352 267 l62 0 l-42 -6z"/></g>
+        <text x="40" y="300" dy="16" fill="#B9BDC0" font-family="IBM Plex Mono,monospace" font-size="12">muro visto di lato: le ombre allungano i difetti</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="servizi">
+  <div class="wrap">
+    <aside class="nota"><b>INTERESSE · carico cognitivo + effetto Von Restorff.</b> Sette servizi divisi in 3 famiglie, così si capisce subito. La muratura è l'unica scheda scura: si nota per prima ed è il lavoro su cui l'impresa vuole crescere.<br><b>Animazione:</b> le schede entrano una dopo l'altra; passando sopra, una striscia di luce le attraversa.</aside>
+    <div class="svc-head">
+      <span class="eyebrow">Servizi</span>
+      <h2>Ogni superficie perfetta parte da <b>un muro dritto</b>.</h2>
+    </div>
+    <div class="svc">
+      <div class="fam">
+        <span class="eyebrow">La base</span>
+        <a class="card base reveal" href="#contatti">
+          <span class="badge">Il nostro punto di partenza</span>
+          <h3>Muratura</h3>
+          <p>Pareti nuove, aperture, chiusure, tramezzi, consolidamenti. Il muro giusto rende tutto il resto più semplice e più duraturo.</p>
+          <span class="go">Scopri la muratura →</span>
+        </a>
+      </div>
+      <div class="fam">
+        <span class="eyebrow">Le superfici</span>
+        <a class="card reveal" href="#contatti"><h3>Rasatura e lisciatura</h3><p>Pareti e soffitti lisci, dentro e fuori casa.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Facciate</h3><p>Ripristino e rifacimento per case e condomini.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Cartongesso</h3><p>Pareti, controsoffitti, nicchie e velette.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Intonaci, imbiancatura e sottofondi</h3><p>Le basi e le finiture di ogni ambiente.</p><span class="go">Vedi →</span></a>
+      </div>
+      <div class="fam">
+        <span class="eyebrow">Tutto il cantiere</span>
+        <a class="card reveal" href="#contatti"><h3>Ristrutturazioni chiavi in mano</h3><p>Un solo referente per tutti i lavori, dall'inizio alla fine.</p><span class="go">Vedi →</span></a>
+        <a class="card reveal" href="#contatti"><h3>Impianti</h3><p>Coordinati con le opere murarie, nello stesso cantiere.</p><span class="go">Vedi →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="metodo" style="background:var(--plaster-2)">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · avversione alla perdita.</b> La paura più grande sono le sorprese. Mostriamo cosa succede e quando, e che chiedere non costa nulla. Nessuna garanzia scritta: il cliente non le ha ancora.<br><b>Animazione:</b> la linea bronzo si riempie mentre scorri, come un cantiere che avanza.</aside>
+    <div class="method">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Come lavoriamo</span>
+        <h2>Sai sempre <b>cosa succede</b> e chi chiamare.</h2>
+        <p class="read" style="color:var(--ink-2)">Un'impresa sola segue tutti i lavori. Niente artigiani da coordinare, niente rimpalli di responsabilità.</p>
+      </div>
+      <ol class="track" id="track">
+        <li><h3>Sopralluogo <span class="free">gratis</span></h3><p>Veniamo a vedere il lavoro, misuriamo e ascoltiamo cosa ti serve.</p></li>
+        <li><h3>Preventivo <span class="free">gratis</span></h3><p>Scritto voce per voce, così sai cosa compri.</p></li>
+        <li><h3>Un referente</h3><p>Una persona sola risponde per tutto il cantiere.</p></li>
+        <li><h3>Cantiere in ordine</h3><p>Lavoriamo puliti e lasciamo gli ambienti in ordine. <span class="placeholder">[da confermare col cliente: come, in pratica]</span></p></li>
+        <li><h3>Consegna</h3><p>Controlliamo insieme il lavoro finito, anche con la torcia.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="lavori">
+  <div class="wrap">
+    <aside class="nota"><b>DESIDERIO · prove visive.</b> Il prima e dopo fa immaginare il proprio muro finito. Servono foto vere del cliente: per ora ci sono spazi segnati.<br><b>Animazione:</b> il cursore prima/dopo si trascina con il dito; i filtri cambiano le foto senza ricaricare.</aside>
+    <div class="works-head">
+      <div style="display:grid;gap:12px"><span class="eyebrow">Lavori</span><h2>Prima e <b>dopo</b>.</h2></div>
+      <div class="chips" role="group" aria-label="Filtra i lavori">
+        <button class="chip" type="button" aria-pressed="true" data-f="tutti">Tutti</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="rasatura">Rasatura</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="facciate">Facciate</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="cartongesso">Cartongesso</button>
+        <button class="chip" type="button" aria-pressed="false" data-f="muratura">Muratura</button>
+      </div>
+    </div>
+    <div class="ba" id="ba">
+      <div class="ph ph-before"><span>PRIMA · foto in arrivo</span></div>
+      <div class="ph ph-after"><span>DOPO · foto in arrivo</span></div>
+      <div class="handle" aria-hidden="true"></div>
+      <input type="range" min="0" max="100" value="50" id="ba-range" aria-label="Confronta prima e dopo">
+    </div>
+    <div class="tiles" id="tiles">
+      <div class="tile" data-t="rasatura"><span>Rasatura soggiorno · Sesto S.G.</span></div>
+      <div class="tile" data-t="facciate"><span>Facciata condominio · Milano</span></div>
+      <div class="tile" data-t="cartongesso"><span>Controsoffitto · Cinisello</span></div>
+      <div class="tile" data-t="muratura"><span>Nuova parete · Sesto S.G.</span></div>
+      <div class="tile" data-t="rasatura"><span>Rasatura esterna · Monza</span></div>
+      <div class="tile" data-t="facciate"><span>Facciata · estero</span></div>
+    </div>
+    <p style="margin-top:12px;font:500 .85rem var(--f-m);color:var(--ink-2)">Didascalie di esempio: verranno sostituite con i lavori veri.</p>
+  </div>
+</section>
+
+<section class="dark" id="estero">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · autorità.</b> Nessuna impresa della zona può dire di aver lavorato all'estero. Lo diciamo con calma, senza effetti: è la prova del livello.<br><b>Animazione:</b> nessuna, di proposito. Solo tipografia.</aside>
+    <div class="far">
+      <div style="display:grid;gap:20px;align-content:start">
+        <span class="eyebrow">Dove lavoriamo</span>
+        <h2>Da Sesto San Giovanni <b>fino all'estero</b>.</h2>
+        <p class="read" style="color:var(--on-night-2)">Lavoriamo ogni giorno a Milano e nell'hinterland. Ci hanno chiamato anche in Germania, in Francia e nei Paesi arabi: stessa cura, stesse finiture.</p>
+        <p class="todo">[Da inserire: città e tipo di lavoro all'estero, con foto]</p>
+      </div>
+      <ul class="places">
+        <li class="home">Sesto San Giovanni <small>la sede</small></li>
+        <li>Milano e hinterland <small>ogni giorno</small></li>
+        <li>Germania <small>lavori eseguiti</small></li>
+        <li>Francia <small>lavori eseguiti</small></li>
+        <li>Paesi arabi <small>lavori eseguiti</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="recensioni">
+  <div class="wrap">
+    <aside class="nota"><b>FIDUCIA · riprova sociale.</b> Qui andranno le recensioni Google vere. Saranno anche la prova di pulizia e velocità. Finché non ci sono, lo spazio resta vuoto e nessuna recensione viene inventata.</aside>
+    <div class="reviews">
+      <span class="eyebrow">Recensioni Google</span>
+      <h2>Cosa dicono i clienti</h2>
+      <p>Le recensioni arriveranno dalla scheda Google di El Gammal, appena sarà attiva.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contatti" style="background:var(--plaster-2)">
+  <div class="wrap">
+    <aside class="nota"><b>AZIONE · piccolo primo passo.</b> Mandare una foto costa meno che chiedere un preventivo. Tre campi soli nel modulo. "Gratis" vicino a ogni bottone.</aside>
+    <div class="contact">
+      <div class="big-wa">
+        <span class="eyebrow">Contatti</span>
+        <h2>Mandaci una foto del muro. <b>Ti diciamo cosa serve.</b></h2>
+        <p class="read" style="color:var(--ink-2)">Sopralluogo e preventivo sono gratuiti. Rispondiamo su WhatsApp o al telefono.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href="#contatti">Scrivi su WhatsApp</a>
+          <a class="btn btn-s" href="#contatti">Chiama <span class="placeholder">[telefono]</span></a>
+        </div>
+      </div>
+      <form id="form" novalidate>
+        <label for="f-nome">Nome<input id="f-nome" name="nome" autocomplete="name" required></label>
+        <label for="f-contatto">Telefono o email<input id="f-contatto" name="contatto" autocomplete="tel" required></label>
+        <label for="f-msg">Che lavoro ti serve? (due righe)<textarea id="f-msg" name="msg" rows="3"></textarea></label>
+        <button class="btn btn-p" type="submit">Richiedi il sopralluogo gratuito</button>
+        <p class="form-ok" id="form-ok" hidden>Concept: il modulo non invia nulla. Nel sito vero la richiesta arriva al cliente con scritto "(dal sito)".</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div style="display:grid;gap:16px">%%LOGO%%<p><strong>IMPRESA EDILE EL GAMMAL MOHAMED</strong><br>Via Guglielmo Marconi 124, 20099 Sesto San Giovanni (MI)<br>P.IVA <span class="placeholder">[da ricevere]</span></p></div>
+    <div><strong>Contatti</strong><br>Telefono <span class="placeholder">[da ricevere]</span><br>WhatsApp <span class="placeholder">[da ricevere]</span><br>Email <span class="placeholder">[da ricevere]</span></div>
+    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Dal 2005</div>
+  </div>
+</footer>
+
+<nav class="dock" aria-label="Contatto rapido">
+  <a href="#contatti">Chiama</a><a href="#contatti">WhatsApp</a><a class="main" href="#contatti">Sopralluogo gratis</a>
+</nav>
+
+<script>
+document.body.classList.remove('js-off');document.documentElement.classList.add('js');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// note on/off
+const tn=document.getElementById('toggle-notes');
+tn.addEventListener('click',()=>{const off=document.body.classList.toggle('no-notes');tn.setAttribute('aria-pressed',String(!off));tn.textContent=off?'Note: nascoste':'Note: visibili';});
+
+// menu
+const bg=document.getElementById('burger'),dr=document.getElementById('drawer');
+bg.addEventListener('click',()=>{const o=dr.hidden;dr.hidden=!o;bg.setAttribute('aria-expanded',String(o));});
+dr.addEventListener('click',e=>{if(e.target.closest('a')){dr.hidden=true;bg.setAttribute('aria-expanded','false');}});
+
+// comparsa schede
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4)*70+'ms';io.observe(el);});
+const beam=document.getElementById('beam');
+new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)beam.classList.add('on')}),{threshold:.4}).observe(beam);
+
+// metodo: linea che si riempie
+const track=document.getElementById('track');
+function trackFill(){const r=track.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*0.75-r.top)/r.height));track.style.setProperty('--p',reduce?1:p.toFixed(3));}
+addEventListener('scroll',trackFill,{passive:true});trackFill();
+
+// prima/dopo
+const ba=document.getElementById('ba'),rg=document.getElementById('ba-range');
+rg.addEventListener('input',()=>ba.style.setProperty('--x',rg.value+'%'));
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed','false'));c.setAttribute('aria-pressed','true');
+  const f=c.dataset.f;document.querySelectorAll('#tiles .tile').forEach(t=>t.hidden=!(f==='tutti'||t.dataset.t===f));
+}));
+
+// modulo
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();document.getElementById('form-ok').hidden=false;});
+
+// ===== Muro alla luce radente =====
+(function(){
+  const box=document.getElementById('wall'),cv=document.getElementById('wallc'),ctx=cv.getContext('2d'),meter=document.getElementById('meter');
+  const W=300,H=200; const off=document.createElement('canvas');off.width=W;off.height=H;const octx=off.getContext('2d');const img=octx.createImageData(W,H);
+  // rumore
+  function hash(x,y){let h=x*374761393+y*668265263;h=(h^(h>>13))*1274126177;return ((h^(h>>16))>>>0)/4294967295;}
+  function vnoise(x,y){const xi=Math.floor(x),yi=Math.floor(y),xf=x-xi,yf=y-yi;const s=t=>t*t*(3-2*t);
+    const a=hash(xi,yi),b=hash(xi+1,yi),c=hash(xi,yi+1),d=hash(xi+1,yi+1);const u=s(xf),v=s(yf);return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v;}
+  const hm=new Float32Array(W*H);
+  const strokes=[];for(let i=0;i<14;i++){strokes.push({cx:hash(i,7)*W,cy:hash(i,9)*H,r:40+hash(i,11)*90,w:2+hash(i,13)*3,a0:hash(i,15)*6.28,len:.6+hash(i,17)*1.2,amp:.5+hash(i,19)*.8});}
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    let h=.55*vnoise(x*.035,y*.035)+.3*vnoise(x*.09+10,y*.09)+.15*vnoise(x*.25+30,y*.25);
+    for(const s of strokes){const dx=x-s.cx,dy=y-s.cy;const ang=Math.atan2(dy,dx);let da=ang-s.a0;da=Math.atan2(Math.sin(da),Math.cos(da));if(Math.abs(da)<s.len){const d=Math.hypot(dx,dy)-s.r;h+=s.amp*.22*Math.exp(-(d*d)/(s.w*s.w));}}
+    hm[y*W+x]=h;}
+  let amp=1,lamp={x:-.15,y:.35},target={x:.75,y:.35},running=false,dirty=true,intro=!reduce;
+  function render(){
+    const S=2.6*amp, Lz=16;const lx=lamp.x*W,ly=lamp.y*H;const d=img.data;
+    for(let y=1;y<H-1;y++)for(let x=1;x<W-1;x++){
+      const i=y*W+x;const nx=-(hm[i+1]-hm[i-1])*S,ny=-(hm[i+W]-hm[i-W])*S;const nl=Math.hypot(nx,ny,1);
+      let vx=lx-x,vy=ly-y;const vl=Math.hypot(vx,vy,Lz);vx/=vl;vy/=vl;const vz=Lz/vl;
+      const lam=Math.max(0,(nx*vx+ny*vy+vz)/nl);const flat=vz;const ratio=flat>0?lam/flat:1;
+      const dist=Math.hypot(lx-x,(ly-y)*1.2)/W;const att=1/(1+dist*dist*2.2);
+      let k=.80+.20*att; k*= (0.74+0.26*Math.min(1.7,ratio));
+      const o=i*4;d[o]=Math.min(255,226*k);d[o+1]=Math.min(255,224*k);d[o+2]=Math.min(255,219*k);d[o+3]=255;}
+    octx.putImageData(img,0,0);
+    ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(off,1,1,W-2,H-2,0,0,cv.width,cv.height);
+    // alone della lampada
+    const g=ctx.createRadialGradient(lamp.x*cv.width,lamp.y*cv.height,0,lamp.x*cv.width,lamp.y*cv.height,cv.width*.35);
+    g.addColorStop(0,'rgba(255,244,225,.22)');g.addColorStop(1,'rgba(255,244,225,0)');ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
+    meter.style.setProperty('--m',Math.round(amp*100)+'%');
+  }
+  function size(){const r=box.getBoundingClientRect();const dpr=Math.min(2,devicePixelRatio||1);cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);dirty=true;}
+  function progress(){const r=box.getBoundingClientRect();const p=Math.min(1,Math.max(0,(-r.top+ r.height*0.15)/(r.height*0.9)));return p;}
+  let t0=performance.now();
+  function loop(t){
+    if(!running)return;
+    if(intro){const k=Math.min(1,(t-t0)/1800);const e=1-Math.pow(1-k,3);lamp.x=-.15+(.78+.15)*e;if(k>=1)intro=false;dirty=true;}
+    else{const nx=lamp.x+(target.x-lamp.x)*.12,ny=lamp.y+(target.y-lamp.y)*.12;if(Math.abs(nx-lamp.x)>.001||Math.abs(ny-lamp.y)>.001){lamp.x=nx;lamp.y=ny;dirty=true;}}
+    const na=reduce?.6:1-.94*progress();if(Math.abs(na-amp)>.004){amp=na;dirty=true;}
+    if(dirty){render();dirty=false;}
+    requestAnimationFrame(loop);
+  }
+  function point(e){const r=box.getBoundingClientRect();target.x=(e.clientX-r.left)/r.width;target.y=(e.clientY-r.top)/r.height;intro=false;}
+  box.addEventListener('pointermove',point);box.addEventListener('pointerdown',point);
+  new ResizeObserver(size).observe(box);size();
+  if(reduce){lamp.x=.7;amp=.6;render();return;}
+  new IntersectionObserver(es=>es.forEach(e=>{const v=e.isIntersecting;if(v&&!running){running=true;requestAnimationFrame(loop);}else if(!v){running=false;}}),{threshold:0}).observe(box);
+})();
+</script>
+</body>
+</html>
