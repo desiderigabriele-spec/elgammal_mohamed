@@ -1,0 +1,547 @@
+<title>Studio El Gammal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: un dossier di cantiere. Colonna di lettura stretta, schede concorrenti a griglia, mappa in SVG. Colori presi dal logo del cliente. */
+:root{
+  --paper:#EDEFEF;      /* grigio intonaco */
+  --surface:#FFFFFF;
+  --ink:#292D30;        /* antracite del logo */
+  --muted:#596066;
+  --line:#CDD2D4;
+  --bronze:#75654F;     /* bronzo del logo, scurito per il testo (5,6:1 su bianco) */
+  --bronze-soft:#8B7962;/* bronzo originale del logo, solo per superfici */
+  --bronze-tint:#E6E0D7;
+  --warn:#8A3B12;
+  --f-display:"Archivo","Arial Narrow",Arial,sans-serif;
+  --f-body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#1B1E20;--surface:#24282B;--ink:#ECEAE6;--muted:#A9AFB3;--line:#3A4044;
+  --bronze:#C9B79D;--bronze-soft:#B7A58C;--bronze-tint:#352F27;--warn:#F0A47C;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1B1E20;--surface:#24282B;--ink:#ECEAE6;--muted:#A9AFB3;--line:#3A4044;
+  --bronze:#C9B79D;--bronze-soft:#B7A58C;--bronze-tint:#352F27;--warn:#F0A47C;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1120px;margin:0 auto;padding-block:48px 96px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;font-stretch:80%;letter-spacing:-.01em;text-transform:uppercase}
+h2{font-size:clamp(1.7rem,3.4vw,2.4rem);font-weight:800;font-stretch:85%;text-transform:uppercase}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0}
+.read{max-width:65ch}
+.label{font:500 .78rem/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bronze)}
+a{color:var(--ink);text-decoration-color:var(--bronze-soft);text-underline-offset:3px}
+a:focus-visible{outline:3px solid var(--bronze);outline-offset:2px}
+strong{font-weight:700}
+
+/* testata */
+.head{display:grid;gap:24px;padding-bottom:40px;border-bottom:3px solid var(--ink)}
+.head .meta{display:flex;flex-wrap:wrap;gap:8px 24px}
+.head .lead{font-size:1.2rem;max-width:60ch}
+.note{background:var(--bronze-tint);border-left:4px solid var(--bronze-soft);padding:16px 20px;max-width:75ch}
+.note p+p{margin-top:8px}
+
+/* indice */
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+nav.toc a{font:600 .92rem/1 var(--f-body);text-decoration:none;border:1px solid var(--line);background:var(--surface);
+  padding:12px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:2px}
+nav.toc a:hover{border-color:var(--ink)}
+
+section{padding-top:80px;display:grid;gap:24px}
+@media (min-width:900px){section{padding-top:128px}}
+.sec-head{display:grid;gap:8px}
+
+/* schede concorrenti */
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);padding:24px;display:grid;gap:12px;align-content:start;min-width:0}
+.card .top{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.card .where{font:500 .8rem/1 var(--f-mono);color:var(--muted)}
+.card blockquote{margin:0;font-style:italic;border-left:3px solid var(--line);padding-left:12px}
+.card dl{margin:0;display:grid;gap:8px}
+.card dt{font:500 .72rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card dd{margin:0}
+.sw{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sw i{width:22px;height:22px;border:1px solid var(--line);display:inline-block}
+.sw span{font:500 .78rem/1 var(--f-mono);color:var(--muted)}
+.src{font-size:.85rem;color:var(--muted);word-break:break-word}
+
+/* sintesi */
+.findings{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.finding{border-top:3px solid var(--ink);padding-top:16px;display:grid;gap:8px}
+.finding.key{border-top-color:var(--bronze-soft)}
+
+/* mappa */
+.map{background:var(--surface);border:1px solid var(--line);padding:16px;overflow-x:auto}
+.map svg{display:block;width:100%;min-width:560px;height:auto}
+.map text{font-family:var(--f-body);fill:var(--ink)}
+.legend{font-size:.95rem;color:var(--muted)}
+
+/* profili */
+.persona{background:var(--surface);border:1px solid var(--line);display:grid;gap:0}
+.persona header{padding:24px;border-bottom:1px solid var(--line);display:grid;gap:6px}
+.persona .body{display:grid;gap:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.persona .cell{padding:20px 24px;border-bottom:1px solid var(--line);display:grid;gap:6px;align-content:start;min-width:0}
+.persona ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.quote{font-style:italic}
+.quote cite{font-style:normal;font-size:.8rem;color:var(--muted);display:block}
+.tbd{color:var(--warn);font-weight:600}
+
+/* parole chiave */
+.kw{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.kw .col{background:var(--surface);border:1px solid var(--line);padding:20px 24px;display:grid;gap:12px;align-content:start}
+.kw ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.kw li{font:500 .92rem/1.4 var(--f-mono);padding:6px 0;border-bottom:1px dashed var(--line)}
+.kw li:last-child{border-bottom:0}
+.kw .why{font-size:.95rem;color:var(--muted)}
+
+/* leve */
+.table-wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:720px}
+th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line)}
+th{font:500 .74rem/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--paper)}
+td:first-child{font-weight:700;width:20%}
+tr:last-child td{border-bottom:0}
+
+/* conclusione */
+.verdict{background:var(--ink);color:var(--paper);padding:40px clamp(24px,5vw,56px);display:grid;gap:20px}
+.verdict .label{color:var(--bronze-soft)}
+.verdict ol{margin:0;padding-left:22px;display:grid;gap:10px;max-width:70ch;font-size:1.08rem}
+.verdict .promise{font:900 clamp(1.8rem,4.4vw,3rem)/1.05 var(--f-display);font-stretch:78%;text-transform:uppercase}
+.verdict .promise b{color:var(--bronze-soft)}
+
+.asks{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));counter-reset:a}
+.asks li{list-style:none;background:var(--surface);border:1px solid var(--line);padding:16px 20px}
+.asks ul{margin:0;padding:0;display:contents}
+
+.sources ol{margin:0;padding-left:22px;display:grid;gap:6px;font-size:.92rem;color:var(--muted)}
+.sources a{word-break:break-word}
+
+@media (prefers-reduced-motion:no-preference){nav.toc a{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+
+<header class="head">
+  <div class="meta">
+    <span class="label">Fase 1 di 4 · Studio</span>
+    <span class="label">Desideri&amp;Code</span>
+    <span class="label">15 novembre 2026</span>
+  </div>
+  <h1>El Gammal<br>Impresa edile</h1>
+  <p class="lead">Studio della concorrenza, dei clienti, delle ricerche e delle leve di persuasione. Serve a scegliere il posizionamento prima di disegnare il marchio e il sito.</p>
+  <div class="note">
+    <p><strong>Cosa manca: la città.</strong> La sede è in Via Marconi 124, ma il comune non è confermato e online non ho trovato l'impresa. Quindi non posso ancora fare la mappa dei concorrenti di zona.</p>
+    <p>Al loro posto ho studiato <strong>9 imprese italiane</strong> che vendono gli stessi servizi e hanno un sito curato. Sono i modelli con cui il cliente verrà confrontato, perché El Gammal lavora in tutta Italia e all'estero. Quando arriva la città aggiungo i concorrenti locali.</p>
+  </div>
+  <nav class="toc" aria-label="Indice">
+    <a href="#concorrenza">1 · Concorrenza</a>
+    <a href="#mappa">Mappa</a>
+    <a href="#clienti">2 · Clienti ideali</a>
+    <a href="#ricerche">3 · Ricerche</a>
+    <a href="#leve">4 · Leve</a>
+    <a href="#conclusione">5 · Conclusione</a>
+    <a href="#domande">Domande al cliente</a>
+  </nav>
+</header>
+
+<!-- 1 CONCORRENZA -->
+<section id="concorrenza">
+  <div class="sec-head">
+    <span class="label">1 · Concorrenza</span>
+    <h2>Nove imprese, lo stesso discorso</h2>
+    <p class="read">Ho letto le home e le pagine servizio. I colori vengono dal codice dei siti. Le frasi tra virgolette sono copiate dai siti.</p>
+  </div>
+
+  <div class="grid">
+    <article class="card">
+      <div class="top"><h3>Edil Fag</h3><span class="where">Milano</span></div>
+      <blockquote>"Da oltre 30 anni ci occupiamo di ristrutturazioni, manutenzioni e opere edili."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Servizi quasi identici a El Gammal (muratura, cartongesso, imbiancatura, facciate). Recensioni Google sul sito che citano pulizia e tempi. WhatsApp.</dd></div>
+        <div><dt>Deboli</dt><dd>Testi generici e lunghi. Menu con 25 voci. Nessuna specialità chiara.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#26326b"></i><i style="background:#2ea3f2"></i><i style="background:#df6f10"></i><span>blu navy, azzurro, arancio</span></span> Tono corretto, da brochure.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.edilfag.com/">edilfag.com</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>EdilTurin</h3><span class="where">Torino</span></div>
+      <blockquote>"Riusciamo SEMPRE a consegnare ai nostri clienti la casa che sognano, stando nei tempi e nei costi pattuiti."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Telefono e WhatsApp in alto. Una pagina dedicata alle recensioni Google. Parla di metodo.</dd></div>
+        <div><dt>Deboli</dt><dd>"Eccellenza", "casa dei sogni": promesse grandi senza prove. Il metodo è annunciato ma non mostrato.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#23232c"></i><i style="background:#ff3600"></i><i style="background:#046bd2"></i><span>quasi nero, arancio vivo, blu</span></span> Tono da venditore, maiuscole.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.edilturin.it/">edilturin.it</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>EdilGo</h3><span class="where">Roma (prefisso 06)</span></div>
+      <blockquote>"Una facciata degradata vale il 15% in meno sul mercato immobiliare."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No, ma "preventivo gratuito in 48h"</dd></div>
+        <div><dt>Forti</dt><dd>La pagina facciate è la più convincente: problema, soluzione, fasi. Ponteggi inclusi, garanzia scritta di almeno 5 anni, pulizia quotidiana.</dd></div>
+        <div><dt>Deboli</dt><dd>Il dato del 15% non ha fonte. Molto appoggiato ai bonus (15 citazioni in una pagina). Niente WhatsApp.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#1b2040"></i><i style="background:#c9a84c"></i><span>blu notte, oro</span></span> Tono tecnico e sicuro.</dd></div>
+      </dl>
+      <p class="src"><a href="https://edilgosrl.it/servizi/rifacimento-facciate">edilgosrl.it/servizi/rifacimento-facciate</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>Costruzioni De Masi</h3><span class="where">Siracusa</span></div>
+      <blockquote>"Preventivo vincolante, penali sui tempi e garanzia decennale."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>Sì: facciate "da 15 a 120 €/m²"</dd></div>
+        <div><dt>Forti</dt><dd>Garanzie forti e scritte. Dal 1966, oltre 500 cantieri. Tempi stimati per tipo di edificio. Molto curato per Google.</dd></div>
+        <div><dt>Deboli</dt><dd>Pagina affollata, emoji, la frase "rifacimento facciate Siracusa" ripetuta di continuo. Bonus ovunque (46 citazioni).</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#0a4d8c"></i><i style="background:#c8a04a"></i><i style="background:#e67e22"></i><span>blu, oro, arancio</span></span> Tono da guida tecnica.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.costruzionidemasi.com/rifacimento-facciate-siracusa/">costruzionidemasi.com</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>OttantaCostruzioni</h3><span class="where">Udine</span></div>
+      <blockquote>"Un unico referente, zero stress."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Promessa chiara e umana. Voto Google nell'hero ("4,6 su 5, 16 recensioni"). Impresa certificata SOA.</dd></div>
+        <div><dt>Deboli</dt><dd>"Bonus Edilizi" è una voce del menu. Niente WhatsApp. Solo Friuli.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><span>non rilevati dal codice</span></span> Tono semplice e rassicurante.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.ottantacostruzioni.it/">ottantacostruzioni.it</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>Impresa Elia</h3><span class="where">Cervere (CN)</span></div>
+      <blockquote>"Impresa Edile a Cuneo per Costruzioni e Ristrutturazioni di Qualità."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Due titolari con nome e numero di telefono: senti con chi parli. Galleria lavori divisa per tipo.</dd></div>
+        <div><dt>Deboli</dt><dd>"Qualità", "Professionalità": parole che usano tutti. Niente WhatsApp. Un refuso nei testi.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#6f86ac"></i><i style="background:#9db0cf"></i><i style="background:#f0f4fb"></i><span>azzurri polvere</span></span> Tono familiare.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.impresaelia.it/">impresaelia.it</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>QuattroEmme</h3><span class="where">Cagliari</span></div>
+      <blockquote>"Siamo specializzati in edilizia, dalla progettazione alle nuove costruzioni…"</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Pagine per galleria, video e recensioni. Offre progettazione e interni.</dd></div>
+        <div><dt>Deboli</dt><dd>Dice "specializzati" e poi elenca tutto. Nessun bottone nell'hero. Tema WordPress riconoscibile.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#2657a4"></i><i style="background:#2ea3f2"></i><i style="background:#0ba012"></i><span>blu, azzurro, verde</span></span> Tono generico.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.quattroemmecostruzioni.it/">quattroemmecostruzioni.it</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>Tre Gi Impianti</h3><span class="where">Campania</span></div>
+      <blockquote>"Costruiamo per voi garanzie."</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>No</dd></div>
+        <div><dt>Forti</dt><dd>Edilizia e impianti insieme. Si rivolge a enti pubblici e aziende.</dd></div>
+        <div><dt>Deboli</dt><dd>Sei titoli principali nella stessa pagina. La pagina facciate non esiste più (errore 404). Linguaggio da capitolato.</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><i style="background:#eeeeee"></i><span>grigi, nessun accento</span></span> Tono istituzionale.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.tregimpianti.com/">tregimpianti.com</a></p>
+    </article>
+
+    <article class="card">
+      <div class="top"><h3>Facile Ristrutturare</h3><span class="where">13 città</span></div>
+      <blockquote>Rete nazionale di ristrutturazioni chiavi in mano, con pubblicità in TV.</blockquote>
+      <dl>
+        <div><dt>Prezzi</dt><dd>Non verificato (il sito non si apre da qui)</dd></div>
+        <div><dt>Forti</dt><dd>Marchio noto, presenza in molte città.</dd></div>
+        <div><dt>Deboli</dt><dd>Recensioni pubbliche negative su ritardi e consegne incomplete. Sui forum si chiede cosa voglia dire davvero "chiavi in mano".</dd></div>
+        <div><dt>Colori e tono</dt><dd><span class="sw"><span>non verificati</span></span> Tono da grande marchio.</dd></div>
+      </dl>
+      <p class="src"><a href="https://www.altroconsumo.it/community/casa-e-condominio/ristrutturare/conversazione/7458/ristrutturazione-chiavi-in-mano-cosa-significa">altroconsumo.it</a> · <a href="https://studiomadera.it/news/172-facile-ristrutturare">studiomadera.it</a></p>
+    </article>
+  </div>
+
+  <div class="findings">
+    <div class="finding key">
+      <h3>Tutti blu e arancio</h3>
+      <p>7 imprese su 9 usano blu o blu notte con un accento arancio o oro. La palette provvisoria del brief (blu notte + arancio mattone) le imita. <strong>L'antracite e il bronzo del logo invece non li usa nessuno.</strong></p>
+    </div>
+    <div class="finding">
+      <h3>Tutti promettono, pochi mostrano</h3>
+      <p>"Tempi", "qualità", "serietà" compaiono ovunque. Quasi nessuno fa vedere come lavora. Le uniche promesse con dei fatti dietro (garanzia scritta, pulizia ogni giorno) vengono dalle imprese più convincenti.</p>
+    </div>
+    <div class="finding">
+      <h3>Tanti parlano di bonus</h3>
+      <p>4 su 9 usano i bonus come argomento di vendita. El Gammal non ne parla. Può diventare un pregio: <strong>si parla del lavoro, non delle pratiche</strong>.</p>
+    </div>
+    <div class="finding key">
+      <h3>Tutti locali, tutti generalisti</h3>
+      <p>Ognuno lavora in una provincia e fa "un po' di tutto". Nessuno è specialista delle superfici e nessuno parla a chi sta all'estero. Sono due spazi liberi.</p>
+    </div>
+  </div>
+</section>
+
+<!-- MAPPA -->
+<section id="mappa">
+  <div class="sec-head">
+    <span class="label">1 · Mappa di posizionamento</span>
+    <h2>Lo spazio libero è in alto a destra</h2>
+    <p class="read">Orizzontale: quanto le promesse si possono verificare (dalle parole generiche ai fatti e al metodo mostrato). Verticale: fin dove arriva l'impresa (una provincia, poi l'Italia, poi l'estero). Le posizioni sono un mio giudizio basato sui siti letti.</p>
+  </div>
+  <figure class="map" style="margin:0">
+    <svg viewBox="0 0 760 470" role="img" aria-labelledby="map-t">
+      <title id="map-t">Mappa: i concorrenti sono quasi tutti in basso, cioè locali. Lo spazio in alto a destra, internazionale e con promesse verificabili, è libero.</title>
+      <rect x="60" y="20" width="660" height="390" fill="var(--paper)" stroke="var(--line)"/>
+      <rect x="390" y="20" width="330" height="195" fill="var(--bronze-tint)"/>
+      <line x1="390" y1="20" x2="390" y2="410" stroke="var(--line)" stroke-dasharray="4 4"/>
+      <line x1="60" y1="215" x2="720" y2="215" stroke="var(--line)" stroke-dasharray="4 4"/>
+      <text x="60" y="440" font-size="13">Promesse generiche</text>
+      <text x="720" y="440" font-size="13" text-anchor="end">Fatti e metodo mostrati →</text>
+      <text x="40" y="410" font-size="13" transform="rotate(-90 40 410)">Una provincia</text>
+      <text x="40" y="20" font-size="13" text-anchor="end" transform="rotate(-90 40 20)">Italia ed estero →</text>
+      <text x="705" y="44" font-size="13" text-anchor="end" font-weight="700" fill="var(--bronze)">SPAZIO LIBERO</text>
+
+      <g font-size="13">
+        <circle cx="126" cy="350" r="7" fill="var(--muted)"/><text x="138" y="354">Tre Gi Impianti</text>
+        <circle cx="172" cy="385" r="7" fill="var(--muted)"/><text x="184" y="389">Impresa Elia</text>
+        <circle cx="194" cy="358" r="7" fill="var(--muted)"/><text x="206" y="345">QuattroEmme</text>
+        <circle cx="324" cy="372" r="7" fill="var(--muted)"/><text x="336" y="376">Edil Fag</text>
+        <circle cx="390" cy="390" r="7" fill="var(--muted)"/><text x="402" y="394">EdilTurin</text>
+        <circle cx="432" cy="360" r="7" fill="var(--muted)"/><text x="444" y="364">OttantaCostruzioni</text>
+        <circle cx="560" cy="345" r="7" fill="var(--muted)"/><text x="572" y="333">EdilGo</text>
+        <circle cx="620" cy="385" r="7" fill="var(--muted)"/><text x="610" y="402" text-anchor="end">De Masi</text>
+        <circle cx="356" cy="228" r="7" fill="var(--muted)"/><text x="368" y="244">Facile Ristrutturare</text>
+      </g>
+      <g>
+        <circle cx="620" cy="80" r="11" fill="var(--bronze-soft)" stroke="var(--ink)" stroke-width="2"/>
+        <text x="604" y="85" font-size="14" font-weight="700" text-anchor="end">El Gammal: dove deve andare</text>
+      </g>
+    </svg>
+  </figure>
+  <p class="legend read">El Gammal può occupare l'angolo in alto a destra solo se porta dei fatti: foto vere, un metodo di lavoro descritto passo per passo, impegni scritti che il cliente può rispettare. La sola parola "internazionale" non basta.</p>
+</section>
+
+<!-- 2 CLIENTI -->
+<section id="clienti">
+  <div class="sec-head">
+    <span class="label">2 · Clienti ideali</span>
+    <h2>Tre persone, una paura comune: le sorprese</h2>
+    <p class="read">Le frasi in corsivo sono parole vere di clienti, prese da recensioni pubbliche e da un forum di consumatori.</p>
+  </div>
+
+  <article class="persona">
+    <header>
+      <span class="label">Profilo A · privato</span>
+      <h3>Chi ha appena comprato casa e deve sistemarla prima del trasloco</h3>
+      <p>35–55 anni, coppia o famiglia. Ha speso molto per l'acquisto e ha una data di trasloco da rispettare. Di solito è la sua prima ristrutturazione.</p>
+    </header>
+    <div class="body">
+      <div class="cell"><span class="label">Paure</span>
+        <ul><li>Ritardi che fanno saltare il trasloco</li><li>Polvere e sporco in tutta la casa</li><li>Un'impresa che sparisce a metà lavoro</li><li>Parlare con cinque artigiani diversi</li></ul></div>
+      <div class="cell"><span class="label">Desideri</span>
+        <ul><li>Una persona sola a cui telefonare</li><li>Vedere lavori finiti simili al suo</li><li>Sapere prima cosa succede e quando</li></ul></div>
+      <div class="cell"><span class="label">Obiezioni</span>
+        <ul><li>"Un'impresa che fa tutto è brava in tutto?"</li><li>"Che cosa vuol dire davvero chiavi in mano?"</li></ul></div>
+      <div class="cell"><span class="label">Parole vere</span>
+        <p class="quote">"si riscontrano solo problemi e sorprese ma con Valerio è tutto filato liscio" <cite>recensione su edilturin.it</cite></p>
+        <p class="quote">"la pulizia e l'ordine in casa ogni fine giornata" <cite>recensione su edilfag.com</cite></p>
+        <p class="quote">"La ditta che eseguiva i lavori è sparita o è fallita" <cite>forum Altroconsumo</cite></p>
+      </div>
+      <div class="cell"><span class="label">Quando cerca</span><p>Tra il rogito e il trasloco. Cerca la sera, dal telefono. Chiede 3 o 4 preventivi.</p></div>
+    </div>
+  </article>
+
+  <article class="persona">
+    <header>
+      <span class="label">Profilo B · condominio</span>
+      <h3>L'amministratore e i consiglieri che devono rifare la facciata</h3>
+      <p>Gestisce un problema che riguarda tutti: intonaco che si stacca, crepe, macchie. Deve portare preventivi in assemblea e farli votare.</p>
+    </header>
+    <div class="body">
+      <div class="cell"><span class="label">Paure</span>
+        <ul><li>Un cantiere che dura mesi (le guide parlano di 2–6 mesi)</li><li>Lamentele dei condomini per rumore e sporco</li><li>Rischi di sicurezza sul ponteggio</li></ul></div>
+      <div class="cell"><span class="label">Desideri</span>
+        <ul><li>Un preventivo chiaro da confrontare con gli altri</li><li>Una stima dei tempi da presentare in assemblea</li><li>Un'impresa assicurata, con personale formato</li></ul></div>
+      <div class="cell"><span class="label">Obiezioni</span>
+        <ul><li>"Chi parla con i condomini durante il cantiere?"</li><li>"Siete assicurati? Mi mandate i documenti?"</li></ul></div>
+      <div class="cell"><span class="label">Parole vere</span>
+        <p class="quote">"Pulizia quotidiana dell'area e comunicazione continua con l'amministratore" <cite>promessa su edilgosrl.it: è ciò che l'amministratore vuole sentire</cite></p>
+        <p class="quote">"chiedere a ciascuna impresa una stima dei tempi" <cite>consiglio di una guida, ecorit.it</cite></p>
+      </div>
+      <div class="cell"><span class="label">Quando cerca</span><p>Dopo un distacco di intonaco o prima dell'assemblea. Cerca dal computer in ufficio, di giorno.</p></div>
+    </div>
+  </article>
+
+  <article class="persona">
+    <header>
+      <span class="label">Profilo C · aziende ed estero</span>
+      <h3>Il negozio o l'ufficio che non può fermarsi, e il committente all'estero che vuole finiture italiane</h3>
+      <p>Due casi con la stessa esigenza: un'impresa affidabile, che arriva, lavora in fretta e se ne va lasciando tutto in ordine.</p>
+    </header>
+    <div class="body">
+      <div class="cell"><span class="label">Paure</span>
+        <ul><li>Giorni di chiusura che costano</li><li>All'estero: un'impresa che non si riesce a controllare da lontano</li></ul></div>
+      <div class="cell"><span class="label">Desideri</span>
+        <ul><li>Date certe di inizio e fine</li><li>Finiture di livello italiano (rasatura, facciate, cartongesso)</li><li>Parlare nella propria lingua</li></ul></div>
+      <div class="cell"><span class="label">Obiezioni</span>
+        <ul><li>"Lavorate davvero fuori Italia? Dove?"</li></ul></div>
+      <div class="cell"><span class="label">Parole vere</span>
+        <p class="tbd">Da completare. Non ho trovato recensioni pubbliche per questo profilo. Mi servono dal cliente: chi sono oggi i clienti esteri e come lo trovano.</p></div>
+      <div class="cell"><span class="label">Quando cerca</span><p>Spesso non cerca su Google: arriva con il passaparola e controlla il sito per fidarsi. Il sito qui deve <strong>confermare</strong>, non convincere da zero.</p></div>
+    </div>
+  </article>
+</section>
+
+<!-- 3 RICERCHE -->
+<section id="ricerche">
+  <div class="sec-head">
+    <span class="label">3 · Ricerche</span>
+    <h2>Come lo cercano</h2>
+    <p class="read">Ricerche locali divise per intenzione. Al posto di [città] va il comune della sede e quelli vicini. I volumi di ricerca non li ho: si misurano con lo strumento di Google Ads quando abbiamo la città. Tutti i concorrenti letti usano il modello "servizio + città" nel titolo delle pagine.</p>
+  </div>
+  <div class="kw">
+    <div class="col">
+      <h3>Urgenza: vuole chiamare</h3>
+      <ul>
+        <li>impresa edile [città]</li>
+        <li>muratore [città]</li>
+        <li>rasatura pareti [città]</li>
+        <li>cartongesso [città]</li>
+        <li>rifacimento facciata condominio [città]</li>
+        <li>ristrutturazione chiavi in mano [città]</li>
+        <li>imbianchino [città]</li>
+        <li>impresa edile vicino a me</li>
+      </ul>
+      <p class="why">Vanno nei titoli delle pagine servizio e nella scheda Google.</p>
+    </div>
+    <div class="col">
+      <h3>Confronto: sta scegliendo</h3>
+      <ul>
+        <li>impresa edile [città] recensioni</li>
+        <li>ristrutturazione chiavi in mano cosa comprende</li>
+        <li>parete in cartongesso o in muratura</li>
+        <li>rasatura a gesso o a calce</li>
+        <li>intonaco o rasatura</li>
+        <li>facciata: tinteggiatura o rifacimento</li>
+      </ul>
+      <p class="why">Diventano domande frequenti nelle pagine servizio, con risposte vere.</p>
+    </div>
+    <div class="col">
+      <h3>Informazione: ha un problema</h3>
+      <ul>
+        <li>crepe nei muri cosa fare</li>
+        <li>intonaco che si stacca dalla facciata</li>
+        <li>quanto dura il rifacimento di una facciata</li>
+        <li>come capire se una rasatura è fatta bene</li>
+        <li>quanto regge una parete in cartongesso</li>
+        <li>muffa sui muri</li>
+      </ul>
+      <p class="why">Prima risposte utili, poi il contatto. È qui che si usa la reciprocità.</p>
+    </div>
+    <div class="col">
+      <h3>Estero: per le lingue future</h3>
+      <ul>
+        <li>entreprise rénovation italienne</li>
+        <li>ravalement de façade</li>
+        <li>italienische Baufirma</li>
+        <li>Fassadensanierung</li>
+        <li lang="ar" dir="rtl">شركة مقاولات إيطالية</li>
+        <li lang="ar" dir="rtl">تشطيبات إيطالية</li>
+      </ul>
+      <p class="why">"Impresa italiana" e "finiture italiane" in francese, tedesco e arabo. Da verificare con chi parla queste lingue prima di usarle.</p>
+    </div>
+  </div>
+  <div class="note"><p><strong>Le ricerche sul costo</strong> ("rasatura pareti costo al metro") sono tra le più comuni, ma il brief vieta di parlare di prezzi. Risposta consigliata: spiegare da cosa dipende il preventivo, senza cifre, e invitare a mandare una foto.</p></div>
+</section>
+
+<!-- 4 LEVE -->
+<section id="leve">
+  <div class="sec-head">
+    <span class="label">4 · Leve psicologiche</span>
+    <h2>Cosa funziona per questo pubblico</h2>
+    <p class="read">Chi ristruttura compra soprattutto <strong>la certezza che andrà bene</strong>. Per questo le leve che contano di più sono quelle che tolgono paura, non quelle che spingono a decidere in fretta.</p>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Leva</th><th>Perché funziona qui</th><th>Dove la uso nel sito</th></tr></thead>
+      <tbody>
+        <tr><td>Avversione alla perdita</td><td>La gente teme di perdere soldi, tempo e serenità più di quanto desideri una casa nuova. Le recensioni dei concorrenti parlano di sparizioni e ritardi.</td><td>Una sezione che mostra come lavora l'impresa, passo per passo: chi chiama, quando inizia, come si chiude il cantiere. Garanzie scritte solo se il cliente le conferma.</td></tr>
+        <tr><td>Riprova sociale</td><td>Il primo controllo è il voto su Google. OttantaCostruzioni lo mette nell'hero.</td><td>Spazio per le recensioni Google, vuoto finché non arrivano quelle vere. Nel frattempo le prove sono foto e video veri prima e dopo.</td></tr>
+        <tr><td>Effetto alone</td><td>Un sito ordinato fa pensare a un cantiere ordinato. La pulizia è una promessa del cliente: il sito deve farla vedere.</td><td>Spazi ampi, griglia rigorosa, niente elementi a caso. Il sito stesso dimostra "pulito".</td></tr>
+        <tr><td>Autorità ed esperienza</td><td>"Dal 2005" è un fatto vero e facile da capire.</td><td>Vicino al nome e nei punti dove si chiede fiducia. Più avanti, certificazioni e assicurazione con i loghi veri.</td></tr>
+        <tr><td>Effetto Von Restorff</td><td>Si ricorda l'elemento diverso dagli altri. Il brief chiede di mettere in evidenza la muratura.</td><td>La muratura ha un trattamento diverso dagli altri servizi. Il colore bronzo è usato solo per i bottoni.</td></tr>
+        <tr><td>Carico cognitivo</td><td>Sette servizi in fila stancano. Chi arriva dal telefono vuole capire in 5 secondi.</td><td>Servizi raccolti in 3 famiglie (superfici, strutture, chiavi in mano). Modulo con pochi campi.</td></tr>
+        <tr><td>Piccolo primo passo</td><td>Chiedere un preventivo sembra un impegno. Mandare una foto no.</td><td>"Mandaci una foto del muro su WhatsApp" come primo contatto, accanto al classico preventivo.</td></tr>
+        <tr><td>Reciprocità</td><td>Chi riceve un consiglio utile tende a ricambiare.</td><td>Risposte vere alle domande della colonna "informazione", per esempio come capire se una rasatura è fatta bene.</td></tr>
+        <tr><td>Fluidità percettiva</td><td>Quello che si legge con facilità sembra più vero.</td><td>Frasi brevi, titoli con la parte importante in grassetto, una sola idea per sezione.</td></tr>
+        <tr><td>Urgenza vera</td><td>Mai scadenze finte. Ma alcune urgenze sono reali: l'intonaco che si stacca è un rischio, e le facciate si programmano con la bella stagione.</td><td>Solo nella pagina facciate, con frasi sobrie e vere.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 5 CONCLUSIONE -->
+<section id="conclusione">
+  <div class="verdict">
+    <span class="label">5 · Conclusione</span>
+    <p class="promise">Muri perfetti.<br>Cantiere pulito.<br><b>Un'impresa sola.</b></p>
+    <ol>
+      <li>Tutti promettono tempi e qualità senza mostrarli. El Gammal vince <strong>facendo vedere</strong> come lavora, con foto vere e un metodo spiegato.</li>
+      <li>I tre servizi che rendono di più (rasatura, facciate, cartongesso) parlano tutti di <strong>superfici</strong>. È la specialità da rivendicare. La muratura è la base che le regge.</li>
+      <li>"Chiavi in mano" è la conseguenza: chi fa bene le superfici può gestire tutto il cantiere con un solo referente.</li>
+      <li>Antracite e bronzo del logo lo staccano dal blu e arancio dei concorrenti. Il tono è asciutto e concreto, come un capocantiere serio.</li>
+      <li>Il raggio internazionale è un vantaggio raro, ma va provato con lavori veri prima di metterlo in primo piano.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- DOMANDE -->
+<section id="domande">
+  <div class="sec-head">
+    <span class="label">Prima della fase 2</span>
+    <h2>Cosa chiedere al cliente</h2>
+    <p class="read">Servono per non scrivere nulla di inventato. Più risposte arrivano, più il sito sarà convincente.</p>
+  </div>
+  <ul class="asks">
+    <li><strong>Città della sede</strong> e comuni dove lavora più spesso.</li>
+    <li><strong>"Tempi rapidi":</strong> che cosa può promettere per iscritto? Per esempio il sopralluogo entro tot giorni, o le date di inizio e fine nel preventivo.</li>
+    <li><strong>"Cantiere pulito":</strong> pulisce ogni sera? Protegge pavimenti e mobili? Porta via le macerie?</li>
+    <li><strong>Sopralluogo e preventivo:</strong> sono gratuiti?</li>
+    <li><strong>Garanzie scritte</strong> sui lavori: ci sono? Di quanti anni?</li>
+    <li><strong>Lavori all'estero:</strong> in quali paesi ha già lavorato? Ci sono foto?</li>
+    <li><strong>Lingue parlate</strong> dal titolare (arabo, francese, tedesco?).</li>
+    <li><strong>Recensioni:</strong> ci sono già recensioni Google o di altri siti? Mi servono i link.</li>
+    <li><strong>Un lavoro di cui va fiero</strong>, con foto prima e dopo: diventa la storia principale del sito.</li>
+  </ul>
+</section>
+
+<!-- FONTI -->
+<section id="fonti" class="sources">
+  <div class="sec-head"><span class="label">Fonti</span><h2>Da dove viene tutto</h2></div>
+  <ol>
+    <li><a href="https://www.edilfag.com/">Edil Fag, home e recensioni</a></li>
+    <li><a href="https://www.edilturin.it/">EdilTurin, home</a> · <a href="https://www.edilturin.it/recensioni-clienti-edil-turin-torino/">pagina recensioni</a></li>
+    <li><a href="https://edilgosrl.it/servizi/rifacimento-facciate">EdilGo, pagina rifacimento facciate</a></li>
+    <li><a href="https://www.costruzionidemasi.com/rifacimento-facciate-siracusa/">Costruzioni De Masi, pagina facciate</a></li>
+    <li><a href="https://www.ottantacostruzioni.it/">OttantaCostruzioni, home</a></li>
+    <li><a href="https://www.impresaelia.it/">Impresa Elia, home</a></li>
+    <li><a href="https://www.quattroemmecostruzioni.it/">QuattroEmme Costruzioni, home</a></li>
+    <li><a href="https://www.tregimpianti.com/">Tre Gi Impianti, home</a></li>
+    <li><a href="https://www.altroconsumo.it/community/casa-e-condominio/ristrutturare/conversazione/7458/ristrutturazione-chiavi-in-mano-cosa-significa">Altroconsumo, discussione "Ristrutturazione chiavi in mano: cosa significa?"</a></li>
+    <li><a href="https://studiomadera.it/news/172-facile-ristrutturare">Facile Ristrutturare, opinioni dai forum</a></li>
+    <li><a href="https://www.leggecondominiale.it/rifacimento-facciate-condominio-tempi-costi-e-cosa-e-previsto/">Legge Condominiale, tempi del rifacimento facciate</a></li>
+    <li><a href="https://www.ecorit.it/ristrutturazioni-facciate-condominiali-quanto-costa-e-chi-paga/">Ecorit, facciate condominiali e preventivi per l'assemblea</a></li>
+    <li><a href="https://www.nngroup.com/articles/minimize-cognitive-load/">Nielsen Norman Group, ridurre il carico cognitivo</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Von_Restorff_effect">Effetto Von Restorff</a> · <a href="https://en.wikipedia.org/wiki/Loss_aversion">Avversione alla perdita</a> · <a href="https://en.wikipedia.org/wiki/Halo_effect">Effetto alone</a> · <a href="https://en.wikipedia.org/wiki/Social_proof">Riprova sociale</a></li>
+  </ol>
+</section>
+
+</div>
