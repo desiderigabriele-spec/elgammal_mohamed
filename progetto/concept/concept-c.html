@@ -71,7 +71,8 @@ section{padding-block:80px}
 .hero-copy .lead{font-size:1.15rem;color:var(--ink-2);max-width:44ch}
 .scene{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:5/4;max-height:min(560px,62vh);width:100%;background:var(--wall)}
 @media (max-width:959px){.scene{aspect-ratio:16/10;max-height:none}}
-.scene svg,.scene canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene .room,.scene canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene .room{object-fit:cover;max-width:none}
 .clock{position:absolute;right:14px;top:14px;background:#fff;border-radius:999px;padding:8px 14px;font:600 1rem var(--f-m);display:flex;gap:8px;align-items:center;box-shadow:0 1px 0 var(--line)}
 .clock i{width:10px;height:10px;border-radius:50%;background:var(--bronze-l)}
 .scene .tag{position:absolute;left:14px;bottom:14px;background:#fff;border-radius:999px;padding:6px 12px;font:500 .75rem var(--f-m);color:var(--ink-2)}
@@ -117,7 +118,7 @@ section{padding-block:80px}
 /* lavori */
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:min(82%,420px);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;overscroll-behavior-x:contain}
 .rail article{scroll-snap-align:start;display:grid;gap:10px}
-.rail .ph{aspect-ratio:4/5;border-radius:20px;background:repeating-linear-gradient(135deg,#DDD9D2 0 2px,#E8E5DF 2px 12px);display:grid;place-items:center;font:500 .8rem var(--f-m);color:var(--ink-2);text-align:center;padding:16px}
+.rail .ph{aspect-ratio:4/5;border-radius:20px;background:#DDD9D2;width:100%;max-width:100%;object-fit:cover;display:block}
 .rail p{color:var(--ink-2)}
 
 /* estero */
@@ -190,21 +191,10 @@ footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
             <div class="ctas"><a class="btn btn-p" href="#contatti">Sopralluogo gratuito</a><a class="btn btn-s" href="#contatti">Scrivici su WhatsApp</a></div>
           </div>
           <div class="scene" id="scene">
-            <svg viewBox="0 0 500 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-              <rect width="500" height="400" fill="#E7E3DC"/>
-              <rect x="0" y="300" width="500" height="100" fill="#CFC6B8"/>
-              <path d="M0 300 H500" stroke="#B7AC9B" stroke-width="3"/>
-              <rect x="300" y="70" width="140" height="170" fill="#F4F1EA" stroke="#292D30" stroke-width="4"/>
-              <path d="M370 70 V240 M300 155 H440" stroke="#292D30" stroke-width="3"/>
-              <path d="M300 240 L250 300 H390 L440 240 Z" fill="#F4F1EA" opacity=".55"/>
-              <rect x="60" y="190" width="150" height="110" rx="10" fill="#8B7962"/>
-              <rect x="70" y="175" width="130" height="40" rx="10" fill="#A28F76"/>
-              <rect x="60" y="300" width="10" height="16" fill="#292D30"/><rect x="200" y="300" width="10" height="16" fill="#292D30"/>
-              <path d="M120 70 V120" stroke="#292D30" stroke-width="2"/><path d="M100 120 H140 L132 140 H108 Z" fill="#292D30"/>
-            </svg>
+            <img class="room" src="foto/soggiorno-bianco.webp" alt="Soggiorno bianco e ordinato con una grande finestra">
             <canvas id="dust" role="img" aria-label="Polvere sulla stanza che sparisce mentre scorri la pagina."></canvas>
             <div class="clock" aria-hidden="true"><i></i><span id="clock">17:30</span></div>
-            <span class="tag">Illustrazione · foto reale in arrivo</span>
+            <span class="tag">Foto di esempio</span>
           </div>
         </div>
       </div>
@@ -238,6 +228,7 @@ footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
           <circle cx="100" cy="100" r="7" fill="#292D30"/>
         </svg>
         <span class="ph-note">Esempio da validare con il cliente</span>
+        <img src="foto/imbianchino.webp" alt="Imbianchino al lavoro su una parete" loading="lazy" style="width:100%;max-width:420px;border-radius:20px;aspect-ratio:3/2;object-fit:cover">
       </div>
       <ol class="hours">
         <li class="hour" data-h="7.5"><time>07:30</time><h3>Arriviamo e proteggiamo</h3><p>Copriamo pavimenti e mobili che restano nella stanza.</p></li>
@@ -268,13 +259,14 @@ footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
 
 <section id="lavori">
   <div class="wrap">
-    <aside class="nota"><b>DESIDERIO.</b> Una fila di foto da scorrere col pollice, come sul telefono. Ogni foto con una frase sola. Foto vere in arrivo.</aside>
+    <aside class="nota"><b>DESIDERIO.</b> Una fila di foto da scorrere col pollice, come sul telefono. Ogni foto con una frase sola. Foto di esempio (CC0, StockSnap): vanno sostituite con i lavori veri.</aside>
     <div style="display:grid;gap:16px;margin-bottom:32px"><span class="kicker">Lavori</span><h2>Case <b>finite</b>.</h2></div>
     <div class="rail" tabindex="0" aria-label="Lavori, scorri di lato">
-      <article><div class="ph">FOTO · soggiorno rasato<br>in arrivo</div><p>Soggiorno, Sesto San Giovanni <span class="placeholder">[esempio]</span></p></article>
-      <article><div class="ph">FOTO · bagno ristrutturato<br>in arrivo</div><p>Bagno, Milano <span class="placeholder">[esempio]</span></p></article>
-      <article><div class="ph">FOTO · facciata<br>in arrivo</div><p>Facciata condominio <span class="placeholder">[esempio]</span></p></article>
-      <article><div class="ph">FOTO · controsoffitto<br>in arrivo</div><p>Ufficio, cartongesso <span class="placeholder">[esempio]</span></p></article>
+      <article><img class="ph" src="foto/soggiorno-luce.webp" alt="Soggiorno luminoso" loading="lazy"><p>Soggiorno, Sesto San Giovanni <span class="placeholder">[esempio]</span></p></article>
+      <article><img class="ph" src="foto/bagno-moderno.webp" alt="Bagno moderno" loading="lazy"><p>Bagno, Milano <span class="placeholder">[esempio]</span></p></article>
+      <article><img class="ph" src="foto/facciata-condominio.webp" alt="Facciata di condominio" loading="lazy"><p>Facciata condominio <span class="placeholder">[esempio]</span></p></article>
+      <article><img class="ph" src="foto/ufficio-bianco.webp" alt="Ufficio bianco" loading="lazy"><p>Ufficio, cartongesso <span class="placeholder">[esempio]</span></p></article>
+      <article><img class="ph" src="foto/stanza-porte.webp" alt="Stanza bianca con porte" loading="lazy"><p>Pareti rasate e imbiancate <span class="placeholder">[esempio]</span></p></article>
     </div>
   </div>
 </section>
@@ -325,7 +317,7 @@ footer .logo{--logo-ink:#fff;--logo-accent:#B7A58C;height:56px}
   <div class="wrap">
     <div style="display:grid;gap:16px">%%LOGO%%<p><strong>IMPRESA EDILE EL GAMMAL MOHAMED</strong><br>Via Guglielmo Marconi 124, 20099 Sesto San Giovanni (MI)<br>P.IVA <span class="placeholder">[da ricevere]</span></p></div>
     <div><strong>Contatti</strong><br>Telefono <span class="placeholder">[da ricevere]</span><br>WhatsApp <span class="placeholder">[da ricevere]</span><br>Email <span class="placeholder">[da ricevere]</span></div>
-    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Dal 2005</div>
+    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Dal 2005<br><small>Foto provvisorie CC0 da StockSnap</small></div>
   </div>
 </footer>
 

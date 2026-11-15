@@ -116,7 +116,10 @@ section{padding-block:80px;border-top:1px solid var(--line)}
 /* per chi */
 .who{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
 @media (min-width:900px){.who{grid-template-columns:repeat(3,1fr)}}
-.who article{background:var(--bg);padding:32px 24px;display:grid;gap:14px;align-content:start}
+.who article{background:var(--bg);padding:0 0 32px;display:grid;gap:14px;align-content:start}
+.who article > :not(img){margin-inline:24px}
+.who article img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block;filter:saturate(.85)}
+.who article .btn{justify-self:start}
 .who ul{margin:0;padding-left:18px;color:var(--fg-2);display:grid;gap:4px}
 
 /* cronoprogramma */
@@ -135,7 +138,7 @@ section{padding-block:80px;border-top:1px solid var(--line)}
 /* cartelli di cantiere */
 .signs{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
 .sign{background:var(--paper);color:var(--ink);border:4px solid var(--paper);display:grid}
-.sign .ph{aspect-ratio:4/3;background:repeating-linear-gradient(135deg,#CFCCC5 0 2px,#DAD8D2 2px 12px);display:grid;place-items:center;font:500 .8rem var(--f-m);color:#4A5055}
+.sign .ph{aspect-ratio:4/3;background:#CFCCC5;display:block;width:100%;max-width:100%;object-fit:cover}
 .sign dl{margin:0;display:grid;grid-template-columns:auto 1fr;font-size:.95rem}
 .sign dt,.sign dd{margin:0;padding:8px 10px;border-top:1px solid #B9B6AF}
 .sign dt{font:500 .72rem/1.6 var(--f-m);text-transform:uppercase;letter-spacing:.06em;color:#4A5055;border-right:1px solid #B9B6AF}
@@ -278,9 +281,9 @@ footer .logo{height:56px}
     <aside class="nota"><b>INTERESSE · carico cognitivo.</b> Tre tipi di cliente, tre porte d'ingresso. Ognuno trova subito le sue parole: il privato pensa alla casa, l'amministratore all'assemblea, l'azienda a non fermarsi.<br><b>Animazione:</b> nessuna. Qui serve leggere.</aside>
     <div style="display:grid;gap:16px;margin-bottom:40px"><span class="mono">Per chi lavoriamo</span><h2>Nessun lavoro <b>troppo piccolo</b>.</h2></div>
     <div class="who">
-      <article><span class="mono">Privati</span><h3>La tua casa</h3><ul><li>Appartamenti da sistemare prima del trasloco</li><li>Una stanza, un bagno, una parete</li><li>Ristrutturazioni complete</li></ul><a class="btn btn-s btn-sm" href="#contatti">Chiedi un sopralluogo</a></article>
-      <article><span class="mono">Condomini e amministratori</span><h3>Le parti comuni</h3><ul><li>Facciate, scale, androni</li><li>Preventivo chiaro da portare in assemblea</li><li>Impresa assicurata, personale formato sulla sicurezza</li></ul><a class="btn btn-s btn-sm" href="#contatti">Chiedi un preventivo</a></article>
-      <article><span class="mono">Aziende e negozi</span><h3>Uffici e locali</h3><ul><li>Pareti e controsoffitti in cartongesso</li><li>Rinnovo di uffici, negozi, locali</li><li>Lavori di qualsiasi dimensione</li></ul><a class="btn btn-s btn-sm" href="#contatti">Parliamone</a></article>
+      <article><img src="foto/soggiorno-luce.webp" alt="Soggiorno ristrutturato e luminoso" loading="lazy"><span class="mono">Privati</span><h3>La tua casa</h3><ul><li>Appartamenti da sistemare prima del trasloco</li><li>Una stanza, un bagno, una parete</li><li>Ristrutturazioni complete</li></ul><a class="btn btn-s btn-sm" href="#contatti">Chiedi un sopralluogo</a></article>
+      <article><img src="foto/facciata-condominio.webp" alt="Facciata di condominio" loading="lazy"><span class="mono">Condomini e amministratori</span><h3>Le parti comuni</h3><ul><li>Facciate, scale, androni</li><li>Preventivo chiaro da portare in assemblea</li><li>Impresa assicurata, personale formato sulla sicurezza</li></ul><a class="btn btn-s btn-sm" href="#contatti">Chiedi un preventivo</a></article>
+      <article><img src="foto/interno-controsoffitto.webp" alt="Ufficio con controsoffitto" loading="lazy"><span class="mono">Aziende e negozi</span><h3>Uffici e locali</h3><ul><li>Pareti e controsoffitti in cartongesso</li><li>Rinnovo di uffici, negozi, locali</li><li>Lavori di qualsiasi dimensione</li></ul><a class="btn btn-s btn-sm" href="#contatti">Parliamone</a></article>
     </div>
   </div>
 </section>
@@ -300,12 +303,12 @@ footer .logo{height:56px}
 
 <section id="cantieri" class="gridbg">
   <div class="wrap">
-    <aside class="nota"><b>DESIDERIO · prove.</b> Ogni lavoro è presentato come il cartello di cantiere che tutti hanno visto per strada: una forma familiare e credibile. Foto e dati sono da riempire con i lavori veri.<br><b>Animazione:</b> nessuna; le foto vere faranno il lavoro.</aside>
+    <aside class="nota"><b>DESIDERIO · prove.</b> Ogni lavoro è presentato come il cartello di cantiere che tutti hanno visto per strada: una forma familiare e credibile. Foto di esempio (CC0, StockSnap): vanno sostituite con i lavori veri.<br><b>Animazione:</b> nessuna; le foto vere faranno il lavoro.</aside>
     <div style="display:grid;gap:16px;margin-bottom:40px"><span class="mono">Cantieri</span><h2>Lavori <b>veri</b>, con nome e indirizzo.</h2></div>
     <div class="signs">
-      <article class="sign"><div class="title">Rifacimento facciata</div><div class="ph">FOTO PRIMA / DOPO · in arrivo</div><dl><dt>Luogo</dt><dd>Sesto San Giovanni <span class="placeholder">[da confermare]</span></dd><dt>Lavori</dt><dd>Ripristino intonaco, rasatura, tinteggiatura</dd><dt>Committente</dt><dd>Condominio</dd></dl></article>
-      <article class="sign"><div class="title">Nuove pareti in muratura</div><div class="ph">FOTO PRIMA / DOPO · in arrivo</div><dl><dt>Luogo</dt><dd>Milano <span class="placeholder">[da confermare]</span></dd><dt>Lavori</dt><dd>Tramezzi, intonaco, rasatura</dd><dt>Committente</dt><dd>Privato</dd></dl></article>
-      <article class="sign"><div class="title">Uffici in cartongesso</div><div class="ph">FOTO PRIMA / DOPO · in arrivo</div><dl><dt>Luogo</dt><dd>Estero <span class="placeholder">[città]</span></dd><dt>Lavori</dt><dd>Pareti e controsoffitti</dd><dt>Committente</dt><dd>Azienda</dd></dl></article>
+      <article class="sign"><div class="title">Rifacimento facciata</div><img class="ph" src="foto/balconi-condominio.webp" alt="Facciata di condominio con balconi" loading="lazy"><dl><dt>Luogo</dt><dd>Sesto San Giovanni <span class="placeholder">[da confermare]</span></dd><dt>Lavori</dt><dd>Ripristino intonaco, rasatura, tinteggiatura</dd><dt>Committente</dt><dd>Condominio</dd></dl></article>
+      <article class="sign"><div class="title">Nuove pareti in muratura</div><img class="ph" src="foto/muratura-mattoni.webp" alt="Parete in mattoni" loading="lazy"><dl><dt>Luogo</dt><dd>Milano <span class="placeholder">[da confermare]</span></dd><dt>Lavori</dt><dd>Tramezzi, intonaco, rasatura</dd><dt>Committente</dt><dd>Privato</dd></dl></article>
+      <article class="sign"><div class="title">Uffici in cartongesso</div><img class="ph" src="foto/ufficio-bianco.webp" alt="Ufficio bianco e luminoso" loading="lazy"><dl><dt>Luogo</dt><dd>Estero <span class="placeholder">[città]</span></dd><dt>Lavori</dt><dd>Pareti e controsoffitti</dd><dt>Committente</dt><dd>Azienda</dd></dl></article>
     </div>
   </div>
 </section>
@@ -360,7 +363,7 @@ footer .logo{height:56px}
   <div class="wrap">
     <div style="display:grid;gap:16px">%%LOGO%%<p><strong>IMPRESA EDILE EL GAMMAL MOHAMED</strong><br>Via Guglielmo Marconi 124, 20099 Sesto San Giovanni (MI)<br>P.IVA <span class="placeholder">[da ricevere]</span></p></div>
     <div><strong>Contatti</strong><br>Telefono <span class="placeholder">[da ricevere]</span><br>WhatsApp <span class="placeholder">[da ricevere]</span><br>Email <span class="placeholder">[da ricevere]</span></div>
-    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Impresa assicurata · dal 2005</div>
+    <div><strong>Informazioni</strong><br>Privacy policy<br>Cookie policy<br>Impresa assicurata · dal 2005<br><small>Foto provvisorie CC0 da StockSnap</small></div>
   </div>
 </footer>
 
