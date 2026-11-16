@@ -1,0 +1,10 @@
+---
+import negativo from '../../public/logo/el-gammal-principale-negativo.svg?raw';
+interface Props { class?: string; altezza?: number }
+const { class: cls = '', altezza = 48 } = Astro.props;
+const svg = negativo
+  .replace(/<title>.*?<\/title>/, '')
+  .replace('<svg ', `<svg class="logo ${cls}" style="height:${altezza}px;width:auto" focusable="false" `)
+  .replace(/role="img" aria-label="[^"]*"/, 'aria-hidden="true"');
+---
+<Fragment set:html={svg} />

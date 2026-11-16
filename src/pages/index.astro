@@ -1,0 +1,204 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Strati from '../components/Strati.astro';
+import Metodo from '../components/Metodo.astro';
+import Cartello from '../components/Cartello.astro';
+import Recensioni from '../components/Recensioni.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { impresa, waHref, telHref } from '../data/impresa';
+import privati from '../assets/foto/soggiorno-luce.webp';
+import condomini from '../assets/foto/balconi-condominio.webp';
+import aziende from '../assets/foto/ufficio-bianco.webp';
+import fFacciata from '../assets/foto/facciata-condominio.webp';
+import fMuro from '../assets/foto/muratura-mattoni.webp';
+import fUfficio from '../assets/foto/interno-controsoffitto.webp';
+
+const perChi = [
+  { tag: 'Privati', t: 'La tua casa', foto: privati, alt: 'Soggiorno ristrutturato e luminoso', li: ['Appartamenti da sistemare prima del trasloco', 'Una stanza, un bagno, una parete', 'Ristrutturazioni complete'], cta: 'Chiedi un sopralluogo', href: '/ristrutturazioni-chiavi-in-mano' },
+  { tag: 'Condomini e amministratori', t: 'Le parti comuni', foto: condomini, alt: 'Facciata di un condominio con balconi', li: ['Facciate, scale e androni', 'Preventivo chiaro da portare in assemblea', 'Impresa assicurata, personale formato sulla sicurezza'], cta: 'Vedi le facciate', href: '/facciate' },
+  { tag: 'Aziende e negozi', t: 'Uffici e locali', foto: aziende, alt: 'Ufficio bianco e luminoso', li: ['Pareti e controsoffitti in cartongesso', 'Rinnovo di uffici, negozi e locali', 'Lavori di qualsiasi dimensione'], cta: 'Vedi il cartongesso', href: '/cartongesso' },
+];
+---
+<Base
+  title="El Gammal · Impresa edile a Sesto San Giovanni e Milano dal 2005"
+  description="Impresa edile a Sesto San Giovanni dal 2005: muratura, intonaci, rasature, cartongesso, facciate e ristrutturazioni chiavi in mano a Milano. Sopralluogo e preventivo gratuiti."
+>
+  <section class="hero gridbg">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="mono">Impresa edile · Sesto San Giovanni (MI)</p>
+        <h1>Dal primo <b>mattone</b> all'ultima mano di colore.</h1>
+        <p class="lead">Muratura, intonaci, rasature, cartongesso e facciate a Sesto San Giovanni e Milano. <strong>Un'impresa sola</strong> per tutto il cantiere, anche all'estero.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href="/contatti">Sopralluogo gratuito</a>
+          <a class="btn btn-s" href={waHref()}>Scrivi su WhatsApp</a>
+        </div>
+        <dl class="facts">
+          <div><dt class="mono">Dal</dt><dd>{impresa.dal}</dd></div>
+          <div><dt class="mono">Sopralluogo</dt><dd>Gratis</dd></div>
+          <div><dt class="mono">Preventivo</dt><dd>Gratis</dd></div>
+        </dl>
+      </div>
+      <svg class="draw" viewBox="300 140 1060 470" role="img" aria-label="Disegno tecnico del simbolo El Gammal: due edifici tracciati a linea.">
+        <g class="dim"><line x1="372" y1="585" x2="1255" y2="585" /><line x1="372" y1="570" x2="372" y2="600" /><line x1="1255" y1="570" x2="1255" y2="600" /></g>
+        <text x="814" y="572" text-anchor="middle">DAL {impresa.dal}</text>
+        <path class="edge" d="M803 239L892 286V547H803Z" />
+        <path class="outline" d="M372 547V316L803 199L923 263V352L991 334L1255 383V547H1223V412L991 367L923 386V547H892V286L803 239L405 343V547Z" />
+        <path class="win" d="M469 395L525 385V457L469 467Z M568 379L625 369V445L568 453Z M668 362L726 352V431L668 440Z M1017 432L1070 440V505L1017 499Z M1114 445L1165 452V514L1114 507Z" />
+      </svg>
+    </div>
+  </section>
+
+  <section class="sec" id="servizi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Servizi · sezione di un muro</p>
+        <h2>Ogni strato del tuo muro, <b>una sola impresa</b>.</h2>
+        <p class="read">I nostri lavori nell'ordine in cui si fanno. Scorri e guarda il muro che si costruisce.</p>
+      </div>
+      <Strati />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="per-chi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Per chi lavoriamo</p>
+        <h2>Nessun lavoro <b>troppo piccolo</b>.</h2>
+        <p class="read">Lavoriamo per privati, condomini e aziende. Non c'è un importo minimo.</p>
+      </div>
+      <div class="who">
+        {perChi.map((c) => (
+          <article class="rv">
+            <Picture src={c.foto} alt={c.alt} formats={['avif']} fallbackFormat="webp" widths={[480, 760]} sizes="(min-width: 1000px) 400px, 92vw" loading="lazy" />
+            <div class="who-b">
+              <p class="mono">{c.tag}</p>
+              <h3>{c.t}</h3>
+              <ul class="tick">{c.li.map((l) => <li>{l}</li>)}</ul>
+              <a class="btn btn-s btn-sm" href={c.href}>{c.cta}</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="ex-note">Foto di esempio: verranno sostituite con i lavori veri.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="metodo">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Come lavoriamo</p>
+        <h2>Un cantiere <b>organizzato</b> si vede dal primo giorno.</h2>
+        <p class="read">Prima di iniziare sai chi viene, cosa fa e in che ordine. Una persona sola risponde per tutto.</p>
+      </div>
+      <Metodo />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="cantieri">
+    <div class="wrap">
+      <div class="sec-head row-head">
+        <div class="stack" style="gap:16px">
+          <p class="mono">Cantieri</p>
+          <h2>Lavori <b>veri</b>, con nome e indirizzo.</h2>
+        </div>
+        <a class="btn btn-s" href="/lavori">Tutti i lavori</a>
+      </div>
+      <div class="signs">
+        <Cartello titolo="Rifacimento facciata" foto={fFacciata} alt="Facciata di un condominio" luogo={'Sesto San Giovanni <span class="todo">[da confermare]</span>'} lavori="Ripristino intonaco, rasatura, tinteggiatura" committente="Condominio" />
+        <Cartello titolo="Nuove pareti in muratura" foto={fMuro} alt="Parete in mattoni" luogo={'Milano <span class="todo">[da confermare]</span>'} lavori="Tramezzi, intonaco, rasatura" committente="Privato" />
+        <Cartello titolo="Uffici in cartongesso" foto={fUfficio} alt="Ufficio con controsoffitto" luogo={'Estero <span class="todo">[città]</span>'} lavori="Pareti e controsoffitti" committente="Azienda" />
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="estero">
+    <div class="wrap far">
+      <div class="stack">
+        <p class="mono">Dove lavoriamo</p>
+        <h2>Base a Sesto. <b>Cantieri anche all'estero.</b></h2>
+        <p class="read">Ogni giorno a Milano e nell'hinterland. Abbiamo lavorato anche in Germania, in Francia e nei Paesi arabi, con la stessa cura.</p>
+        <a class="btn btn-s" href="/dove-lavoriamo">Dove lavoriamo</a>
+      </div>
+      <ul class="coords">
+        <li class="home"><b>Sesto San Giovanni</b><span>45,53° N · 9,23° E · sede</span></li>
+        <li><b>Milano e hinterland</b><span>ogni giorno</span></li>
+        {impresa.estero.map((p) => <li><b>{p}</b><span>lavori eseguiti</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="recensioni">
+    <div class="wrap"><Recensioni /></div>
+  </section>
+
+  <section class="sec" id="contatti">
+    <div class="wrap contact">
+      <div class="stack">
+        <p class="mono">Contatti</p>
+        <h2>Apriamo il <b>tuo cantiere</b>?</h2>
+        <p class="read">Sopralluogo e preventivo gratuiti, per lavori di qualsiasi dimensione. Mandaci una foto su WhatsApp o lascia due righe qui.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href={waHref()}>WhatsApp</a>
+          <a class="btn btn-s" href={telHref()}>Chiama {impresa.telefono ?? <span class="todo">[telefono]</span>}</a>
+        </div>
+        <p class="mono">{impresa.indirizzo.via} · {impresa.indirizzo.cap} {impresa.indirizzo.citta} ({impresa.indirizzo.provincia})</p>
+      </div>
+      <ContactForm id="home-form" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-block: 40px 72px; }
+  @media (min-width: 900px) { .hero { padding-block: 48px 96px; } }
+  .hero-grid { display: grid; gap: 32px; align-items: center; }
+  @media (min-width: 1000px) { .hero-grid { grid-template-columns: 1.2fr 0.8fr; gap: 48px; } }
+  .hero-copy { display: grid; gap: 20px; min-width: 0; }
+  .hero h1 { font-size: clamp(2.75rem, 5.4vw, 4.75rem); }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 46ch; }
+  .facts { display: grid; grid-template-columns: repeat(3, auto); margin: 0; border: 1px solid var(--line); justify-self: start; }
+  .facts div { padding: 10px clamp(10px, 3vw, 16px); border-inline-end: 1px solid var(--line); display: grid; gap: 2px; }
+  .facts div:last-child { border-inline-end: 0; }
+  .facts dd { margin: 0; font: 800 1.5rem/1 var(--f-d); text-transform: uppercase; }
+  .draw { width: 100%; max-height: 380px; }
+  @media (max-width: 999px) { .draw { max-height: 220px; } }
+  .draw .outline { fill: none; stroke: var(--fg); stroke-width: 5; }
+  .draw .win { fill: var(--fg); }
+  .draw .edge { fill: var(--bronze); transform-origin: 847px 547px; }
+  .draw .dim line { stroke: var(--fg-2); stroke-width: 2; }
+  .draw text { fill: var(--fg-2); font: 500 24px var(--f-m); }
+  :global(.js) .draw .outline { stroke-dasharray: 3400; stroke-dashoffset: 3400; animation: trace 2.2s var(--mech) 0.2s forwards; }
+  :global(.js) .draw .win { opacity: 0; animation: pop 0.3s steps(2) 2.2s forwards; }
+  :global(.js) .draw .edge { transform: scaleY(0); animation: rise 0.6s var(--mech) 1.9s forwards; }
+  @keyframes trace { to { stroke-dashoffset: 0; } }
+  @keyframes pop { to { opacity: 1; } }
+  @keyframes rise { to { transform: scaleY(1); } }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.js) .draw .outline, :global(.js) .draw .win, :global(.js) .draw .edge { animation: none; stroke-dashoffset: 0; opacity: 1; transform: none; }
+  }
+
+  .who { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (min-width: 900px) { .who { grid-template-columns: repeat(3, 1fr); } }
+  .who article { background: var(--bg); display: grid; align-content: start; }
+  .who :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .who-b { padding: 24px; display: grid; gap: 14px; }
+  .who-b .btn { justify-self: start; margin-block-start: 8px; }
+  .ex-note { margin-block-start: 12px; font: 500 1rem var(--f-m); color: var(--fg-2); }
+
+  .row-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+  .signs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+
+  .far { display: grid; gap: 40px; }
+  @media (min-width: 1000px) { .far { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .far .btn { justify-self: start; }
+  .coords { list-style: none; padding: 0; border-block-start: 1px solid var(--line); }
+  .coords li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-block: 18px; border-block-end: 1px solid var(--line); }
+  .coords b { font: 800 clamp(1.8rem, 4vw, 2.75rem)/1 var(--f-d); text-transform: uppercase; }
+  .coords li.home b { color: var(--bronze); }
+  .coords span { font: 500 1rem var(--f-m); color: var(--fg-2); }
+
+  .contact { display: grid; gap: 48px; }
+  @media (min-width: 1000px) { .contact { grid-template-columns: 1fr 1fr; align-items: start; } }
+</style>

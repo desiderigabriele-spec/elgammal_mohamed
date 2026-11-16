@@ -1,0 +1,183 @@
+<title>Marchio El Gammal</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Barlow:wght@400;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Il manuale del marchio scritto nel marchio stesso: tavola tecnica su antracite, quote e strati. Scelta di un solo tema, come il sito. */
+:root{
+  --bg:#1F2326; --bg-2:#272C30; --line:#3D4448; --fg:#ECEAE6; --fg-2:#B4BABE; --bronze:#B7A58C; --bronze-logo:#8B7962; --paper:#E9E7E2; --ink:#292D30; --brick:#A0704F;
+  --f-d:"Barlow Condensed","Arial Narrow",sans-serif; --f-b:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif; --f-m:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --mech:cubic-bezier(.7,0,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 18px/1.55 var(--f-b);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background-image:linear-gradient(rgba(183,165,140,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(183,165,140,.06) 1px,transparent 1px);background-size:32px 32px}
+.wrap{max-width:1120px;margin:0 auto;padding-block:48px 112px;display:grid;gap:96px}
+h1,h2,h3{font-family:var(--f-d);text-transform:uppercase;margin:0;line-height:.95;text-wrap:balance;font-weight:600}
+h1{font-size:clamp(3rem,8vw,6rem)} h1 b,h2 b{color:var(--bronze);font-weight:800}
+h2{font-size:clamp(2.2rem,5vw,3.6rem)} h3{font-size:1.6rem;font-weight:800}
+p{margin:0}
+.mono{font:500 1rem/1.3 var(--f-m);letter-spacing:.06em;text-transform:uppercase;color:var(--fg-2)}
+.read{max-width:62ch;color:var(--fg-2)}
+section{display:grid;gap:28px}
+.head{display:grid;gap:20px;border-bottom:2px solid var(--fg);padding-bottom:40px}
+.quota{display:flex;align-items:center;gap:12px;color:var(--fg-2);font:500 1rem var(--f-m)}
+.quota::before,.quota::after{content:"";flex:1;height:2px;background:var(--fg-2)}
+.quota span{white-space:nowrap}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.box{background:var(--bg-2);border:1px solid var(--line);padding:24px;display:grid;gap:12px;align-content:start;min-width:0}
+.box ul{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--fg-2)}
+.yes,.no{display:grid;gap:8px}
+.yes p,.no p{padding:12px 14px;background:var(--bg)}
+.yes p{border-left:4px solid var(--bronze)} .no p{border-left:4px solid #6B3A2E;color:var(--fg-2);text-decoration:line-through;text-decoration-color:#B5634E}
+.promise{font:800 clamp(2rem,5vw,3.4rem)/1 var(--f-d);text-transform:uppercase}
+.promise b{color:var(--bronze)}
+.sw{display:grid;grid-template-rows:120px auto}
+.sw .chip{display:flex;align-items:flex-end;padding:12px;font:500 1rem var(--f-m)}
+.sw .txt{padding:18px;display:grid;gap:8px;background:var(--bg-2);border:1px solid var(--line);border-top:0}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--bg-2)}
+table{border-collapse:collapse;width:100%;min-width:640px}
+th,td{text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font:500 1rem var(--f-m);color:var(--fg-2);text-transform:uppercase;letter-spacing:.06em}
+td.n{font:500 1rem var(--f-m);font-variant-numeric:tabular-nums}
+.ok{color:#9FD3A8} .warn{color:#F0B28F}
+.pv{display:inline-block;padding:4px 10px;font-weight:600}
+.scale{display:grid;gap:0;border-top:1px solid var(--line)}
+.scale div{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line);min-width:0}
+@media (max-width:600px){.scale div{grid-template-columns:1fr}}
+.scale span:last-child{overflow-wrap:anywhere}
+.layers{width:100%;height:auto;display:block;max-width:520px}
+.motion{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.demo{height:64px;background:var(--bg);border:1px solid var(--line);position:relative;overflow:hidden}
+.demo i{position:absolute;left:0;top:0;bottom:0;width:30%;background:var(--bronze)}
+.d1 i{animation:slide 1.8s var(--mech) infinite alternate}
+.d2 i{width:0;animation:grow 2.4s steps(6) infinite}
+.d3 i{width:10px;left:20px;animation:none;background:var(--brick)}
+@keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(200%)}}
+@keyframes grow{to{width:100%}}
+@media (prefers-reduced-motion:reduce){.demo i{animation:none!important;width:60%!important}}
+.logo-box{background:var(--paper);padding:32px;display:grid;place-items:center}
+.logo-box.dark{background:var(--bg-2)}
+.logo-box svg{width:min(320px,100%);height:auto}
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <span class="mono">Fase 2 · Marchio · direzione B "Strato per strato"</span>
+    <h1>El Gammal <b>Impresa edile</b></h1>
+    <p class="read">Le regole del marchio, scelte partendo dallo studio. Valgono per il sito, la scheda Google, i cartelli di cantiere, i preventivi e i social. Il logo esiste già: lo teniamo e lo rafforziamo.</p>
+    <div class="quota"><span>DAL 2005 · SESTO SAN GIOVANNI</span></div>
+  </header>
+
+  <section>
+    <span class="mono">01 · Piattaforma</span>
+    <h2>Cosa promettiamo</h2>
+    <p class="promise">Ogni strato del tuo muro, <b>una sola impresa</b>.</p>
+    <p class="read">Frase firma, da usare nel sito, sui furgoni e sui cartelli: <strong style="color:var(--fg)">"Dal primo mattone all'ultima mano di colore."</strong> Dice tutto il mestiere, mette la muratura al primo posto e rende chiaro il "chiavi in mano" senza usare la parola.</p>
+    <div class="grid">
+      <div class="box"><h3>Valori</h3><ul><li><strong style="color:var(--fg)">Ordine</strong>: un cantiere organizzato si vede.</li><li><strong style="color:var(--fg)">Precisione</strong>: ogni strato fatto bene regge il successivo.</li><li><strong style="color:var(--fg)">Presenza</strong>: una sede vera, un referente vero, dal 2005.</li></ul></div>
+      <div class="box"><h3>Personalità</h3><ul><li><strong style="color:var(--fg)">Solido</strong>, come un muro portante.</li><li><strong style="color:var(--fg)">Preciso</strong>, come una tavola di progetto.</li><li><strong style="color:var(--fg)">Diretto</strong>, come un capocantiere serio.</li></ul></div>
+      <div class="box"><h3>Perché, dallo studio</h3><ul><li>Tutti promettono, nessuno mostra: noi mostriamo il lavoro strato per strato.</li><li>"Unico referente" lo dice già un concorrente: noi lo facciamo vedere.</li><li>Nessuno in zona ha un'identità: il disegno tecnico ce la dà.</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="mono">02 · Tono di voce</span>
+    <h2>Come parliamo</h2>
+    <p class="read">Frasi corte. Parole del cantiere spiegate in modo semplice. Fatti al posto degli aggettivi. Si dà del "tu" al privato e del "voi" quando si parla ai condomini. Mai prezzi, bonus o numeri che non sono veri.</p>
+    <div class="grid">
+      <div class="box yes"><h3>Sì</h3><p>Sopralluogo e preventivo gratuiti, per lavori di qualsiasi dimensione.</p><p>Prima di iniziare sai chi viene, cosa fa e in che ordine.</p><p>Pochi millimetri di rasatura fanno la differenza.</p></div>
+      <div class="box no"><h3>No</h3><p>Siamo leader nel settore con un servizio di altissima qualità.</p><p>Prezzi imbattibili, approfitta del bonus!</p><p>Trasformiamo i tuoi sogni in realtà.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="mono">03 · Nomi dei servizi</span>
+    <h2>Nomi chiari, niente nomi inventati</h2>
+    <p class="read">Le persone cercano "rasatura pareti", non un nome di fantasia: i nomi dei servizi restano quelli che si cercano su Google. Il marchio li ordina come strati di un muro, con un numero fisso.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Strato</th><th>Servizio</th><th>Pagina</th></tr></thead>
+      <tbody>
+        <tr><td class="n">01</td><td>Muratura</td><td class="n">/muratura</td></tr>
+        <tr><td class="n">02</td><td>Intonaci, imbiancatura e sottofondi</td><td class="n">/intonaci-imbiancatura</td></tr>
+        <tr><td class="n">03</td><td>Rasatura e lisciatura</td><td class="n">/rasatura-pareti</td></tr>
+        <tr><td class="n">04</td><td>Cartongesso</td><td class="n">/cartongesso</td></tr>
+        <tr><td class="n">05</td><td>Impianti</td><td class="n">/impianti</td></tr>
+        <tr><td class="n">06</td><td>Facciate</td><td class="n">/facciate</td></tr>
+        <tr><td class="n">=</td><td>Ristrutturazioni chiavi in mano</td><td class="n">/ristrutturazioni-chiavi-in-mano</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <span class="mono">04 · Colori</span>
+    <h2>Antracite e bronzo, <b>dal logo</b></h2>
+    <p class="read">Nella zona tutti usano blu, arancio, rosso o verde. Antracite e bronzo non li usa nessuno: El Gammal si riconosce al primo colpo d'occhio.</p>
+    <div class="grid">
+      <div class="sw"><div class="chip" style="background:#1F2326;border:1px solid var(--line)">#1F2326</div><div class="txt"><h3>Antracite</h3><p class="read">Lo sfondo. È il colore del logo, del ferro e del cemento: dice solidità e serietà. Su uno sfondo scuro le foto dei lavori risaltano di più.</p></div></div>
+      <div class="sw"><div class="chip" style="background:#B7A58C;color:#292D30">#B7A58C</div><div class="txt"><h3>Bronzo</h3><p class="read">Il colore delle azioni: bottoni e parole chiave. Caldo come la sabbia e l'intonaco, è l'unico colore caldo della pagina, quindi l'occhio va subito lì (effetto Von Restorff).</p></div></div>
+      <div class="sw"><div class="chip" style="background:#E9E7E2;color:#292D30">#E9E7E2</div><div class="txt"><h3>Intonaco</h3><p class="read">Per moduli e cartelli di cantiere: le parti da leggere con calma e da compilare.</p></div></div>
+      <div class="sw"><div class="chip" style="background:#A0704F;color:#fff">#A0704F</div><div class="txt"><h3>Mattone</h3><p class="read">Solo nei disegni del muro. Mai per testi o bottoni.</p></div></div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Uso</th><th>Esempio</th><th>Contrasto</th><th>WCAG</th></tr></thead>
+      <tbody>
+        <tr><td>Testo su fondo</td><td><span class="pv" style="background:#1F2326;color:#ECEAE6;border:1px solid var(--line)">Aa testo</span></td><td class="n">13,2 : 1</td><td class="ok">AAA</td></tr>
+        <tr><td>Testo secondario</td><td><span class="pv" style="background:#1F2326;color:#B4BABE;border:1px solid var(--line)">Aa testo</span></td><td class="n">8,1 : 1</td><td class="ok">AAA</td></tr>
+        <tr><td>Bronzo su fondo</td><td><span class="pv" style="background:#1F2326;color:#B7A58C;border:1px solid var(--line)">Aa parola</span></td><td class="n">6,6 : 1</td><td class="ok">AA</td></tr>
+        <tr><td>Bottone bronzo</td><td><span class="pv" style="background:#B7A58C;color:#292D30">SOPRALLUOGO</span></td><td class="n">5,8 : 1</td><td class="ok">AA</td></tr>
+        <tr><td>Testo su intonaco</td><td><span class="pv" style="background:#E9E7E2;color:#292D30">Aa modulo</span></td><td class="n">11,2 : 1</td><td class="ok">AAA</td></tr>
+        <tr><td>Bronzo del logo su fondo</td><td><span class="pv" style="background:#1F2326;color:#8B7962;border:1px solid var(--line)">Aa</span></td><td class="n">3,8 : 1</td><td class="warn">Solo grafica, mai testo</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <span class="mono">05 · Caratteri</span>
+    <h2>Tre caratteri, <b>licenza libera</b></h2>
+    <p class="read">Tutti con licenza SIL Open Font License: si possono usare e incorporare nel sito gratis. Saranno caricati dal sito stesso, senza chiamare Google.</p>
+    <div class="grid">
+      <div class="box"><span class="mono">Titoli</span><p style="font:800 3rem/1 var(--f-d);text-transform:uppercase">Barlow Condensed</p><p class="read">Stretto e alto come i caratteri dei cartelli stradali e di cantiere. Sta bene in maiuscolo e occupa poco spazio sul telefono.</p></div>
+      <div class="box"><span class="mono">Testi</span><p style="font:600 1.8rem/1.1 var(--f-b)">Barlow</p><p class="read">Della stessa famiglia, ma largo e leggibile. Si legge bene anche al sole, dal telefono.</p></div>
+      <div class="box"><span class="mono">Quote ed etichette</span><p style="font:500 1.4rem/1.2 var(--f-m)">IBM Plex Mono</p><p class="read">Per numeri, spessori, orari e coordinate: la voce "tecnica" del disegno.</p></div>
+    </div>
+    <div class="scale">
+      <div><span class="mono">Titolo pagina</span><span style="font:600 clamp(2.6rem,6vw,5.5rem)/.95 var(--f-d);text-transform:uppercase">Dal primo mattone</span></div>
+      <div><span class="mono">Titolo sezione</span><span style="font:600 clamp(2.2rem,4.5vw,3.6rem)/.95 var(--f-d);text-transform:uppercase">Un cantiere organizzato</span></div>
+      <div><span class="mono">Sottotitolo</span><span style="font:800 1.75rem/1 var(--f-d);text-transform:uppercase">Rasatura e lisciatura</span></div>
+      <div><span class="mono">Testo · 18 px</span><span>Prima di iniziare sai chi viene, cosa fa e in che ordine.</span></div>
+      <div><span class="mono">Etichetta · 16 px</span><span class="mono" style="color:var(--fg)">03 / 06 · Rasatura · 2–3 mm</span></div>
+    </div>
+    <p class="read">Nessun testo sotto i 16 px, interlinea 1,5, righe al massimo di 65 caratteri.</p>
+  </section>
+
+  <section>
+    <span class="mono">06 · Linguaggio visivo</span>
+    <h2>Il sito è <b>una tavola di progetto</b></h2>
+    <div class="grid">
+      <div class="box"><h3>Elemento firma: la quota</h3><p class="read">La linea con le due stanghette che negli schemi tecnici indica una misura. La usiamo per sottolineare i fatti veri: "dal 2005", gli spessori, la distanza da Sesto all'estero.</p><div class="quota"><span>DAL 2005</span></div></div>
+      <div class="box"><h3>La sezione del muro</h3><p class="read">I servizi sono gli strati di un muro, sempre nello stesso ordine e con lo stesso numero. È il disegno che si ricorda.</p>
+        <svg class="layers" viewBox="0 0 300 120" role="img" aria-label="Strati di un muro in sezione"><rect x="10" y="10" width="40" height="100" fill="#E6E4DF"/><rect x="50" y="10" width="4" height="100" fill="#9AA0A4"/><rect x="80" y="10" width="4" height="100" fill="#B7A58C"/><rect x="84" y="10" width="6" height="100" fill="#F1EFEA"/><rect x="90" y="10" width="20" height="100" fill="#C9C4BA"/><rect x="110" y="10" width="120" height="100" fill="#A0704F"/><rect x="230" y="10" width="20" height="100" fill="#C9C4BA"/><rect x="250" y="10" width="10" height="100" fill="#8B7962"/></svg></div>
+      <div class="box"><h3>Fotografia</h3><ul><li>Lavori veri, luce naturale, mai foto in posa.</li><li>Sempre la coppia prima e dopo.</li><li>Dettagli da vicino: uno spigolo, una giunta, una parete alla luce radente.</li><li>Le foto di stock di oggi sono solo provvisorie.</li></ul></div>
+      <div class="box"><h3>Forme e icone</h3><ul><li>Angoli vivi, nessun angolo arrotondato.</li><li>Griglia di 32 px sullo sfondo, come la carta millimetrata.</li><li>Icone a linea da 2 px, estremità squadrate.</li><li>I lavori si presentano come cartelli di cantiere.</li></ul></div>
+    </div>
+    <div class="grid">
+      <div class="logo-box"><svg viewBox="332 159 963 428" role="img" aria-label="Simbolo El Gammal"><path fill="#292D30" d="M372 547V316L803 199L923 263V352L991 334L1255 383V547H1223V412L991 367L923 386V547H892V286L803 239L405 343V547Z"/><path fill="#292D30" d="M469 395L525 385V457L469 467Z M568 379L625 369V445L568 453Z M668 362L726 352V431L668 440Z M1017 432L1070 440V505L1017 499Z M1114 445L1165 452V514L1114 507Z"/><path fill="#8B7962" d="M803 239L892 286V547H803Z"/></svg></div>
+      <div class="logo-box dark"><svg viewBox="332 159 963 428" role="img" aria-label="Simbolo El Gammal in negativo"><path fill="#FFFFFF" d="M372 547V316L803 199L923 263V352L991 334L1255 383V547H1223V412L991 367L923 386V547H892V286L803 239L405 343V547Z"/><path fill="#FFFFFF" d="M469 395L525 385V457L469 467Z M568 379L625 369V445L568 453Z M668 362L726 352V431L668 440Z M1017 432L1070 440V505L1017 499Z M1114 445L1165 452V514L1114 507Z"/><path fill="#B7A58C" d="M803 239L892 286V547H803Z"/></svg></div>
+    </div>
+    <p class="read">Il logo resta com'è. Sul sito scuro si usa la versione negativa. Lo spigolo bronzo del simbolo è la stessa idea della frase firma: il dettaglio che finisce il lavoro.</p>
+  </section>
+
+  <section>
+    <span class="mono">07 · Movimento</span>
+    <h2>Deciso e <b>meccanico</b></h2>
+    <p class="read">Il marchio si muove come un'impresa che lavora: ogni cosa va al suo posto con un gesto netto, senza rimbalzi e senza effetti morbidi. Un'animazione principale sola, gli strati del muro. Tutto il resto è fermo o quasi.</p>
+    <div class="motion">
+      <div class="box"><span class="mono">Ingresso · 450 ms</span><div class="demo d1"><i></i></div><p class="read">Gli strati entrano scivolando lungo una linea, come si posa un materiale. Curva veloce all'inizio, frenata secca.</p></div>
+      <div class="box"><span class="mono">Crescita · a scatti</span><div class="demo d2"><i></i></div><p class="read">Barre e muri crescono a passi, come file di mattoni.</p></div>
+      <div class="box"><span class="mono">Riduci movimento</span><div class="demo d3"><i></i></div><p class="read">Se il telefono chiede meno movimento, tutto è già al suo posto. Le animazioni si fermano anche quando non si vedono.</p></div>
+    </div>
+  </section>
+</div>

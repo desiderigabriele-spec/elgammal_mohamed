@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Mappa from '../components/Mappa.astro';
+import { impresa, waHref, telHref } from '../data/impresa';
+---
+<Base title="Contatti e preventivo gratuito | El Gammal, impresa edile Sesto San Giovanni" description="Richiedi un sopralluogo e un preventivo gratuiti a El Gammal, impresa edile in Via Guglielmo Marconi 124 a Sesto San Giovanni. WhatsApp, telefono o modulo.">
+  <section class="sec gridbg first">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">Contatti e preventivo</p>
+        <h1>Sopralluogo e preventivo <b>gratuiti</b>.</h1>
+        <p class="lead">Per lavori di qualsiasi dimensione. Il modo più veloce: mandaci una foto del lavoro su WhatsApp.</p>
+        <div class="ways">
+          <a class="way" href={waHref()}><span class="mono">WhatsApp</span><b>{impresa.whatsapp ? `+${impresa.whatsapp}` : <span class="todo">[numero]</span>}</b><span>Manda anche le foto</span></a>
+          <a class="way" href={telHref()}><span class="mono">Telefono</span><b>{impresa.telefono ?? <span class="todo">[numero]</span>}</b><span>Orari <span class="todo">[da ricevere]</span></span></a>
+          <div class="way"><span class="mono">Email</span><b>{impresa.email ?? <span class="todo">[indirizzo]</span>}</b></div>
+        </div>
+      </div>
+      <ContactForm id="contatti-form" />
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">La sede</p>
+        <h2>{impresa.indirizzo.via}</h2>
+        <p class="read">{impresa.indirizzo.cap} {impresa.indirizzo.citta} ({impresa.indirizzo.provincia}). Lavoriamo a Milano e nell'hinterland, e anche all'estero.</p>
+      </div>
+      <Mappa />
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .two { display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 1000px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 50ch; }
+  .ways { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .way { background: var(--bg); padding: 18px 20px; display: grid; gap: 4px; text-decoration: none; min-height: 44px; }
+  a.way:hover { background: var(--bg-2); }
+  .way b { font: 800 1.6rem/1.1 var(--f-d); text-transform: uppercase; }
+  .way > span:last-child:not(.mono) { color: var(--fg-2); }
+</style>

@@ -1,0 +1,38 @@
+---
+// Cronoprogramma: le barre crescono a scatti. Le lunghezze sono solo grafiche, non durate promesse.
+const righe = [
+  { t: 'Sopralluogo', s: 'gratuito', d: 'Veniamo a vedere, misuriamo e ascoltiamo cosa ti serve.', x: 0, w: 12, free: true },
+  { t: 'Preventivo', s: 'gratuito, voce per voce', d: 'Scritto, così sai cosa è compreso prima di decidere.', x: 12, w: 14, free: true },
+  { t: 'Cantiere', s: 'un referente', d: 'Una persona sola risponde per tutti i lavori.', x: 26, w: 60, free: false },
+  { t: 'Consegna', s: 'controllo insieme', d: 'Guardiamo insieme il lavoro finito.', x: 86, w: 14, free: false },
+];
+---
+<ol class="gantt" data-gantt>
+  {righe.map((r) => (
+    <li class="row">
+      <div class="lab"><strong>{r.t}</strong><span class="mono">{r.s}</span></div>
+      <div class="bar" aria-hidden="true"><i class:list={{ free: r.free }} style={`--x:${r.x}%;--w:${r.w}%`}></i></div>
+      <p class="d">{r.d}</p>
+    </li>
+  ))}
+</ol>
+<style>
+  .gantt { list-style: none; padding: 0; display: grid; gap: 16px; margin-block-start: 40px; }
+  .row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  @media (min-width: 760px) { .row { grid-template-columns: 220px 1fr; column-gap: 24px; } .d { grid-column: 2; } }
+  .lab { display: grid; gap: 2px; }
+  .lab strong { font-size: 1.125rem; }
+  .bar { height: 44px; background: var(--bg-2); border: 1px solid var(--line); position: relative; }
+  .bar i { position: absolute; inset-block: 0; inset-inline-start: var(--x); width: var(--w); background: var(--bronze); }
+  .js .bar i { width: 0; transition: width 0.8s steps(6); }
+  .js .gantt.in .bar i { width: var(--w); }
+  .bar i.free { background: repeating-linear-gradient(135deg, var(--bronze) 0 8px, #cdbda6 8px 16px); }
+  .d { color: var(--fg-2); }
+  @media (prefers-reduced-motion: reduce) { .js .bar i { transition: none; width: var(--w); } }
+</style>
+<script>
+  document.querySelectorAll('[data-gantt]').forEach((g) => {
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { g.classList.add('in'); io.disconnect(); } }), { threshold: 0.3 });
+    io.observe(g);
+  });
+</script>

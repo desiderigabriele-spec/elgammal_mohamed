@@ -1,0 +1,14 @@
+---
+import { impresa } from '../data/impresa';
+---
+<div class="rev">
+  <span class="mono">Recensioni Google</span>
+  <h2>Cosa dicono <b>i clienti</b></h2>
+  <p class="read">Le recensioni dei clienti arriveranno qui dalla scheda Google di El Gammal. Non pubblichiamo recensioni scritte da noi.</p>
+  {impresa.googleBusiness
+    ? <a class="btn btn-s" href={impresa.googleBusiness} rel="noopener" target="_blank">Leggi le recensioni su Google</a>
+    : <span class="todo">[scheda Google Business da creare]</span>}
+</div>
+<style>
+  .rev { border: 2px dashed var(--line); padding: 40px 24px; display: grid; gap: 16px; justify-items: start; }
+</style>

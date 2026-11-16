@@ -1,0 +1,35 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+interface Props { prima: ImageMetadata; dopo: ImageMetadata; altPrima: string; altDopo: string; esempio?: boolean }
+const { prima, dopo, altPrima, altDopo, esempio = true } = Astro.props;
+const a = await getImage({ src: prima, format: 'webp', width: 1200 });
+const b = await getImage({ src: dopo, format: 'webp', width: 1200 });
+---
+<figure class="ba" data-ba>
+  <img src={a.src} alt={altPrima} width={a.attributes.width} height={a.attributes.height} loading="lazy" decoding="async" class="im" />
+  <img src={b.src} alt={altDopo} width={b.attributes.width} height={b.attributes.height} loading="lazy" decoding="async" class="im after" />
+  <span class="lab l1">Prima</span><span class="lab l2">Dopo</span>
+  <span class="handle" aria-hidden="true"><span>◀ ▶</span></span>
+  <label class="vh" for="ba-r">Sposta per confrontare prima e dopo</label>
+  <input id="ba-r" type="range" min="0" max="100" value="50" />
+  {esempio && <figcaption>Foto di esempio: verranno sostituite con un lavoro vero.</figcaption>}
+</figure>
+<style>
+  .ba { position: relative; margin: 0; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--line); --x: 50%; }
+  .im { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .after { clip-path: inset(0 0 0 var(--x)); }
+  .lab { position: absolute; inset-block-start: 12px; background: var(--paper); color: var(--ink); font: 500 1rem var(--f-m); text-transform: uppercase; padding: 6px 10px; }
+  .l1 { inset-inline-start: 12px; } .l2 { inset-inline-end: 12px; }
+  .handle { position: absolute; inset-block: 0; left: var(--x); width: 2px; background: var(--fg); pointer-events: none; }
+  .handle span { position: absolute; inset-block-start: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--ink); color: var(--fg); padding: 14px 12px; white-space: nowrap; font-weight: 700; border: 2px solid var(--fg); }
+  input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
+  input:focus-visible + figcaption, .ba:focus-within { outline: 3px solid var(--bronze); outline-offset: 2px; }
+  figcaption { position: absolute; inset-inline-start: 12px; inset-block-end: 12px; background: var(--paper); color: var(--ink); font: 500 1rem var(--f-m); padding: 4px 8px; max-width: calc(100% - 24px); }
+</style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-ba]').forEach((f) => {
+    const r = f.querySelector('input');
+    r?.addEventListener('input', () => f.style.setProperty('--x', r.value + '%'));
+  });
+</script>

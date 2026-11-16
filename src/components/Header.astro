@@ -1,0 +1,70 @@
+---
+import Logo from './Logo.astro';
+import { servizi } from '../data/servizi';
+const path = Astro.url.pathname.replace(/\.html$/, '');
+const voci = [
+  { href: '/#servizi', t: 'Servizi' },
+  { href: '/lavori', t: 'Lavori' },
+  { href: '/chi-siamo', t: 'Chi siamo' },
+  { href: '/dove-lavoriamo', t: 'Dove lavoriamo' },
+  { href: '/contatti', t: 'Contatti' },
+];
+---
+<header class="top">
+  <div class="wrap bar">
+    <a href="/" class="brand"><Logo altezza={48} /><span class="vh">El Gammal, impresa edile: home</span></a>
+    <nav class="menu" aria-label="Menu principale">
+      {voci.slice(0, 4).map((v) => <a href={v.href} aria-current={path === v.href ? 'page' : undefined}>{v.t}</a>)}
+      <a class="btn btn-p btn-sm" href="/contatti">Sopralluogo gratuito</a>
+    </nav>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer">
+      <span class="burger-i" aria-hidden="true"></span>Menu
+    </button>
+  </div>
+  <div class="drawer" id="drawer" hidden>
+    <nav class="wrap" aria-label="Menu">
+      <p class="mono">Servizi</p>
+      <ul>
+        {servizi.map((s) => <li><a href={`/${s.slug}`}><span class="n">{s.num}</span>{s.nome}</a></li>)}
+      </ul>
+      <p class="mono">Impresa</p>
+      <ul>
+        {voci.slice(1).map((v) => <li><a href={v.href}>{v.t}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .top { position: sticky; inset-block-start: 0; z-index: 40; background: rgba(31, 35, 38, 0.96); border-block-end: 1px solid var(--line); }
+  @supports (backdrop-filter: blur(8px)) { .top { background: rgba(31, 35, 38, 0.88); backdrop-filter: blur(8px); } }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: var(--header); }
+  .brand { display: inline-flex; align-items: center; min-height: 44px; }
+  .menu { display: none; align-items: center; gap: 4px; }
+  .menu a:not(.btn) { text-decoration: none; font-weight: 600; padding: 12px 14px; min-height: 44px; display: inline-flex; align-items: center; }
+  .menu a:not(.btn):hover, .menu a[aria-current='page'] { color: var(--bronze); }
+  .burger { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; min-width: 48px; padding-inline: 14px; border: 1px solid var(--line); background: var(--bg-2); color: var(--fg); font: 700 1rem var(--f-b); text-transform: uppercase; cursor: pointer; }
+  .burger-i, .burger-i::before, .burger-i::after { display: block; width: 18px; height: 2px; background: currentColor; position: relative; transition: transform 0.25s var(--mech); }
+  .burger-i::before, .burger-i::after { content: ''; position: absolute; inset-inline-start: 0; }
+  .burger-i::before { inset-block-start: -6px; } .burger-i::after { inset-block-start: 6px; }
+  .burger[aria-expanded='true'] .burger-i { background: transparent; }
+  .burger[aria-expanded='true'] .burger-i::before { transform: translateY(6px) rotate(45deg); }
+  .burger[aria-expanded='true'] .burger-i::after { transform: translateY(-6px) rotate(-45deg); }
+  @media (min-width: 1000px) { .menu { display: flex; } .burger { display: none; } }
+  .drawer { border-block-start: 1px solid var(--line); background: var(--bg-2); max-height: calc(100dvh - var(--header)); overflow-y: auto; padding-block: 16px 104px; }
+  .drawer ul { list-style: none; padding: 0; margin-block: 8px 24px; }
+  .drawer a { display: flex; gap: 12px; align-items: center; min-height: 52px; font-weight: 700; text-decoration: none; border-block-end: 1px solid var(--line); }
+  .drawer .n { font: 500 1rem var(--f-m); color: var(--bronze); min-width: 2ch; }
+  @media (min-width: 1000px) { .drawer { display: none; } }
+</style>
+
+<script>
+  const b = document.getElementById('burger');
+  const d = document.getElementById('drawer');
+  if (b && d) {
+    const set = (open: boolean) => { d.hidden = !open; b.setAttribute('aria-expanded', String(open)); };
+    b.addEventListener('click', () => set(d.hidden));
+    d.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !d.hidden) { set(false); b.focus(); } });
+  }
+</script>

@@ -1,0 +1,47 @@
+---
+// Consenso: "Accetta" e "Rifiuta" uguali per forma e posizione, nessuna casella già spuntata.
+// Oggi il sito non usa statistiche né pixel: il consenso riguarda solo i contenuti esterni (mappa Google).
+// Se in futuro si aggiungono statistiche, vanno caricate solo dentro onConsenso('statistiche').
+---
+<div class="ck" id="ck" role="dialog" aria-modal="false" aria-labelledby="ck-t" hidden>
+  <div class="wrap ck-in">
+    <div class="stack ck-txt">
+      <p id="ck-t"><strong>Cookie e contenuti esterni</strong></p>
+      <p>Usiamo solo cookie tecnici, necessari al sito. Con il tuo consenso carichiamo anche contenuti di terze parti, come la mappa di Google, che possono usare cookie propri. <a href="/cookie">Cookie policy</a></p>
+    </div>
+    <div class="ck-btns">
+      <button type="button" class="btn btn-s" data-ck="no">Rifiuta</button>
+      <button type="button" class="btn btn-s" data-ck="si">Accetta</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .ck { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 60; background: var(--bg-2); border-block-start: 2px solid var(--bronze); padding-block: 20px calc(20px + env(safe-area-inset-bottom, 0px)); box-shadow: 0 -8px 24px rgba(0,0,0,.35); }
+  .ck-in { display: grid; gap: 16px; align-items: center; }
+  @media (min-width: 900px) { .ck-in { grid-template-columns: 1fr auto; gap: 32px; } }
+  .ck-txt { gap: 6px; max-width: 70ch; color: var(--fg-2); }
+  .ck-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (min-width: 900px) { .ck-btns { grid-template-columns: repeat(2, minmax(150px, 1fr)); } }
+</style>
+
+<script>
+  const KEY = 'elg-consenso-v1';
+  type Scelta = { esterni: boolean; data: string };
+  const leggi = (): Scelta | null => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; } };
+  const salva = (s: Scelta) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* storage bloccato: vale solo per questa pagina */ } };
+  const box = document.getElementById('ck') as HTMLElement;
+  let attuale = leggi();
+  const applica = (s: Scelta | null) => {
+    (window as any).elgConsenso = s;
+    document.dispatchEvent(new CustomEvent('elg-consenso', { detail: s }));
+  };
+  if (!attuale) box.hidden = false; else applica(attuale);
+  box.querySelectorAll<HTMLButtonElement>('[data-ck]').forEach((b) =>
+    b.addEventListener('click', () => {
+      attuale = { esterni: b.dataset.ck === 'si', data: new Date().toISOString() };
+      salva(attuale); box.hidden = true; applica(attuale);
+    }),
+  );
+  document.querySelectorAll('[data-cookie-open]').forEach((b) => b.addEventListener('click', () => { box.hidden = false; (box.querySelector('[data-ck="no"]') as HTMLElement)?.focus(); }));
+</script>

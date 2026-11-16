@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import { impresa } from '../data/impresa';
+const i = impresa.indirizzo;
+---
+<Base title="Privacy policy | El Gammal, impresa edile" description="Informativa sul trattamento dei dati personali raccolti dal sito di El Gammal, impresa edile a Sesto San Giovanni.">
+  <article class="sec first">
+    <div class="wrap legal">
+      <p class="todo note">[Testo base da far verificare da un consulente privacy prima della pubblicazione definitiva]</p>
+      <h1>Privacy <b>policy</b></h1>
+      <h2>Titolare del trattamento</h2>
+      <p>{impresa.ragioneSociale}, {i.via}, {i.cap} {i.citta} ({i.provincia}). P.IVA {impresa.piva ?? <span class="todo">[da ricevere]</span>}. Email {impresa.email ?? <span class="todo">[da ricevere]</span>}.</p>
+      <h2>Quali dati raccogliamo</h2>
+      <p>Solo i dati che ci dai tu nel modulo o via WhatsApp: nome, telefono o email, il tipo di lavoro e il messaggio. Il sito non usa strumenti di statistica né pixel pubblicitari.</p>
+      <h2>Perché li usiamo</h2>
+      <p>Per risponderti, fissare il sopralluogo e preparare il preventivo che hai chiesto. La base giuridica è la tua richiesta (misure precontrattuali).</p>
+      <h2>Per quanto tempo</h2>
+      <p>Per il tempo necessario a gestire la richiesta e, se diventi cliente, per gli obblighi di legge. <span class="todo">[periodo da definire]</span></p>
+      <h2>Con chi li condividiamo</h2>
+      <p>Con nessuno, salvo i fornitori tecnici che fanno funzionare il sito e la posta <span class="todo">[da elencare: hosting, servizio modulo]</span>. Se ci scrivi su WhatsApp, vale anche l'informativa di WhatsApp.</p>
+      <h2>I tuoi diritti</h2>
+      <p>Puoi chiedere di vedere, correggere o cancellare i tuoi dati, o opporti al loro uso, scrivendo all'indirizzo del titolare. Puoi anche rivolgerti al Garante per la protezione dei dati personali.</p>
+    </div>
+  </article>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .legal { max-width: 760px; display: grid; gap: 16px; }
+  .legal h2 { font-size: 1.75rem; margin-block-start: 24px; }
+  .legal p { color: var(--fg-2); max-width: 62ch; }
+  .note { justify-self: start; padding: 6px 10px; }
+</style>

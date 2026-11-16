@@ -1,0 +1,93 @@
+---
+// Animazione firma: la sezione di un muro che si costruisce mentre scorri.
+// Ogni passo è un servizio, nello stesso ordine in cui si lavora.
+import { servizi } from '../data/servizi';
+const totale = servizi.length - 1;
+---
+<div class="scrolly">
+  <figure class="stage">
+    <svg id="wallsec" viewBox="0 0 480 440" role="img" aria-labelledby="ws-t">
+      <title id="ws-t">Sezione di un muro: muratura, intonaco e pittura, rasatura, controparete in cartongesso con impianti, finitura di facciata.</title>
+      <defs>
+        <pattern id="brick" width="48" height="24" patternUnits="userSpaceOnUse">
+          <rect width="48" height="24" fill="#8B5E46" /><rect x="0" y="0" width="46" height="10" fill="#A0704F" /><rect x="-24" y="12" width="46" height="10" fill="#A0704F" /><rect x="24" y="12" width="46" height="10" fill="#A0704F" />
+        </pattern>
+        <clipPath id="brickclip"><rect id="brickrect" x="150" y="40" width="160" height="360" /></clipPath>
+      </defs>
+      <g font-family="IBM Plex Mono, monospace" font-size="15" fill="#B4BABE">
+        <text x="20" y="26">INTERNO</text><text x="460" y="26" text-anchor="end">ESTERNO</text>
+      </g>
+      <line x1="20" y1="400" x2="460" y2="400" stroke="#3D4448" stroke-width="2" />
+      <g class="ly" data-l="1"><rect x="150" y="40" width="160" height="360" fill="url(#brick)" clip-path="url(#brickclip)" /></g>
+      <g class="ly sl" data-l="2"><rect x="128" y="40" width="22" height="360" fill="#C9C4BA" /><rect x="112" y="40" width="4" height="360" fill="#B7A58C" /></g>
+      <g class="ly sr" data-l="2"><rect x="310" y="40" width="22" height="360" fill="#C9C4BA" /></g>
+      <g class="ly sl" data-l="3"><rect x="116" y="40" width="12" height="360" fill="#F1EFEA" /></g>
+      <g class="ly sl" data-l="4"><rect x="50" y="40" width="14" height="360" fill="#E6E4DF" /><rect x="64" y="40" width="4" height="360" fill="#9AA0A4" /></g>
+      <g class="ly" data-l="5"><circle cx="90" cy="120" r="9" fill="none" stroke="#ECEAE6" stroke-width="3" /><circle cx="90" cy="230" r="7" fill="none" stroke="#B7A58C" stroke-width="3" /><circle cx="92" cy="320" r="10" fill="none" stroke="#ECEAE6" stroke-width="3" /></g>
+      <g class="ly sr" data-l="6"><rect x="332" y="40" width="12" height="360" fill="#8B7962" /><rect x="344" y="40" width="4" height="360" fill="#D8CBB7" /></g>
+      <g stroke="#B4BABE" stroke-width="2"><line x1="50" y1="420" x2="348" y2="420" /><line x1="50" y1="412" x2="50" y2="428" /><line x1="348" y1="412" x2="348" y2="428" /></g>
+    </svg>
+    <figcaption class="caption" aria-live="polite"><span id="cap-n">01 / 0{totale}</span><b id="cap-t">{servizi[0].nome} · {servizi[0].spessore}</b></figcaption>
+  </figure>
+  <div class="steps">
+    {servizi.map((s, i) => (
+      <article class:list={['step', { mark: i === 0, all: s.num === '=' }]} data-s={i + 1} data-cap-n={s.num === '=' ? 'Tutto' : `${s.num} / 0${totale}`} data-cap-t={`${s.nome} · ${s.spessore}`}>
+        {i === 0 && <span class="tag">Il nostro punto di partenza</span>}
+        <span class="n" aria-hidden="true">{s.num}</span>
+        <h3>{s.nome}</h3>
+        <p>{s.breve}</p>
+        <a class="go" href={`/${s.slug}`}>{s.num === '=' ? 'Scopri come funziona' : `Scopri: ${s.nome.toLowerCase()}`} <span aria-hidden="true">→</span></a>
+      </article>
+    ))}
+  </div>
+</div>
+
+<style>
+  .scrolly { display: grid; }
+  @media (min-width: 960px) { .scrolly { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .stage { position: sticky; inset-block-start: var(--header); z-index: 5; background: var(--bg); margin: 0; padding-block: 12px; align-self: start; }
+  @media (min-width: 960px) { .stage { inset-block-start: calc(var(--header) + 40px); } }
+  .stage svg { width: 100%; max-height: 40vh; }
+  @media (min-width: 960px) { .stage svg { max-height: 62vh; } }
+  .caption { display: flex; justify-content: space-between; gap: 12px; border-block-start: 1px solid var(--line); padding-block-start: 12px; font: 500 1rem/1.3 var(--f-m); color: var(--fg-2); }
+  .caption b { color: var(--bronze); font-weight: 500; text-align: end; }
+  .ly { opacity: 0.1; transition: opacity 0.45s var(--mech), transform 0.45s var(--mech); }
+  .ly.on { opacity: 1; }
+  .ly.sl { transform: translateX(-24px); } .ly.sr { transform: translateX(24px); }
+  .ly.sl.on, .ly.sr.on { transform: none; }
+  #brickrect { transition: y 0.9s steps(8), height 0.9s steps(8); }
+  @media (prefers-reduced-motion: reduce) { .ly, #brickrect { transition: none; } }
+  .steps { display: grid; }
+  .step { min-height: 60vh; display: grid; align-content: center; gap: 12px; padding-block: 32px; border-block-end: 1px solid var(--line); }
+  .step:last-child { border-block-end: 0; }
+  .step .n { font: 800 3.5rem/1 var(--f-d); color: #737b80; transition: color 0.3s steps(2); }
+  .step.act .n { color: var(--bronze); }
+  .step p { color: var(--fg-2); max-width: 46ch; }
+  .go { font: 700 1rem var(--f-b); text-transform: uppercase; letter-spacing: 0.04em; color: var(--bronze); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; justify-self: start; }
+  .go:hover { text-decoration: underline; }
+  .step.mark { border: 2px solid var(--bronze); padding: 32px 24px; margin-block: 16px; background: var(--bg-2); }
+  .step.mark h3 { font-size: 2.5rem; }
+  .tag { justify-self: start; background: var(--bronze); color: var(--ink); font: 500 1rem/1 var(--f-m); letter-spacing: 0.04em; text-transform: uppercase; padding: 8px 10px; }
+</style>
+
+<script>
+  const layers = [...document.querySelectorAll<SVGGElement>('#wallsec .ly')];
+  const brick = document.getElementById('brickrect');
+  const steps = [...document.querySelectorAll<HTMLElement>('.step')];
+  const capN = document.getElementById('cap-n');
+  const capT = document.getElementById('cap-t');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function set(n: number) {
+    layers.forEach((l) => l.classList.toggle('on', Number(l.dataset.l) <= n));
+    if (brick) { const h = n >= 1 ? 360 : 0; brick.setAttribute('height', String(h)); brick.setAttribute('y', String(400 - h)); }
+    const st = steps[n - 1];
+    if (st && capN && capT) { capN.textContent = st.dataset.capN || ''; capT.textContent = st.dataset.capT || ''; }
+    steps.forEach((s, i) => s.classList.toggle('act', i === n - 1));
+  }
+  if (reduce || !('IntersectionObserver' in window)) set(steps.length);
+  else {
+    set(1);
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) set(Number((e.target as HTMLElement).dataset.s)); }), { rootMargin: '-45% 0px -45% 0px' });
+    steps.forEach((s) => io.observe(s));
+  }
+</script>

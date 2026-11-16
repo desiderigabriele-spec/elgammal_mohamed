@@ -1,0 +1,36 @@
+---
+// Mappa Google caricata solo dopo il consenso o dopo un clic esplicito: prima nessuna chiamata a Google.
+import { impresa } from '../data/impresa';
+const i = impresa.indirizzo;
+const q = encodeURIComponent(`${i.via}, ${i.cap} ${i.citta}`);
+const src = `https://www.google.com/maps?q=${q}&output=embed`;
+const link = `https://www.google.com/maps/search/?api=1&query=${q}`;
+---
+<div class="map" data-map data-src={src}>
+  <div class="map-ph">
+    <p><strong>{i.via}</strong><br />{i.cap} {i.citta} ({i.provincia})</p>
+    <p class="read">La mappa è di Google e può usare cookie. La carichiamo solo se lo chiedi.</p>
+    <div class="ctas">
+      <button type="button" class="btn btn-s btn-sm" data-map-load>Mostra la mappa</button>
+      <a class="btn btn-s btn-sm" href={link} rel="noopener" target="_blank">Apri in Google Maps</a>
+    </div>
+  </div>
+</div>
+<style>
+  .map { position: relative; aspect-ratio: 4 / 3; max-height: 420px; width: 100%; border: 1px solid var(--line); background: var(--bg-2); background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px); background-size: 32px 32px; }
+  .map-ph { position: absolute; inset: 0; display: grid; align-content: center; gap: 16px; padding: 24px; }
+  .map :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+</style>
+<script>
+  const carica = (m: HTMLElement) => {
+    if (m.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.src = m.dataset.src || ''; f.title = 'Mappa della sede El Gammal'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
+    m.querySelector('.map-ph')?.remove(); m.appendChild(f);
+  };
+  document.querySelectorAll<HTMLElement>('[data-map]').forEach((m) => {
+    m.querySelector('[data-map-load]')?.addEventListener('click', () => carica(m));
+    const auto = () => { if ((window as any).elgConsenso?.esterni) carica(m); };
+    auto(); document.addEventListener('elg-consenso', auto);
+  });
+</script>

@@ -1,0 +1,79 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Metodo from '../components/Metodo.astro';
+import { impresa } from '../data/impresa';
+import foto from '../assets/foto/imbianchino.webp';
+---
+<Base title="Chi siamo | El Gammal, impresa edile a Sesto San Giovanni dal 2005" description="El Gammal è un'impresa edile con sede a Sesto San Giovanni, attiva dal 2005. Lavora per privati, condomini e aziende a Milano e anche all'estero.">
+  <section class="sec gridbg first">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">Chi siamo</p>
+        <h1>Un'impresa, <b>dal {impresa.dal}</b>.</h1>
+        <p class="lead">Da oltre vent'anni costruiamo, intonachiamo, rasiamo e rifiniamo case, condomini e uffici. La sede è a Sesto San Giovanni, in {impresa.indirizzo.via}.</p>
+        <p class="quota"><span>{impresa.dal} → oggi</span></p>
+      </div>
+      <figure class="img">
+        <Picture src={foto} alt="Imbianchino al lavoro su una parete" formats={['avif']} fallbackFormat="webp" widths={[480, 760, 960]} sizes="(min-width: 1000px) 46vw, 92vw" loading="eager" />
+        <figcaption>Foto di esempio</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">Come la pensiamo</p>
+        <h2>Ogni strato regge <b>il successivo</b>.</h2>
+        <p class="read">Un muro storto si paga due volte: in ogni strato sopra. Per questo preferiamo seguire tutto il lavoro, dal primo mattone all'ultima mano di colore, con un referente solo.</p>
+        <p class="todo" style="justify-self:start;padding:6px 10px">[Storia del titolare da raccontare con il cliente: come è nata l'impresa, un lavoro di cui va fiero]</p>
+      </div>
+      <ul class="values">
+        <li><h3>Ordine</h3><p>Un cantiere organizzato si vede: sai chi viene, cosa fa e in che ordine.</p></li>
+        <li><h3>Precisione</h3><p>Muri a piombo, superfici lisce, giunte che non si vedono.</p></li>
+        <li><h3>Presenza</h3><p>Una sede vera a Sesto San Giovanni e un referente che risponde.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec gridbg">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Sicurezza e garanzie</p>
+        <h2>Impresa <b>assicurata</b>.</h2>
+        <p class="read">L'impresa è assicurata e il personale è formato sulla sicurezza. Lavoriamo per privati, condomini e aziende, con disponibilità per lavori di qualsiasi dimensione.</p>
+      </div>
+      <div class="certs" aria-label="Certificazioni">
+        <div class="cert"><span class="todo">[logo certificazione]</span><p>Nome certificazione</p></div>
+        <div class="cert"><span class="todo">[logo certificazione]</span><p>Nome certificazione</p></div>
+        <div class="cert"><span class="todo">[logo iscrizione]</span><p>Iscrizioni e attestati</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Come lavoriamo</p>
+        <h2>Dal sopralluogo <b>alla consegna</b>.</h2>
+      </div>
+      <Metodo />
+      <div class="ctas" style="margin-block-start:40px"><a class="btn btn-p" href="/contatti">Richiedi il sopralluogo gratuito</a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .two { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 1000px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 50ch; }
+  .img { margin: 0; position: relative; border: 1px solid var(--line); aspect-ratio: 3 / 2; overflow: hidden; }
+  .img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .img figcaption { position: absolute; inset-inline-start: 8px; inset-block-end: 8px; background: var(--paper); color: var(--ink); font: 500 1rem var(--f-m); padding: 4px 8px; }
+  .values { list-style: none; padding: 0; display: grid; border-block-start: 1px solid var(--line); }
+  .values li { padding-block: 20px; border-block-end: 1px solid var(--line); display: grid; gap: 8px; }
+  .values p { color: var(--fg-2); }
+  .certs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .cert { border: 2px dashed var(--line); padding: 24px; display: grid; gap: 12px; justify-items: start; color: var(--fg-2); }
+</style>

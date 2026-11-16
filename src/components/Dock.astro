@@ -1,0 +1,15 @@
+---
+import { telHref, waHref } from '../data/impresa';
+---
+<nav class="dock" aria-label="Contatto rapido">
+  <a href={telHref()} data-track="chiama"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>Chiama</a>
+  <a href={waHref()} data-track="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.4-4A8 8 0 1 1 8 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>WhatsApp</a>
+  <a class="main" href="/contatti">Sopralluogo gratis</a>
+</nav>
+<style>
+  .dock { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 45; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 1px; background: var(--line); padding-block-end: env(safe-area-inset-bottom, 0px); border-block-start: 1px solid var(--line); }
+  .dock a { background: var(--bg-2); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font: 700 1rem var(--f-b); text-transform: uppercase; text-decoration: none; padding-inline: 4px; text-align: center; }
+  .dock svg { width: 20px; height: 20px; }
+  .dock a.main { background: var(--bronze); color: var(--ink); }
+  @media (min-width: 1000px) { .dock { display: none; } }
+</style>

@@ -1,0 +1,52 @@
+---
+import Logo from './Logo.astro';
+import { impresa, segnaposto } from '../data/impresa';
+import { servizi } from '../data/servizi';
+const i = impresa.indirizzo;
+---
+<footer class="foot">
+  <div class="wrap cols">
+    <div class="stack">
+      <Logo altezza={60} />
+      <p><strong>{impresa.ragioneSociale}</strong><br />{i.via}<br />{i.cap} {i.citta} ({i.provincia})</p>
+      <p>P.IVA {impresa.piva ?? <span class="todo">[da ricevere]</span>}</p>
+    </div>
+    <nav aria-label="Servizi">
+      <p class="mono">Servizi</p>
+      <ul>{servizi.map((s) => <li><a href={`/${s.slug}`}>{s.nome}</a></li>)}</ul>
+    </nav>
+    <nav aria-label="Impresa">
+      <p class="mono">Impresa</p>
+      <ul>
+        <li><a href="/lavori">Lavori</a></li>
+        <li><a href="/chi-siamo">Chi siamo</a></li>
+        <li><a href="/dove-lavoriamo">Dove lavoriamo</a></li>
+        <li><a href="/contatti">Contatti e preventivo</a></li>
+      </ul>
+    </nav>
+    <div class="stack">
+      <p class="mono">Contatti</p>
+      <p>Telefono {impresa.telefono ?? <span class="todo">[da ricevere]</span>}<br />
+      WhatsApp {impresa.whatsapp ? `+${impresa.whatsapp}` : <span class="todo">[da ricevere]</span>}<br />
+      Email {impresa.email ?? <span class="todo">[da ricevere]</span>}</p>
+    </div>
+  </div>
+  <div class="wrap legal">
+    <p>© {new Date().getFullYear()} {impresa.ragioneSociale} · Dal {impresa.dal}</p>
+    <p><a href="/privacy">Privacy policy</a> · <a href="/cookie">Cookie policy</a> · <button type="button" class="linkbtn" data-cookie-open>Preferenze cookie</button></p>
+  </div>
+</footer>
+
+<style>
+  .foot { background: var(--bg-3); color: var(--fg-2); padding-block: 64px 136px; border-block-start: 1px solid var(--line); }
+  @media (min-width: 1000px) { .foot { padding-block: 80px 48px; } }
+  .cols { display: grid; gap: 40px; }
+  @media (min-width: 760px) { .cols { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .cols { grid-template-columns: 1.3fr 1fr 1fr 1fr; } }
+  ul { list-style: none; padding: 0; margin-block-start: 8px; }
+  li a { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; }
+  li a:hover { color: var(--bronze); text-decoration: underline; }
+  .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-block-start: 48px; padding-block-start: 24px; border-block-start: 1px solid var(--line); }
+  .legal a, .linkbtn { display: inline-flex; min-height: 44px; align-items: center; }
+  .linkbtn { background: none; border: 0; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 0; }
+</style>
