@@ -108,7 +108,7 @@ co.rotation_euler = (target - co.location).to_track_quat('-Z', 'Y').to_euler()
 
 # ---------- render ----------
 scn.render.engine = 'CYCLES'
-scn.cycles.device = 'CPU'; scn.cycles.samples = SAMPLES; scn.cycles.use_denoising = False
+scn.cycles.device = 'CPU'; scn.cycles.samples = SAMPLES; scn.cycles.use_denoising = True
 try: scn.cycles.denoiser = 'OPENIMAGEDENOISE'
 except Exception: pass
 scn.render.resolution_x = W; scn.render.resolution_y = int(W * 9 / 16); scn.render.resolution_percentage = 100

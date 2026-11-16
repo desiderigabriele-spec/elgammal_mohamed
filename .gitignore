@@ -3,3 +3,7 @@ dist/
 .astro/
 .vercel/
 test-results/
+
+# texture scaricate da Poly Haven (CC0): si riscaricano con blender/scarica_texture.sh
+blender/tex/*.jpg
+blender/out/
