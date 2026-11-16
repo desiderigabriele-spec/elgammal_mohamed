@@ -1,0 +1,37 @@
+---
+import { servizi } from '../data/servizi';
+const [base, ...altri] = servizi;
+---
+<div class="sg">
+  <a class="card base rv" href={`/${base.slug}`}>
+    <span class="tag">Il nostro punto di partenza</span>
+    <span class="n" aria-hidden="true">{base.num}</span>
+    <h3>{base.nome}</h3>
+    <p>{base.breve}</p>
+    <span class="go">Scopri la muratura <span aria-hidden="true">→</span></span>
+  </a>
+  {altri.map((s) => (
+    <a class="card rv" href={`/${s.slug}`}>
+      <span class="n" aria-hidden="true">{s.num}</span>
+      <h3>{s.nome}</h3>
+      <p>{s.breve}</p>
+      <span class="go">Scopri <span aria-hidden="true">→</span></span>
+    </a>
+  ))}
+</div>
+<style>
+  .sg { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (min-width: 700px) { .sg { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .sg { grid-template-columns: repeat(4, 1fr); } }
+  .card { background: var(--bg); padding: 28px 24px; display: grid; gap: 12px; align-content: start; text-decoration: none; min-height: 44px; transition: background .2s steps(2); }
+  .card:hover { background: var(--bg-2); }
+  .card .n { font: 800 3rem/1 var(--f-d); color: #737b80; }
+  .card h3 { font-size: 1.75rem; }
+  .card p { color: var(--fg-2); }
+  .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .base { background: var(--bg-2); outline: 2px solid var(--bronze); outline-offset: -2px; }
+  @media (min-width: 700px) { .base { grid-row: span 2; } }
+  .base .n { color: var(--bronze); font-size: 4.5rem; }
+  .base h3 { font-size: 2.5rem; }
+  .tag { justify-self: start; background: var(--bronze); color: var(--ink); font: 500 1rem/1 var(--f-m); letter-spacing: .04em; text-transform: uppercase; padding: 8px 10px; }
+</style>
