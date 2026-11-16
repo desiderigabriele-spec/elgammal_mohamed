@@ -162,7 +162,7 @@ def tex_mat(name, tname, scale, tint=None, rough_mult=1.0):
 def fabric_mat(name, color, scale=0.4):
     m, nt = new_mat(name); n, l = nt.nodes, nt.links; b = n['Principled BSDF']
     b.inputs['Base Color'].default_value = color; b.inputs['Roughness'].default_value = 0.95
-    b.inputs['Sheen Weight'].default_value = 0.3
+    b.inputs['Sheen Weight'].default_value = 0.1
     tc = n.new('ShaderNodeTexCoord'); t = tex_set(nt, 'rough_linen', scale, tc.outputs['Object'])
     if t['nor'] is not None:
         nm = n.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = 0.6
@@ -212,8 +212,8 @@ WALL_LAYERS = [
     ('decrepit_wallpaper', 0, 0, None),
     ('damaged_plaster', P['p1'][0], P['p1'][0] + 18, None),
     ('grey_plaster', P['p4'][0], P['p4'][1] - 2, (0.78, 0.78, 0.78, 1)),
-    ('white_plaster_02', P['p6'][0], P['p6'][1] - 2, (1.15, 1.15, 1.15, 1)),
-    ('white_plaster_02', P['p7'][0], P['p7'][0] + 14, (1.3, 1.25, 1.15, 1)),
+    ((0.74, 0.74, 0.73, 1), P['p6'][0], P['p6'][1] - 2, None),
+    ((0.84, 0.8, 0.73, 1), P['p7'][0], P['p7'][0] + 14, None),
 ]
 M_WALL_BACK = layered_material('parete_fondo', WALL_LAYERS, 2.9)
 M_WALL_LEFT = layered_material('parete_sx', WALL_LAYERS, 2.9)
@@ -223,15 +223,15 @@ M_WALL_FRONT = layered_material('parete_fronte', WALL_LAYERS, 2.9)
 NEW_LAYERS = [
     ((0.5, 0.5, 0.5, 1), 0, 0, None),
     ('grey_plaster', P['p4'][0] + 4, P['p4'][1], (0.78, 0.78, 0.78, 1)),
-    ('white_plaster_02', P['p6'][0] + 2, P['p6'][1], (1.15, 1.15, 1.15, 1)),
-    ('white_plaster_02', P['p7'][0], P['p7'][0] + 14, (1.3, 1.25, 1.15, 1)),
+    ((0.74, 0.74, 0.73, 1), P['p6'][0] + 2, P['p6'][1], None),
+    ((0.84, 0.8, 0.73, 1), P['p7'][0], P['p7'][0] + 14, None),
 ]
 M_TRAMEZZO = layered_material('tramezzo_finitura', NEW_LAYERS, 1.6, base_transparent=True)
 # soffitto vecchio: intonaco macchiato -> bianco
 M_CEIL = layered_material('soffitto', [
     ('white_plaster_02', 0, 0, (0.78, 0.74, 0.66, 1)),
-    ('white_plaster_02', P['p6'][0], P['p6'][1], (1.08, 1.08, 1.08, 1)),
-    ('white_plaster_02', P['p7'][0], P['p7'][0] + 14, (1.12, 1.1, 1.06, 1)),
+    ((0.76, 0.76, 0.75, 1), P['p6'][0], P['p6'][1], None),
+    ((0.86, 0.84, 0.8, 1), P['p7'][0], P['p7'][0] + 14, None),
 ], 3.0)
 # pavimento: graniglia -> parquet
 M_FLOOR = layered_material('pavimento', [
@@ -307,7 +307,7 @@ rbar = box('rad_vecchio_tubo', (2.05, RD - 0.12, 0.13), (1.1, 0.03, 0.03), M_RAD
 key_hide(rbar, hidden_from=P['p3'][0] + 8)
 
 # ------------------------------------------------------------------ fase 1: telo protettivo e sacchi
-M_SHEET = fabric_mat('telo', (0.66, 0.65, 0.62, 1), 0.6)
+M_SHEET = fabric_mat('telo', (0.2, 0.2, 0.19, 1), 0.6)
 fade_material(M_SHEET, f_in=(P['p1'][0] + 2, P['p1'][0] + 10), f_out=(P['p7'][0] + 2, P['p7'][0] + 10))
 M_SHEET.blend_method = 'BLEND' if hasattr(M_SHEET, 'blend_method') else None
 sh = plane('telo', (RW / 2, RD / 2 - 0.2, 0.03), (RW - 0.1, RD - 0.2), (0, 0, 0), M_SHEET)
@@ -357,7 +357,9 @@ for side, xs in (('a', TX - BT / 2 - 0.01), ('b', TX + BT / 2 + 0.01)):
     for nm, (ya, yb, za, zb) in {
         'sx': (TY0, DOOR_Y0, 0, RH), 'dx': (DOOR_Y1, TY1, 0, RH), 'sopra': (DOOR_Y0, DOOR_Y1, DOOR_H, RH)}.items():
         o = plane(f'tram_{side}_{nm}', (xs, (ya + yb) / 2, (za + zb) / 2), (yb - ya, zb - za), rot, M_TRAMEZZO)
+        key_hide(o, visible_from=P['p4'][0] + 3)
 o = plane('tram_testa', (TX, TY0 - 0.01, RH / 2), (BT + 0.02, RH), (math.radians(90), 0, 0), M_TRAMEZZO)
+key_hide(o, visible_from=P['p4'][0] + 3)
 
 # ------------------------------------------------------------------ fase 3: tracce e impianti
 M_GROOVE = simple_mat('traccia', (0.16, 0.14, 0.13, 1), 0.95)
@@ -412,8 +414,8 @@ for i in range(nprof):
 M_BOARD = layered_material('lastre', [
     ((0.5, 0.5, 0.5, 1), 0, 0, None),
     ((0.74, 0.76, 0.78, 1), P['p5'][0] + 8, P['p5'][1] - 2, None),
-    ('white_plaster_02', P['p6'][0], P['p6'][1], (1.08, 1.08, 1.08, 1)),
-    ('white_plaster_02', P['p7'][0], P['p7'][0] + 14, (1.12, 1.1, 1.06, 1)),
+    ((0.76, 0.76, 0.75, 1), P['p6'][0], P['p6'][1], None),
+    ((0.86, 0.84, 0.8, 1), P['p7'][0], P['p7'][0] + 14, None),
 ], 1.5, base_transparent=True)
 f0, f1 = P['p5'][0] + 8, P['p5'][1] - 2
 panels = []
@@ -428,6 +430,7 @@ for j in range(ny):
         panels.append(o); idx += 1
 for o in panels: bpy.data.objects.remove(o)
 lastra = box('controsoffitto', (RW / 2, (RD - 0.6) / 2, CZ), (RW, RD + 0.6, 0.0125), M_BOARD)
+key_hide(lastra, visible_from=P['p5'][0] + 6)
 # veletta lungo la parete di fondo
 vel = box('veletta', (RW / 2, RD - 0.2, CZ - 0.15), (RW, 0.4, 0.3), M_BOARD)
 key_hide(vel, visible_from=P['p5'][1] - 4)
@@ -448,7 +451,7 @@ for k, x in enumerate([0.8, 1.9, 3.0, 4.0]):
 M_RAD_NEW = simple_mat('termosifone_nuovo', (0.93, 0.93, 0.92, 1), 0.3)
 rad = box('termosifone_nuovo', (2.15, RD - 0.07, 0.42), (1.0, 0.06, 0.5), M_RAD_NEW, bevel=0.01)
 key_hide(rad, visible_from=P['p7'][0] + 20)
-M_SOFA = fabric_mat('divano', (0.62, 0.55, 0.45, 1), 0.5)
+M_SOFA = fabric_mat('divano', (0.34, 0.29, 0.23, 1), 0.5)
 fade_material(M_SOFA, f_in=(P['p7'][0] + 22, P['p7'][0] + 30))
 sofa_parts = [
     ('div_base', (1.9, 2.15, 0.22), (2.2, 0.95, 0.3)),
@@ -543,7 +546,7 @@ scn.cycles.device = 'CPU'
 scn.cycles.samples = SAMPLES
 scn.cycles.use_adaptive_sampling = True; scn.cycles.adaptive_threshold = 0.03
 scn.cycles.use_denoising = True; scn.cycles.denoiser = 'OPENIMAGEDENOISE'
-scn.cycles.max_bounces = 6; scn.cycles.diffuse_bounces = 3; scn.cycles.glossy_bounces = 2; scn.cycles.transparent_max_bounces = 4
+scn.cycles.max_bounces = 6; scn.cycles.diffuse_bounces = 3; scn.cycles.glossy_bounces = 2; scn.cycles.transparent_max_bounces = 16
 scn.cycles.blur_glossy = 1.0; scn.cycles.sample_clamp_indirect = 8
 if ASPECT == '9:16':
     scn.render.resolution_x = W; scn.render.resolution_y = int(W * 16 / 9)
