@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // Indirizzo pubblico del sito: cambiarlo quando c'è il dominio definitivo
 // (oppure impostare SITE_URL su Vercel).
-const SITE = process.env.SITE_URL || 'https://elgammal.vercel.app';
+const SITE = process.env.SITE_URL || 'https://elgammalmohamed.vercel.app';
 
 export default defineConfig({
   site: SITE,
