@@ -213,8 +213,8 @@ TX = 3.35                             # tramezzo nuovo: x costante, da y=2.7 all
 TY0, TY1 = 2.7, RD
 DOOR_Y0, DOOR_Y1, DOOR_H = 3.15, 4.0, 2.1
 
-PAINT = {'classico': (0.84, 0.8, 0.73, 1), 'caldo': (0.7, 0.6, 0.49, 1), 'minimal': (0.9, 0.89, 0.86, 1), 'accento': (0.88, 0.85, 0.79, 1)}[STILE]
-PAINT_BACK = {'accento': (0.36, 0.42, 0.35, 1)}.get(STILE, PAINT)
+PAINT = {'classico': (0.84, 0.8, 0.73, 1), 'caldo': (0.58, 0.46, 0.34, 1), 'minimal': (0.9, 0.89, 0.86, 1), 'accento': (0.88, 0.85, 0.79, 1)}[STILE]
+PAINT_BACK = {'accento': (0.2, 0.27, 0.19, 1)}.get(STILE, PAINT)
 # materiale delle pareti esistenti: carta da parati -> intonaco rovinato -> intonaco grigio -> rasatura -> pittura
 WALL_LAYERS = [
     ('decrepit_wallpaper', 0, 0, None),
@@ -507,9 +507,9 @@ else:
         parti.append(box('cuscino_2', (cx + 0.74, cy + 0.04, 0.71), (0.4, 0.12, 0.4), MC, bevel=0.06))
         for o in parti: key_hide(o, visible_from=vf)
     STILI = {
-        'caldo':   dict(sofa=(0.5, 0.45, 0.38, 1), cusc=(0.62, 0.32, 0.2, 1), rug=(0.62, 0.55, 0.45, 1)),
-        'minimal': dict(sofa=(0.66, 0.66, 0.64, 1), cusc=(0.85, 0.84, 0.8, 1), rug=(0.78, 0.76, 0.72, 1)),
-        'accento': dict(sofa=(0.8, 0.76, 0.68, 1), cusc=(0.6, 0.3, 0.19, 1), rug=(0.6, 0.55, 0.47, 1)),
+        'caldo':   dict(sofa=(0.3, 0.24, 0.17, 1), cusc=(0.42, 0.18, 0.09, 1), rug=(0.45, 0.4, 0.32, 1)),
+        'minimal': dict(sofa=(0.32, 0.32, 0.31, 1), cusc=(0.6, 0.58, 0.54, 1), rug=(0.55, 0.53, 0.5, 1)),
+        'accento': dict(sofa=(0.55, 0.5, 0.42, 1), cusc=(0.4, 0.15, 0.07, 1), rug=(0.42, 0.38, 0.32, 1)),
     }[STILE]
     M_RUG = fabric_mat('tappeto', STILI['rug'], 0.25)
     fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
@@ -520,9 +520,13 @@ else:
     if STILE == 'caldo':
         importa('mid_century_lounge_chair', (3.9, 2.0, 0.0), rz=-1.25, scala=0.85, appoggia=0.01, visible_from=P['p7'][0] + 24)
     elif STILE == 'minimal':
-        importa('Ottoman_01', (3.75, 1.9, 0.0), rz=-0.6, scala=0.85, appoggia=0.01, visible_from=P['p7'][0] + 24)
-        importa('side_table_tall_01', (3.2, 2.45, 0.0), appoggia=0.01, visible_from=P['p7'][0] + 24)
-        importa('potted_plant_04', (3.2, 2.45, 0.77), scala=1.2, appoggia=0.765, visible_from=P['p7'][0] + 28)
+        MPF = fabric_mat('pouf', (0.5, 0.48, 0.44, 1), 0.3); MTB = simple_mat('tavolino_bianco', (0.85, 0.84, 0.82, 1), 0.4)
+        extra = [cyl('pouf', (3.75, 1.95, 0.21), 0.32, 0.42, (0, 0, 0), MPF, verts=48),
+                 cyl('tavolino', (3.25, 2.5, 0.25), 0.22, 0.5, (0, 0, 0), MTB, verts=48)]
+        for o in extra:
+            md = o.modifiers.new('bev', 'BEVEL'); md.width = 0.04; md.segments = 4
+            key_hide(o, visible_from=P['p7'][0] + 24)
+        importa('potted_plant_04', (3.25, 2.5, 0.5), scala=1.2, appoggia=0.5, visible_from=P['p7'][0] + 28)
     else:
         importa('modern_arm_chair_01', (3.85, 2.05, 0.0), rz=-1.2, scala=0.95, appoggia=0.01, visible_from=P['p7'][0] + 24)
 LX, LY = (3.9, 2.4) if STILE == 'classico' else (4.3, 2.5)
