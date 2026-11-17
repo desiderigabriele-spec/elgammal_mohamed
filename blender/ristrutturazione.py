@@ -18,7 +18,7 @@ W = int(arg('--w', '1280'))
 SAMPLES = int(arg('--samples', '64'))
 FLIST = arg('--frame-list', '')
 ASPECT = arg('--aspect', '16:9')
-STILE = arg('--stile', 'classico')   # arredo finale: classico | caldo | minimal | accento
+STILE = arg('--stile', 'mix')   # arredo finale: mix | classico | caldo | minimal | accento
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, 'tex')
 random.seed(11)
@@ -213,7 +213,7 @@ TX = 3.35                             # tramezzo nuovo: x costante, da y=2.7 all
 TY0, TY1 = 2.7, RD
 DOOR_Y0, DOOR_Y1, DOOR_H = 3.15, 4.0, 2.1
 
-PAINT = {'classico': (0.84, 0.8, 0.73, 1), 'caldo': (0.58, 0.46, 0.34, 1), 'minimal': (0.9, 0.89, 0.86, 1), 'accento': (0.88, 0.85, 0.79, 1)}[STILE]
+PAINT = {'classico': (0.84, 0.8, 0.73, 1), 'caldo': (0.58, 0.46, 0.34, 1), 'minimal': (0.9, 0.89, 0.86, 1), 'accento': (0.88, 0.85, 0.79, 1), 'mix': (0.7, 0.64, 0.56, 1)}[STILE]
 PAINT_BACK = {'accento': (0.2, 0.27, 0.19, 1)}.get(STILE, PAINT)
 # materiale delle pareti esistenti: carta da parati -> intonaco rovinato -> intonaco grigio -> rasatura -> pittura
 WALL_LAYERS = [
@@ -510,14 +510,65 @@ else:
         'caldo':   dict(sofa=(0.3, 0.24, 0.17, 1), cusc=(0.42, 0.18, 0.09, 1), rug=(0.45, 0.4, 0.32, 1)),
         'minimal': dict(sofa=(0.32, 0.32, 0.31, 1), cusc=(0.6, 0.58, 0.54, 1), rug=(0.55, 0.53, 0.5, 1)),
         'accento': dict(sofa=(0.55, 0.5, 0.42, 1), cusc=(0.4, 0.15, 0.07, 1), rug=(0.42, 0.38, 0.32, 1)),
+        'mix':     dict(sofa=(0.42, 0.39, 0.34, 1), cusc=(0.42, 0.18, 0.09, 1), rug=(0.5, 0.46, 0.4, 1)),
     }[STILE]
     M_RUG = fabric_mat('tappeto', STILI['rug'], 0.25)
     fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
-    rug = box('tappeto', (1.95, 2.0, 0.008), (2.6, 1.9, 0.012), M_RUG, bevel=0.004)
+    rug = box('tappeto', (1.95, 2.15, 0.008), (3.0, 2.2, 0.012) if STILE == 'mix' else (2.6, 1.9, 0.012), M_RUG, bevel=0.004)
     key_hide(rug, visible_from=P['p7'][0] + 20)
     divano(1.95, 2.85, STILI['sofa'], STILI['cusc'], P['p7'][0] + 22)
-    importa('potted_plant_01', (0.45, 3.8, 0.0), rz=0.4, scala=1.15, appoggia=0.01, visible_from=P['p7'][0] + 26)
-    if STILE == 'caldo':
+    importa('potted_plant_01', (0.45, 3.8, 0.0) if STILE != 'mix' else (0.45, 4.2, 0.0), rz=0.4, scala=1.15, appoggia=0.01, visible_from=P['p7'][0] + 26)
+    if STILE == 'mix':
+        V = P['p7'][0] + 24
+        # poltrona anni '60 e lampada a destra, pianta grande in fondo a sinistra
+        importa('mid_century_lounge_chair', (3.9, 2.0, 0.0), rz=-1.25, scala=0.85, appoggia=0.01, visible_from=V)
+        importa('potted_plant_02', (4.2, 1.35, 0.0), rz=0.3, scala=1.1, appoggia=0.01, visible_from=P['p7'][0] + 26)
+        # madia bassa sulla parete sinistra, con oggetti sopra
+        importa('modern_wooden_cabinet', (0.25, 2.45, 0.0), rz=math.pi / 2, scala=0.65, appoggia=0.01, visible_from=V)
+        TOP = 0.68 * 0.65 + 0.01
+        M_CER = simple_mat('ceramica', (0.42, 0.2, 0.11, 1), 0.35); M_CER2 = simple_mat('ceramica_chiara', (0.8, 0.77, 0.7, 1), 0.3)
+        M_LIB = [simple_mat('libro_' + str(k), c, 0.7) for k, c in enumerate([(0.2, 0.25, 0.22, 1), (0.75, 0.7, 0.6, 1), (0.45, 0.2, 0.12, 1)])]
+        ogg = [cyl('vaso_alto', (0.25, 1.98, TOP + 0.13), 0.055, 0.26, (0, 0, 0), M_CER, verts=40),
+               cyl('vaso_basso', (0.22, 2.13, TOP + 0.06), 0.07, 0.12, (0, 0, 0), M_CER2, verts=40)]
+        for k in range(3):
+            ogg.append(box('libro', (0.27, 2.85, TOP + 0.02 + k * 0.04), (0.24, 0.32 - k * 0.03, 0.04), M_LIB[k], bevel=0.003))
+        for o in ogg: key_hide(o, visible_from=V)
+        importa('potted_plant_04', (0.25, 3.05, 0.0), scala=1.1, appoggia=TOP, visible_from=P['p7'][0] + 28)
+        # quadro astratto sopra la madia
+        M_TELA, nt = new_mat('tela'); nn, ll = nt.nodes, nt.links
+        tc = nn.new('ShaderNodeTexCoord'); no = nn.new('ShaderNodeTexNoise'); no.inputs['Scale'].default_value = 1.6; no.inputs['Detail'].default_value = 1.0
+        ll.new(tc.outputs['Generated'], no.inputs['Vector'])
+        cr = nn.new('ShaderNodeValToRGB'); r = cr.color_ramp; r.interpolation = 'CONSTANT'
+        r.elements[0].position = 0.0; r.elements[0].color = (0.78, 0.72, 0.62, 1)
+        r.elements[1].position = 0.44; r.elements[1].color = (0.45, 0.2, 0.1, 1)
+        e = r.elements.new(0.53); e.color = (0.2, 0.24, 0.2, 1)
+        e = r.elements.new(0.6); e.color = (0.62, 0.52, 0.38, 1)
+        ll.new(no.outputs['Fac'], cr.inputs['Fac']); ll.new(cr.outputs['Color'], nt.nodes['Principled BSDF'].inputs['Base Color'])
+        nt.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.9
+        M_CORN = simple_mat('cornice', (0.04, 0.04, 0.04, 1), 0.5)
+        q = [box('cornice', (0.02, 2.45, 1.5), (0.03, 1.1, 0.78), M_CORN, bevel=0.004), box('tela', (0.04, 2.45, 1.5), (0.012, 1.02, 0.7), M_TELA)]
+        for o in q: key_hide(o, visible_from=V)
+        # tavolino tondo in rovere con un libro e una ciotola
+        M_ROV = tex_mat('rovere', 'laminate_floor_02', 0.6, tint=(1.0, 0.92, 0.82, 1))
+        tv = [cyl('tavolino', (1.95, 1.98, 0.18), 0.34, 0.34, (0, 0, 0), M_ROV, verts=64),
+              box('libro_tav', (1.85, 1.98, 0.37), (0.26, 0.2, 0.035), M_LIB[1], bevel=0.003),
+              cyl('ciotola', (2.07, 2.0, 0.39), 0.07, 0.07, (0, 0, 0), M_CER, verts=40)]
+        md = tv[0].modifiers.new('bev', 'BEVEL'); md.width = 0.02; md.segments = 3
+        for o in tv: key_hide(o, visible_from=V)
+        # tende di lino ai lati della finestra
+        M_TENDA = fabric_mat('tenda', (0.82, 0.79, 0.72, 1), 0.25)
+        for x0, x1 in ((0.85, 1.35), (2.85, 3.3)):
+            N = 48; verts = []; faces = []
+            for k in range(N + 1):
+                x = x0 + (x1 - x0) * k / N; y = RD - 0.14 + 0.035 * math.sin(k / N * math.pi * 8)
+                verts += [(x, y, 0.02), (x, y, 2.48)]
+            for k in range(N): faces.append((2 * k, 2 * k + 2, 2 * k + 3, 2 * k + 1))
+            me = bpy.data.meshes.new('tenda'); me.from_pydata(verts, [], faces); me.update()
+            o = bpy.data.objects.new('tenda', me); scn.collection.objects.link(o); o.data.materials.append(M_TENDA)
+            for poly in me.polygons: poly.use_smooth = True
+            o.modifiers.new('sol', 'SOLIDIFY').thickness = 0.006
+            key_hide(o, visible_from=P['p7'][0] + 20)
+    elif STILE == 'caldo':
         importa('mid_century_lounge_chair', (3.9, 2.0, 0.0), rz=-1.25, scala=0.85, appoggia=0.01, visible_from=P['p7'][0] + 24)
     elif STILE == 'minimal':
         MPF = fabric_mat('pouf', (0.5, 0.48, 0.44, 1), 0.3); MTB = simple_mat('tavolino_bianco', (0.85, 0.84, 0.82, 1), 0.4)
@@ -607,7 +658,8 @@ else:
 scn.render.resolution_percentage = 100
 scn.view_settings.view_transform = 'AgX'; scn.view_settings.look = 'AgX - Medium High Contrast'
 scn.view_settings.exposure = 0.2
-for f, ex in [(0, 0.2), (P['p7'][0], 0.2), (P['p7'][0] + 26, 0.55), (FEND, 0.55)]:
+EXF = 0.55 if STILE == 'classico' else 0.4
+for f, ex in [(0, 0.2), (P['p7'][0], 0.2), (P['p7'][0] + 26, EXF), (FEND, EXF)]:
     scn.view_settings.exposure = ex; scn.view_settings.keyframe_insert('exposure', frame=f)
 scn.render.image_settings.file_format = 'PNG'; scn.render.image_settings.color_mode = 'RGB'
 os.makedirs(OUT, exist_ok=True)

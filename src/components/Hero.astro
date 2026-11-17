@@ -1,48 +1,66 @@
 ---
-// Hero della home: chi siamo, cosa facciamo, dove, e come contattarci. Poi rimanda alla stanza che cambia.
+// Hero della home (versione A, chiara): chi siamo, cosa facciamo, dove, e come contattarci. Poi rimanda alla stanza che cambia.
 import { Picture } from 'astro:assets';
 import { waHref } from '../data/impresa';
 import finita from '../assets/render/stanza-finita.png';
-const punti = ['Sopralluogo e preventivo gratuiti', 'Milano, Sesto San Giovanni e hinterland', 'Case, condomini e uffici, anche per lavori piccoli'];
+const punti = ['Milano, Sesto San Giovanni e hinterland', 'Case, condomini e uffici, anche per lavori piccoli'];
 ---
 <section class="hero">
   <div class="wrap hg">
     <div class="ht">
-      <p class="mono">Impresa edile · Sesto San Giovanni · dal 2005</p>
+      <p class="etichetta"><span class="lungo">Impresa edile · </span>Sesto San Giovanni · dal 2005</p>
       <h1>Ristrutturiamo casa tua, <b>dall'inizio alla fine</b>.</h1>
+      <figure class="hv">
+        <div class="foto">
+          <Picture src={finita} alt="Soggiorno ristrutturato: pareti color sabbia, divano, poltrona, tende di lino e parquet chiaro" formats={['avif']} fallbackFormat="webp" widths={[640, 960, 1280]} sizes="(min-width: 960px) 54vw, 100vw" loading="eager" fetchpriority="high" />
+          <span class="badge"><i aria-hidden="true"></i>Sopralluogo e preventivo gratuiti</span>
+          <span class="ill">Ricostruzione 3D</span>
+        </div>
+        <figcaption>
+          <a class="next" href="#cantiere">Guarda come ci arriviamo <span aria-hidden="true">↓</span></a>
+        </figcaption>
+      </figure>
       <p class="sub">Muri, impianti, intonaci, cartongesso, rasature e pittura: tutti i lavori li fa un'impresa sola, nell'ordine giusto. Tu hai un solo preventivo e una sola persona a cui chiedere.</p>
-      <ul class="tick">{punti.map((p) => <li>{p}</li>)}</ul>
       <div class="ctas">
-        <a class="btn btn-p" href="/contatti">Sopralluogo gratuito</a>
-        <a class="btn btn-s" href={waHref()}>Scrivi su WhatsApp</a>
+        <a class="btn btn-scuro" href="/contatti">Sopralluogo gratuito</a>
+        <a class="btn btn-linea" href={waHref()}>Scrivi su WhatsApp</a>
       </div>
+      <ul class="tick">{punti.map((p) => <li>{p}</li>)}</ul>
     </div>
-    <figure class="hv">
-      <Picture src={finita} alt="Soggiorno ristrutturato: pareti bianche, parquet chiaro, controsoffitto con faretti" formats={['avif']} fallbackFormat="webp" widths={[640, 960, 1280]} sizes="(min-width: 960px) 54vw, 100vw" loading="eager" fetchpriority="high" />
-      <figcaption>
-        <a class="next" href="#cantiere">Guarda come ci arriviamo <span aria-hidden="true">↓</span></a>
-        <span class="ill">Ricostruzione 3D illustrativa</span>
-      </figcaption>
-    </figure>
   </div>
 </section>
 
 <style>
-  .hero { padding-block: 32px 48px; background: var(--bg); }
-  .hg { display: grid; gap: 32px; align-items: center; }
-  .ht { display: grid; gap: 16px; }
-  h1 { font-size: clamp(2.25rem, 7vw, 3.75rem); line-height: 1.05; }
-  h1 b { color: var(--bronze); }
-  .sub { color: var(--fg-2); font-size: 1.125rem; max-width: 36em; }
-  .tick { margin: 0; }
-  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 8px; }
-  .hv { margin: 0; display: grid; gap: 8px; }
-  .hv :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border: 1px solid var(--line); }
-  figcaption { display: flex; justify-content: space-between; align-items: center; gap: 8px 16px; flex-wrap: wrap; }
-  .next { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
-  .ill { color: var(--fg-2); font: 500 1rem var(--f-m); }
+  .hero { padding-block: 16px 48px; background: var(--paper); color: var(--ink); }
+  .hg { display: grid; }
+  .ht { display: grid; gap: 12px; grid-template-areas: 'chip' 'h1' 'foto' 'sub' 'cta' 'tick'; }
+  .etichetta { grid-area: chip; justify-self: start; margin: 0; font: 500 1rem/1.3 var(--f-m); letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-2); background: #fff; border-radius: 999px; padding: 8px 14px; }
+  h1 { grid-area: h1; font-size: clamp(2.5rem, 9vw, 4.25rem); line-height: 1; color: var(--ink); }
+  h1 b { color: var(--bronze-testo); }
+  .hv { grid-area: foto; margin: 0; display: grid; gap: 4px; }
+  .foto { position: relative; border-radius: 20px; overflow: hidden; }
+  .foto :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+  .badge { position: absolute; inset-inline-start: 12px; inset-block-end: 12px; display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--ink); border-radius: 999px; padding: 8px 14px; font: 700 1rem/1.2 var(--f-b); box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.35); }
+  .badge i { width: 10px; height: 10px; border-radius: 50%; background: #2f7a4a; flex: none; }
+  figcaption { display: flex; }
+  .next { color: var(--bronze-testo); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; }
+  .ill { position: absolute; inset-block-start: 10px; inset-inline-end: 10px; background: rgba(31, 35, 38, 0.78); color: #fff; border-radius: 6px; padding: 4px 8px; font: 500 1rem/1.2 var(--f-m); }
+  .lungo { display: none; }
+  .sub { grid-area: sub; color: var(--ink-2); font-size: 1.125rem; max-width: 36em; margin: 0; }
+  .ctas { grid-area: cta; display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .btn-scuro { background: var(--ink); color: #fff; }
+  .btn-scuro:hover { background: #000; }
+  .btn-linea { border-color: var(--ink); color: var(--ink); background: transparent; }
+  .btn-linea:hover { background: var(--ink); color: #fff; }
+  .tick { grid-area: tick; margin: 0; }
+  .tick li { color: var(--ink-2); }
+  .tick li::before { background: var(--bronze-testo); border-radius: 50%; }
+  @media (min-width: 560px) { .lungo { display: inline; } .ctas { grid-template-columns: auto auto; justify-content: start; } }
   @media (min-width: 960px) {
-    .hero { padding-block: 56px 64px; }
-    .hg { grid-template-columns: 5fr 6fr; gap: 48px; }
+    .hero { padding-block: 56px 72px; }
+    .foto :global(img) { aspect-ratio: 16 / 10; }
+    .ht { grid-template-columns: 5fr 6fr; column-gap: 56px; row-gap: 20px; align-items: start;
+      grid-template-areas: 'chip foto' 'h1 foto' 'sub foto' 'cta foto' 'tick foto'; grid-template-rows: auto auto auto auto 1fr; }
+    .hv { align-self: center; }
   }
 </style>

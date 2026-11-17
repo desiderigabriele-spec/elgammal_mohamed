@@ -1,8 +1,10 @@
 ---
 import negativo from '../../public/logo/el-gammal-principale-negativo.svg?raw';
-interface Props { class?: string; altezza?: number }
-const { class: cls = '', altezza = 48 } = Astro.props;
-const svg = negativo
+import colore from '../../public/logo/el-gammal-principale-colore.svg?raw';
+interface Props { class?: string; altezza?: number; chiaro?: boolean }
+// chiaro = logo a colori per sfondi chiari; altrimenti logo negativo per sfondi scuri
+const { class: cls = '', altezza = 48, chiaro = false } = Astro.props;
+const svg = (chiaro ? colore : negativo)
   .replace(/<title>.*?<\/title>/, '')
   .replace('<svg ', `<svg class="logo ${cls}" style="height:${altezza}px;width:auto" focusable="false" `)
   .replace(/role="img" aria-label="[^"]*"/, 'aria-hidden="true"');

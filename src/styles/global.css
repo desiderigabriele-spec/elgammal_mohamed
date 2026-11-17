@@ -26,6 +26,8 @@
   --paper: #e9e7e2;
   --ink: #292d30;
   --ink-2: #4a5055;
+  --line-chiara: #d3cec5;
+  --bronze-testo: #6e5d47; /* bronzo scuro per testo su fondo chiaro (5:1) */
   --brick: #a0704f;
   --todo-bg: #5a3d12;
   --todo-fg: #ffe3b8;
@@ -97,7 +99,7 @@ strong { font-weight: 700; color: var(--fg); }
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
   min-height: 52px; padding-inline: 24px;
   font: 700 1rem/1 var(--f-b); text-transform: uppercase; letter-spacing: 0.04em;
-  text-decoration: none; border: 2px solid transparent; cursor: pointer; border-radius: 0;
+  text-decoration: none; border: 2px solid transparent; cursor: pointer; border-radius: 999px;
   transition: background 0.2s steps(2), color 0.2s steps(2), border-color 0.2s steps(2);
 }
 .btn-p { background: var(--bronze); color: var(--ink); }
