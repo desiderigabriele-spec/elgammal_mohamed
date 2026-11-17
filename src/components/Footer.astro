@@ -27,7 +27,7 @@ const i = impresa.indirizzo;
     <div class="stack">
       <p class="mono">Contatti</p>
       <p>Telefono {impresa.telefono ?? <span class="todo">[da ricevere]</span>}<br />
-      WhatsApp {impresa.whatsapp ? `+${impresa.whatsapp}` : <span class="todo">[da ricevere]</span>}<br />
+      WhatsApp {impresa.whatsapp ? impresa.telefono ?? `+${impresa.whatsapp}` : <span class="todo">[da ricevere]</span>}<br />
       Email {impresa.email ?? <span class="todo">[da ricevere]</span>}</p>
     </div>
   </div>

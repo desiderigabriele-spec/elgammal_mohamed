@@ -12,7 +12,7 @@ import { impresa, waHref, telHref, mailHref } from '../data/impresa';
         <h1>Sopralluogo e preventivo <b>gratuiti</b>.</h1>
         <p class="lead">Per lavori di qualsiasi dimensione. Il modo più veloce: mandaci una foto del lavoro su WhatsApp.</p>
         <div class="ways">
-          <a class="way" href={waHref()}><span class="mono">WhatsApp</span><b>{impresa.whatsapp ? `+${impresa.whatsapp}` : <span class="todo">[numero]</span>}</b><span>Manda anche le foto</span></a>
+          <a class="way" href={waHref()}><span class="mono">WhatsApp</span><b>{impresa.whatsapp ? impresa.telefono ?? `+${impresa.whatsapp}` : <span class="todo">[numero]</span>}</b><span>Manda anche le foto</span></a>
           <a class="way" href={mailHref()}><span class="mono">Email</span><b>{impresa.email ?? <span class="todo">[indirizzo]</span>}</b><span>Rispondiamo per iscritto</span></a>
           <a class="way" href={telHref()}><span class="mono">Telefono</span><b>{impresa.telefono ?? <span class="todo">[numero]</span>}</b><span>Orari <span class="todo">[da ricevere]</span></span></a>
         </div>

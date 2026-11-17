@@ -16,8 +16,8 @@ export const impresa = {
   // Coordinate indicative del centro di Sesto San Giovanni: da sostituire con quelle esatte della sede
   // quando sarà creata la scheda Google Business.
   geo: { lat: 45.5333, lng: 9.2333 },
-  telefono: null as string | null, // es. '+39 333 1234567'
-  whatsapp: null as string | null, // solo cifre con prefisso, es. '393331234567'
+  telefono: '+39 320 401 6055' as string | null, // chiamate e WhatsApp (niente SMS)
+  whatsapp: '393204016055' as string | null, // solo cifre con prefisso
   email: null as string | null,
   piva: null as string | null,
   googleBusiness: null as string | null, // link alla scheda Google, quando esiste
