@@ -34,7 +34,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       )}
       <canvas aria-hidden="true"></canvas>
       <span class="ill">Ricostruzione 3D illustrativa</span>
-      <div class="bar" aria-hidden="true">{fasi.map(() => <i></i>)}<b></b></div>
+      <div class="bar" aria-hidden="true">{fasi.map(() => <i></i>)}</div>
     </div>
     <div class="txt">
       <div class="intro" data-intro>
@@ -46,8 +46,10 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       <ol class="fasi" aria-label="Le fasi di una ristrutturazione">
         {fasi.map((f, i) => (
           <li class="fase" data-i={i}>
-            <p class="mono">Fase {i + 1} di {fasi.length}</p>
-            <h3>{f.t}</h3>
+            <div class="fh">
+              <p class="mono">Fase {i + 1} di {fasi.length}</p>
+              <h3>{f.t}</h3>
+            </div>
             <p class="d">{f.d}</p>
             {f.cta
               ? <a class="btn btn-p" href={f.href}>{f.link}</a>
@@ -70,10 +72,12 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
   .frame img, .frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .frame canvas { opacity: 0; }
   .frame.live canvas { opacity: 1; }
-  .ill { position: absolute; inset-inline-end: 8px; inset-block-start: 8px; background: rgba(17,20,22,.72); color: var(--fg-2); font: 500 1rem var(--f-m); padding: 2px 8px; }
-  .bar { position: absolute; inset-inline: 0; inset-block-end: 0; height: 6px; display: grid; grid-template-columns: repeat(8, 1fr); gap: 2px; background: rgba(17,20,22,.5); }
-  .bar i { background: rgba(236,234,230,.25); }
-  .bar b { position: absolute; inset-block: 0; inset-inline-start: 0; width: calc(var(--p, 0) * 100%); background: var(--bronze); }
+  .ill { position: absolute; inset-inline-end: 8px; inset-block-start: 18px; background: rgba(17,20,22,.72); color: var(--fg-2); font: 500 1rem var(--f-m); padding: 2px 8px; }
+  .bar { position: absolute; inset-inline: 0; inset-block-start: 0; z-index: 2; display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; padding: 6px 8px; background: rgba(17,20,22,.6); }
+  .bar i { height: 4px; border-radius: 2px; background: rgba(236,234,230,.25); transition: background .3s; }
+  .bar i.fatto { background: #7d705d; }
+  .bar i.ora { background: var(--bronze); }
+  .fh { display: grid; gap: 8px; }
   .txt { padding: 24px var(--gutter-e) 48px var(--gutter-s); display: grid; gap: 32px; }
   .intro, .fase { display: grid; gap: 12px; }
   .intro .ih { font-size: clamp(2.1rem, 9vw, 3rem); }
@@ -88,7 +92,10 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
 
   /* con JavaScript: la scena resta ferma e cambia mentre scorri */
   @media (prefers-reduced-motion: no-preference) {
-    :global(.js:not(.no-seq)) .cant { height: 760vh; }
+    :global(.js:not(.no-seq)) .cant { height: 900vh; }
+    :global(.js:not(.no-seq)) .fh { position: relative; padding-block-end: 12px; }
+    :global(.js:not(.no-seq)) .fh::after { content: ''; position: absolute; inset-inline-start: 0; inset-block-end: 0; height: 4px; width: 0; background: var(--bronze); transition: width .7s var(--mech) .15s; }
+    :global(.js:not(.no-seq)) .fase.on .fh::after { width: min(100%, 320px); }
     :global(.js:not(.no-seq)) .stick { position: sticky; inset-block-start: var(--header); height: calc(100svh - var(--header)); overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
     :global(.js:not(.no-seq)) .txt { position: relative; display: block; padding: 20px var(--gutter-e) 88px var(--gutter-s); min-height: 0; }
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { position: absolute; inset-inline: var(--gutter-s) var(--gutter-e); inset-block-start: 20px; transition: opacity .35s var(--mech), transform .35s var(--mech); }
@@ -99,6 +106,13 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .intro.off { opacity: 0; transform: translateY(-12px); pointer-events: none; }
     :global(.js:not(.no-seq)) .hint { display: block; }
   }
+  /* telefono: numero e titolo della fase stanno sull'immagine, come un sottotitolo; sotto solo la spiegazione */
+  @media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
+    :global(.js:not(.no-seq)) .frame::after { content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; height: 55%; background: linear-gradient(180deg, rgba(17,20,22,0), rgba(17,20,22,.9)); pointer-events: none; }
+    :global(.js:not(.no-seq)) .fh { position: absolute; inset-inline: 0; inset-block-end: calc(100% + 20px + 16px); z-index: 3; }
+    :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(2.2rem, 10vw, 3rem); }
+    :global(.js:not(.no-seq)) .fase .mono { color: var(--bronze); }
+  }
   @media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
     :global(.js:not(.no-seq)) .stick { display: block; }
     :global(.js:not(.no-seq)) .frame { position: absolute; inset: 0; aspect-ratio: auto; height: 100%; }
@@ -107,6 +121,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { inset-block-start: auto; inset-block-end: 12vh; inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)) 0; }
     :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }
     :global(.js:not(.no-seq)) .ill { inset-block-start: auto; inset-block-end: 18px; }
+    :global(.js:not(.no-seq)) .bar { inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-start: 20px; border-radius: 999px; }
   }
 </style>
 
@@ -127,6 +142,14 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       const pad = (i: number) => String(i).padStart(3, '0');
       const imgs: (HTMLImageElement | null)[] = new Array(n).fill(null);
       let current = -1, want = 0, visible = true, ticking = false;
+      const bars = [...sec.querySelectorAll<HTMLElement>('.bar i')];
+      // scorrimento a tratti: introduzione, poi per ogni fase una pausa (stanza ferma, arriva il testo) e l'avanzamento
+      const INTRO = 4, PAUSA = 6;
+      type Tratto = { u0: number; u1: number; i: number; a: number; b: number; pausa: boolean };
+      const tratti: Tratto[] = [{ u0: 0, u1: INTRO, i: -1, a: 0, b: 0, pausa: true }];
+      let u = INTRO;
+      fasi.forEach(([a, b], i) => { tratti.push({ u0: u, u1: u + PAUSA, i, a, b: a, pausa: true }); u += PAUSA; tratti.push({ u0: u, u1: u + (b - a), i, a, b, pausa: false }); u += b - a; });
+      const U = u;
 
       const size = () => {
         const r = frame.getBoundingClientRect(), dpr = Math.min(2, devicePixelRatio || 1);
@@ -144,16 +167,18 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         ticking = false;
         const r = sec!.getBoundingClientRect(); const total = r.height - innerHeight;
         const p = Math.min(1, Math.max(0, -r.top / total));
-        want = Math.round(p * (n - 1)); sec!.style.setProperty('--p', String(p));
-        frame.style.setProperty('--p', String(p));
-        intro.classList.toggle('off', want > 3);
-        const fi = fasi.findIndex(([a, b]) => want >= a && want <= b);
-        items.forEach((it, i) => it.classList.toggle('on', want > 3 && i === fi));
+        const uu = p * U; const t = tratti.find((x) => uu < x.u1) || tratti[tratti.length - 1];
+        want = Math.min(n - 1, t.pausa ? t.a : Math.round(t.a + (uu - t.u0)));
+        const fi = t.i;
+        intro.classList.toggle('off', fi >= 0);
+        items.forEach((it, i) => it.classList.toggle('on', i === fi));
+        bars.forEach((b, i) => { b.classList.toggle('fatto', i < fi); b.classList.toggle('ora', i === fi); });
         draw();
       }
       const onScroll = () => { if (!ticking && visible) { ticking = true; requestAnimationFrame(update); } };
-      // carica prima i fotogrammi delle fasi (uno ogni 8), poi tutti gli altri
-      const order = [...Array(n).keys()].sort((a, b) => (a % 8) - (b % 8) || a - b);
+      // carica prima il primo fotogramma di ogni fase, poi uno ogni 8, poi tutti gli altri
+      const inizi = new Set(fasi.map(([a]) => a));
+      const order = [...Array(n).keys()].sort((a, b) => Number(inizi.has(b)) - Number(inizi.has(a)) || (a % 8) - (b % 8) || a - b);
       let next = 0, inflight = 0;
       const load = () => {
         while (inflight < 6 && next < order.length) {
