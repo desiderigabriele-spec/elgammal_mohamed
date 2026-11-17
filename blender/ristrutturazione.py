@@ -18,6 +18,7 @@ W = int(arg('--w', '1280'))
 SAMPLES = int(arg('--samples', '64'))
 FLIST = arg('--frame-list', '')
 ASPECT = arg('--aspect', '16:9')
+STILE = arg('--stile', 'classico')   # arredo finale: classico | caldo | minimal | accento
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.join(HERE, 'tex')
 random.seed(11)
@@ -212,15 +213,17 @@ TX = 3.35                             # tramezzo nuovo: x costante, da y=2.7 all
 TY0, TY1 = 2.7, RD
 DOOR_Y0, DOOR_Y1, DOOR_H = 3.15, 4.0, 2.1
 
+PAINT = {'classico': (0.84, 0.8, 0.73, 1), 'caldo': (0.7, 0.6, 0.49, 1), 'minimal': (0.9, 0.89, 0.86, 1), 'accento': (0.88, 0.85, 0.79, 1)}[STILE]
+PAINT_BACK = {'accento': (0.36, 0.42, 0.35, 1)}.get(STILE, PAINT)
 # materiale delle pareti esistenti: carta da parati -> intonaco rovinato -> intonaco grigio -> rasatura -> pittura
 WALL_LAYERS = [
     ('decrepit_wallpaper', 0, 0, None),
     ('damaged_plaster', P['p1'][0], P['p1'][0] + 18, None),
     ('grey_plaster', P['p4'][0], P['p4'][1] - 2, (0.78, 0.78, 0.78, 1)),
     ((0.74, 0.74, 0.73, 1), P['p6'][0], P['p6'][1] - 2, None),
-    ((0.84, 0.8, 0.73, 1), P['p7'][0], P['p7'][0] + 14, None),
+    (PAINT, P['p7'][0], P['p7'][0] + 14, None),
 ]
-M_WALL_BACK = layered_material('parete_fondo', WALL_LAYERS, 2.9)
+M_WALL_BACK = layered_material('parete_fondo', WALL_LAYERS[:-1] + [(PAINT_BACK,) + WALL_LAYERS[-1][1:]], 2.9)
 M_WALL_LEFT = layered_material('parete_sx', WALL_LAYERS, 2.9)
 M_WALL_RIGHT = layered_material('parete_dx', WALL_LAYERS, 2.9)
 M_WALL_FRONT = layered_material('parete_fronte', WALL_LAYERS, 2.9)
@@ -229,7 +232,7 @@ NEW_LAYERS = [
     ((0.5, 0.5, 0.5, 1), 0, 0, None),
     ('grey_plaster', P['p4'][0] + 4, P['p4'][1], (0.78, 0.78, 0.78, 1)),
     ((0.74, 0.74, 0.73, 1), P['p6'][0] + 2, P['p6'][1], None),
-    ((0.84, 0.8, 0.73, 1), P['p7'][0], P['p7'][0] + 14, None),
+    (PAINT, P['p7'][0], P['p7'][0] + 14, None),
 ]
 M_TRAMEZZO = layered_material('tramezzo_finitura', NEW_LAYERS, 1.6, base_transparent=True)
 # soffitto vecchio: intonaco macchiato -> bianco
@@ -478,26 +481,63 @@ for k, x in enumerate([0.8, 1.9, 3.0, 4.0]):
 M_RAD_NEW = simple_mat('termosifone_nuovo', (0.93, 0.93, 0.92, 1), 0.3)
 rad = box('termosifone_nuovo', (2.15, RD - 0.07, 0.42), (1.0, 0.06, 0.5), M_RAD_NEW, bevel=0.01)
 key_hide(rad, visible_from=P['p7'][0] + 20)
-importa('Sofa_01', (1.95, 2.4, 0.01), rz=0.0, scala=1.3, visible_from=P['p7'][0] + 22)
-importa('throw_pillows_01', (1.55, 2.55, 0.5), rz=0.15, scala=0.8, appoggia=0.56, visible_from=P['p7'][0] + 26)
-M_RUG = fabric_mat('tappeto', (0.42, 0.38, 0.33, 1), 0.25)
-fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
-rug = box('tappeto', (1.95, 1.35, 0.008), (2.4, 1.7, 0.012), M_RUG, bevel=0.004)
-key_hide(rug, visible_from=P['p7'][0] + 20)
-importa('side_table_01', (3.45, 2.3, 0.01), rz=-0.3, scala=0.95, visible_from=P['p7'][0] + 24)
-importa('potted_plant_04', (3.45, 2.3, 0.53), scala=1.3, visible_from=P['p7'][0] + 28)
+if STILE == 'classico':
+    importa('Sofa_01', (1.95, 2.4, 0.01), rz=0.0, scala=1.3, visible_from=P['p7'][0] + 22)
+    importa('throw_pillows_01', (1.55, 2.55, 0.5), rz=0.15, scala=0.8, appoggia=0.56, visible_from=P['p7'][0] + 26)
+    M_RUG = fabric_mat('tappeto', (0.42, 0.38, 0.33, 1), 0.25)
+    fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
+    rug = box('tappeto', (1.95, 1.35, 0.008), (2.4, 1.7, 0.012), M_RUG, bevel=0.004)
+    key_hide(rug, visible_from=P['p7'][0] + 20)
+    importa('side_table_01', (3.45, 2.3, 0.01), rz=-0.3, scala=0.95, visible_from=P['p7'][0] + 24)
+    importa('potted_plant_04', (3.45, 2.3, 0.53), scala=1.3, visible_from=P['p7'][0] + 28)
+else:
+    # divano moderno basso, costruito qui (stoffa di lino, cuscini morbidi)
+    def divano(cx, cy, col, cusc, vf):
+        M = fabric_mat('divano', col, 0.35); MC = fabric_mat('cuscini', cusc, 0.3)
+        MP = simple_mat('zoccolo', (0.06, 0.06, 0.06, 1), 0.5)
+        parti = [box('div_zoccolo', (cx, cy + 0.02, 0.04), (2.0, 0.78, 0.08), MP, bevel=0.01),
+                 box('div_base', (cx, cy, 0.23), (2.3, 0.95, 0.3), M, bevel=0.05),
+                 box('div_sx', (cx - 1.05, cy, 0.47), (0.2, 0.95, 0.2), M, bevel=0.08),
+                 box('div_dx', (cx + 1.05, cy, 0.47), (0.2, 0.95, 0.2), M, bevel=0.08),
+                 box('div_schienale', (cx, cy + 0.37, 0.6), (2.3, 0.2, 0.46), M, bevel=0.08)]
+        for k in (-1, 1):
+            parti.append(box('div_seduta', (cx + k * 0.465, cy - 0.06, 0.45), (0.92, 0.78, 0.16), M, bevel=0.07))
+            parti.append(box('div_cusc_schiena', (cx + k * 0.465, cy + 0.2, 0.68), (0.9, 0.2, 0.42), M, bevel=0.09))
+        parti.append(box('cuscino_1', (cx - 0.72, cy + 0.04, 0.73), (0.44, 0.13, 0.44), MC, bevel=0.06))
+        parti.append(box('cuscino_2', (cx + 0.74, cy + 0.04, 0.71), (0.4, 0.12, 0.4), MC, bevel=0.06))
+        for o in parti: key_hide(o, visible_from=vf)
+    STILI = {
+        'caldo':   dict(sofa=(0.5, 0.45, 0.38, 1), cusc=(0.62, 0.32, 0.2, 1), rug=(0.62, 0.55, 0.45, 1)),
+        'minimal': dict(sofa=(0.66, 0.66, 0.64, 1), cusc=(0.85, 0.84, 0.8, 1), rug=(0.78, 0.76, 0.72, 1)),
+        'accento': dict(sofa=(0.8, 0.76, 0.68, 1), cusc=(0.6, 0.3, 0.19, 1), rug=(0.6, 0.55, 0.47, 1)),
+    }[STILE]
+    M_RUG = fabric_mat('tappeto', STILI['rug'], 0.25)
+    fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
+    rug = box('tappeto', (1.95, 2.0, 0.008), (2.6, 1.9, 0.012), M_RUG, bevel=0.004)
+    key_hide(rug, visible_from=P['p7'][0] + 20)
+    divano(1.95, 2.85, STILI['sofa'], STILI['cusc'], P['p7'][0] + 22)
+    importa('potted_plant_01', (0.45, 3.8, 0.0), rz=0.4, scala=1.15, appoggia=0.01, visible_from=P['p7'][0] + 26)
+    if STILE == 'caldo':
+        importa('mid_century_lounge_chair', (3.9, 2.0, 0.0), rz=-1.25, scala=0.85, appoggia=0.01, visible_from=P['p7'][0] + 24)
+    elif STILE == 'minimal':
+        importa('Ottoman_01', (3.75, 1.9, 0.0), rz=-0.6, scala=0.85, appoggia=0.01, visible_from=P['p7'][0] + 24)
+        importa('side_table_tall_01', (3.2, 2.45, 0.0), appoggia=0.01, visible_from=P['p7'][0] + 24)
+        importa('potted_plant_04', (3.2, 2.45, 0.77), scala=1.2, appoggia=0.765, visible_from=P['p7'][0] + 28)
+    else:
+        importa('modern_arm_chair_01', (3.85, 2.05, 0.0), rz=-1.2, scala=0.95, appoggia=0.01, visible_from=P['p7'][0] + 24)
+LX, LY = (3.9, 2.4) if STILE == 'classico' else (4.3, 2.5)
 M_BLACK = simple_mat('metallo_nero', (0.05, 0.05, 0.05, 1), 0.35, metal=0.8)
 fade_material(M_BLACK, f_in=(P['p7'][0] + 24, P['p7'][0] + 32))
-lamp = [cyl('lamp_base', (3.9, 2.4, 0.01), 0.14, 0.02, (0, 0, 0), M_BLACK), cyl('lamp_asta', (3.9, 2.4, 0.75), 0.012, 1.5, (0, 0, 0), M_BLACK)]
+lamp = [cyl('lamp_base', (LX, LY, 0.01), 0.14, 0.02, (0, 0, 0), M_BLACK), cyl('lamp_asta', (LX, LY, 0.75), 0.012, 1.5, (0, 0, 0), M_BLACK)]
 M_SHADE = simple_mat('paralume', (0.95, 0.9, 0.8, 1), 0.6, emit=((1.0, 0.75, 0.5, 1), 0.0))
 key_value(M_SHADE.node_tree.nodes['Principled BSDF'].inputs['Emission Strength'], [(P['p7'][0] + 24, 0.0), (P['p7'][0] + 32, 4.0)])
-lamp.append(cyl('lamp_paralume', (3.9, 2.4, 1.55), 0.2, 0.3, (0, 0, 0), M_SHADE, verts=32))
+lamp.append(cyl('lamp_paralume', (LX, LY, 1.55), 0.2, 0.3, (0, 0, 0), M_SHADE, verts=32))
 for o in lamp: key_hide(o, visible_from=P['p7'][0] + 24)
 LL = bpy.data.lights.new('luce_lampada', 'POINT'); LL.shadow_soft_size = 0.15; LL.color = (1.0, 0.72, 0.45)
 LL.energy = 0; LL.keyframe_insert('energy', frame=P['p7'][0] + 24); LL.energy = 45; LL.keyframe_insert('energy', frame=P['p7'][0] + 32)
-lo = bpy.data.objects.new('luce_lampada', LL); scn.collection.objects.link(lo); lo.location = (3.9, 2.4, 1.5)
+lo = bpy.data.objects.new('luce_lampada', LL); scn.collection.objects.link(lo); lo.location = (LX, LY, 1.5)
 # pianta
-importa('potted_plant_02', (0.5, 3.6, 0.0), rz=0.6, scala=1.35, appoggia=0.01, visible_from=P['p7'][0] + 26)
+if STILE == 'classico': importa('potted_plant_02', (0.5, 3.6, 0.0), rz=0.6, scala=1.35, appoggia=0.01, visible_from=P['p7'][0] + 26)
 
 # ------------------------------------------------------------------ luce: mattina -> tramonto
 world = bpy.data.worlds.new('mondo'); scn.world = world; world.use_nodes = True

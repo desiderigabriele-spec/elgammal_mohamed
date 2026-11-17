@@ -3,7 +3,9 @@
 import json, os, urllib.request
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODELLI = ['Sofa_01', 'potted_plant_04', 'potted_plant_02', 'throw_pillows_01', 'side_table_01',
-           'wooden_ladder_02', 'cement_bag', 'trashbag', 'trowel_01', 'plastic_crate_01', 'Drill_01', 'cardboard_box_01']
+           'wooden_ladder_02', 'cement_bag', 'trashbag', 'trowel_01', 'plastic_crate_01', 'Drill_01', 'cardboard_box_01',
+           'sofa_03', 'mid_century_lounge_chair', 'modern_coffee_table_01', 'modern_coffee_table_02', 'coffee_table_round_01',
+           'Ottoman_01', 'side_table_tall_01', 'modern_wooden_cabinet', 'modern_arm_chair_01', 'potted_plant_01']
 HDRI = ['piazza_bologni']
 
 UA = {'User-Agent': 'scene-downloader/1.0'}
