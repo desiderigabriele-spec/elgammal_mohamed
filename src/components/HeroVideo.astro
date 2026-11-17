@@ -1,0 +1,54 @@
+---
+// Hero della home: messaggio chiaro a sinistra, video breve della stanza che si trasforma a destra.
+import { waHref } from '../data/impresa';
+const punti = ['Dal 2005 a Sesto San Giovanni', 'Sopralluogo e preventivo gratuiti', 'Una sola impresa per tutti i lavori'];
+---
+<section class="hero">
+  <div class="wrap hg">
+    <div class="ht">
+      <p class="mono">Impresa edile · Milano e hinterland</p>
+      <h1>Ristrutturiamo casa tua con <b>un'impresa sola</b>.</h1>
+      <p class="sub">Muratura, impianti, intonaci, cartongesso, rasature e pittura. Facciamo tutto noi, dal sopralluogo alla consegna.</p>
+      <ul class="tick">{punti.map((p) => <li>{p}</li>)}</ul>
+      <div class="ctas">
+        <a class="btn btn-p" href="/contatti">Sopralluogo gratuito</a>
+        <a class="btn btn-s" href={waHref()}>Scrivi su WhatsApp</a>
+      </div>
+    </div>
+    <figure class="hv">
+      <video muted playsinline loop autoplay preload="metadata" poster="/video/poster.webp" width="960" height="540" aria-label="Una stanza che passa da vecchia a ristrutturata, fase dopo fase">
+        <source src="/video/ristrutturazione.mp4" type="video/mp4" />
+      </video>
+      <figcaption>
+        <span>Dal muro grezzo alla casa finita</span>
+        <span class="ill">Ricostruzione 3D illustrativa</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<script>
+  // Con "riduci movimento" il video resta fermo sulla prima immagine.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<HTMLVideoElement>('.hv video').forEach((v) => { v.removeAttribute('autoplay'); v.pause(); });
+  }
+</script>
+
+<style>
+  .hero { padding-block: 32px 48px; background: var(--bg); }
+  .hg { display: grid; gap: 32px; align-items: center; }
+  .ht { display: grid; gap: 16px; }
+  h1 { font-size: clamp(2.25rem, 7vw, 3.75rem); line-height: 1.05; }
+  h1 b { color: var(--bronze); }
+  .sub { color: var(--fg-2); font-size: 1.125rem; max-width: 34em; }
+  .tick { margin: 0; }
+  .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 8px; }
+  .hv { margin: 0; display: grid; gap: 8px; }
+  video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #2a2724; border: 1px solid var(--line); }
+  figcaption { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--fg-2); font-size: 1rem; }
+  .ill { font: 500 1rem var(--f-m); }
+  @media (min-width: 960px) {
+    .hero { padding-block: 64px 80px; }
+    .hg { grid-template-columns: 5fr 6fr; gap: 48px; }
+  }
+</style>

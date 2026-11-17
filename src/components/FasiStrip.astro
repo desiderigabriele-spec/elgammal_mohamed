@@ -1,0 +1,75 @@
+---
+// Servizi come striscia orizzontale: una scheda per fase del lavoro, da scorrere a destra.
+import { servizi } from '../data/servizi';
+const per = (s: string) => servizi.find((x) => x.slug === s)!;
+const img = (i: number) => `/sequenza/sm/f${String(i).padStart(3, '0')}.webp`;
+const schede = [
+  { s: per('muratura'), fase: '1', foto: img(35), alt: 'Tramezzo nuovo in mattoni con il vano porta' },
+  { s: per('impianti'), fase: '2', foto: img(47), alt: 'Tracce aperte nei muri con i tubi degli impianti' },
+  { s: per('intonaci-imbiancatura'), fase: '3', foto: img(59), alt: 'Pareti intonacate in grigio' },
+  { s: per('cartongesso'), fase: '4', foto: img(71), alt: 'Controsoffitto in cartongesso con veletta' },
+  { s: per('rasatura-pareti'), fase: '5', foto: img(81), alt: 'Pareti e soffitto rasati, bianchi e lisci' },
+  { s: per('ristrutturazioni-chiavi-in-mano'), fase: '6', foto: img(99), alt: 'Soggiorno finito, pitturato e arredato' },
+];
+const facciate = per('facciate');
+---
+<div class="fs">
+  <div class="fs-nav" aria-hidden="true">
+    <button type="button" class="nb" data-dir="-1" tabindex="-1">←</button>
+    <button type="button" class="nb" data-dir="1" tabindex="-1">→</button>
+  </div>
+  <ol class="track" aria-label="I nostri servizi, nell'ordine in cui si lavora">
+    {schede.map((c) => (
+      <li>
+        <a class="sc" href={`/${c.s.slug}`}>
+          <img src={c.foto} alt={c.alt} width="960" height="540" loading="lazy" decoding="async" />
+          <span class="mono">Fase {c.fase} di 6</span>
+          <h3>{c.s.nome}</h3>
+          <p>{c.s.breve}</p>
+          <span class="go">Scopri <span aria-hidden="true">→</span></span>
+        </a>
+      </li>
+    ))}
+    <li>
+      <a class="sc alt" href={`/${facciate.slug}`}>
+        <span class="mono">E all'esterno</span>
+        <h3>{facciate.nome}</h3>
+        <p>{facciate.breve}</p>
+        <span class="go">Scopri <span aria-hidden="true">→</span></span>
+      </a>
+    </li>
+  </ol>
+  <p class="hint mono" aria-hidden="true">Scorri a destra →</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.fs').forEach((fs) => {
+    const t = fs.querySelector<HTMLElement>('.track')!;
+    fs.querySelectorAll<HTMLButtonElement>('.nb').forEach((b) =>
+      b.addEventListener('click', () => {
+        const card = t.querySelector('li')!.getBoundingClientRect().width + 16;
+        const rtl = getComputedStyle(t).direction === 'rtl' ? -1 : 1;
+        t.scrollBy({ left: Number(b.dataset.dir) * card * rtl, behavior: 'smooth' });
+      }),
+    );
+  });
+</script>
+
+<style>
+  .fs { position: relative; display: grid; gap: 16px; }
+  .fs-nav { display: none; justify-content: flex-end; gap: 8px; }
+  .nb { width: 48px; height: 48px; border: 1px solid var(--line); background: var(--bg-2); color: var(--fg); font-size: 1.25rem; cursor: pointer; }
+  .nb:hover { border-color: var(--bronze); color: var(--bronze); }
+  @media (min-width: 900px) { .fs-nav { display: flex; } .hint { display: none; } }
+  .track { list-style: none; margin: 0; padding: 0 0 16px; display: grid; grid-auto-flow: column; grid-auto-columns: min(82vw, 340px); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: 0; scrollbar-width: thin; }
+  .track li { scroll-snap-align: start; display: grid; }
+  .sc { display: grid; gap: 8px; align-content: start; text-decoration: none; background: var(--bg-2); border: 1px solid var(--line); padding: 0 0 24px; }
+  .sc:hover { border-color: var(--bronze); }
+  .sc img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; display: block; margin-block-end: 8px; }
+  .sc > :not(img) { margin-inline: 20px; }
+  .sc h3 { font-size: 1.75rem; }
+  .sc p { color: var(--fg-2); }
+  .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .alt { padding-block-start: 24px; background: var(--bg-3); }
+  .hint { color: var(--fg-2); }
+</style>

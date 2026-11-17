@@ -1,0 +1,154 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import HeroVideo from '../components/HeroVideo.astro';
+import FasiStrip from '../components/FasiStrip.astro';
+import Metodo from '../components/Metodo.astro';
+import Cartello from '../components/Cartello.astro';
+import Recensioni from '../components/Recensioni.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { impresa, waHref, telHref } from '../data/impresa';
+import privati from '../assets/foto/soggiorno-luce.webp';
+import condomini from '../assets/foto/balconi-condominio.webp';
+import aziende from '../assets/foto/ufficio-bianco.webp';
+import fFacciata from '../assets/foto/facciata-condominio.webp';
+import fMuro from '../assets/foto/muratura-mattoni.webp';
+import fUfficio from '../assets/foto/interno-controsoffitto.webp';
+
+const perChi = [
+  { tag: 'Privati', t: 'La tua casa', foto: privati, alt: 'Soggiorno ristrutturato e luminoso', li: ['Appartamenti da sistemare prima del trasloco', 'Una stanza, un bagno, una parete', 'Ristrutturazioni complete'], cta: 'Chiedi un sopralluogo', href: '/ristrutturazioni-chiavi-in-mano' },
+  { tag: 'Condomini e amministratori', t: 'Le parti comuni', foto: condomini, alt: 'Facciata di un condominio con balconi', li: ['Facciate, scale e androni', 'Preventivo chiaro da portare in assemblea', 'Impresa assicurata, personale formato sulla sicurezza'], cta: 'Vedi le facciate', href: '/facciate' },
+  { tag: 'Aziende e negozi', t: 'Uffici e locali', foto: aziende, alt: 'Ufficio bianco e luminoso', li: ['Pareti e controsoffitti in cartongesso', 'Rinnovo di uffici, negozi e locali', 'Lavori di qualsiasi dimensione'], cta: 'Vedi il cartongesso', href: '/cartongesso' },
+];
+---
+<Base
+  noindex={true}
+  title="El Gammal · Impresa edile a Sesto San Giovanni e Milano dal 2005"
+  description="Impresa edile a Sesto San Giovanni dal 2005: muratura, intonaci, rasature, cartongesso, facciate e ristrutturazioni chiavi in mano a Milano. Sopralluogo e preventivo gratuiti."
+>
+  <HeroVideo />
+
+  <section class="sec" id="servizi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Cosa facciamo</p>
+        <h2>Tutti i lavori di casa, <b>nell'ordine giusto</b>.</h2>
+        <p class="read">Ogni fase è un nostro servizio. Puoi affidarci tutta la ristrutturazione o solo il lavoro che ti serve.</p>
+      </div>
+      <FasiStrip />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="per-chi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Per chi lavoriamo</p>
+        <h2>Nessun lavoro <b>troppo piccolo</b>.</h2>
+        <p class="read">Lavoriamo per privati, condomini e aziende. Non c'è un importo minimo.</p>
+      </div>
+      <div class="who">
+        {perChi.map((c) => (
+          <article class="rv">
+            <Picture src={c.foto} alt={c.alt} formats={['avif']} fallbackFormat="webp" widths={[480, 760]} sizes="(min-width: 1000px) 400px, 92vw" loading="lazy" />
+            <div class="who-b">
+              <p class="mono">{c.tag}</p>
+              <h3>{c.t}</h3>
+              <ul class="tick">{c.li.map((l) => <li>{l}</li>)}</ul>
+              <a class="btn btn-s btn-sm" href={c.href}>{c.cta}</a>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="ex-note">Foto di esempio: verranno sostituite con i lavori veri.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="metodo">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">Come lavoriamo</p>
+        <h2>Un cantiere <b>organizzato</b> si vede dal primo giorno.</h2>
+        <p class="read">Prima di iniziare sai chi viene, cosa fa e in che ordine. Una persona sola risponde per tutto.</p>
+      </div>
+      <Metodo />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="cantieri">
+    <div class="wrap">
+      <div class="sec-head row-head">
+        <div class="stack" style="gap:16px">
+          <p class="mono">Cantieri</p>
+          <h2>Lavori <b>veri</b>, con nome e indirizzo.</h2>
+        </div>
+        <a class="btn btn-s" href="/lavori">Tutti i lavori</a>
+      </div>
+      <div class="signs">
+        <Cartello titolo="Rifacimento facciata" foto={fFacciata} alt="Facciata di un condominio" luogo={'Sesto San Giovanni <span class="todo">[da confermare]</span>'} lavori="Ripristino intonaco, rasatura, tinteggiatura" committente="Condominio" />
+        <Cartello titolo="Nuove pareti in muratura" foto={fMuro} alt="Parete in mattoni" luogo={'Milano <span class="todo">[da confermare]</span>'} lavori="Tramezzi, intonaco, rasatura" committente="Privato" />
+        <Cartello titolo="Uffici in cartongesso" foto={fUfficio} alt="Ufficio con controsoffitto" luogo={'Estero <span class="todo">[città]</span>'} lavori="Pareti e controsoffitti" committente="Azienda" />
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="estero">
+    <div class="wrap far">
+      <div class="stack">
+        <p class="mono">Dove lavoriamo</p>
+        <h2>Base a Sesto. <b>Cantieri anche all'estero.</b></h2>
+        <p class="read">Ogni giorno a Milano e nell'hinterland. Abbiamo lavorato anche in Germania, in Francia e nei Paesi arabi, con la stessa cura.</p>
+        <a class="btn btn-s" href="/dove-lavoriamo">Dove lavoriamo</a>
+      </div>
+      <ul class="coords">
+        <li class="home"><b>Sesto San Giovanni</b><span>45,53° N · 9,23° E · sede</span></li>
+        <li><b>Milano e hinterland</b><span>ogni giorno</span></li>
+        {impresa.estero.map((p) => <li><b>{p}</b><span>lavori eseguiti</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="recensioni">
+    <div class="wrap"><Recensioni /></div>
+  </section>
+
+  <section class="sec" id="contatti">
+    <div class="wrap contact">
+      <div class="stack">
+        <p class="mono">Contatti</p>
+        <h2>Apriamo il <b>tuo cantiere</b>?</h2>
+        <p class="read">Sopralluogo e preventivo gratuiti, per lavori di qualsiasi dimensione. Mandaci una foto su WhatsApp o lascia due righe qui.</p>
+        <div class="ctas">
+          <a class="btn btn-p" href={waHref()}>WhatsApp</a>
+          <a class="btn btn-s" href={telHref()}>Chiama {impresa.telefono ?? <span class="todo">[telefono]</span>}</a>
+        </div>
+        <p class="mono">{impresa.indirizzo.via} · {impresa.indirizzo.cap} {impresa.indirizzo.citta} ({impresa.indirizzo.provincia})</p>
+      </div>
+      <ContactForm id="home-form" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .who { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  @media (min-width: 900px) { .who { grid-template-columns: repeat(3, 1fr); } }
+  .who article { background: var(--bg); display: grid; align-content: start; }
+  .who :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .who-b { padding: 24px; display: grid; gap: 14px; }
+  .who-b .btn { justify-self: start; margin-block-start: 8px; }
+  .ex-note { margin-block-start: 12px; font: 500 1rem var(--f-m); color: var(--fg-2); }
+
+  .row-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+  .signs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+
+  .far { display: grid; gap: 40px; }
+  @media (min-width: 1000px) { .far { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .far .btn { justify-self: start; }
+  .coords { list-style: none; padding: 0; border-block-start: 1px solid var(--line); }
+  .coords li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-block: 18px; border-block-end: 1px solid var(--line); }
+  .coords b { font: 800 clamp(1.8rem, 4vw, 2.75rem)/1 var(--f-d); text-transform: uppercase; }
+  .coords li.home b { color: var(--bronze); }
+  .coords span { font: 500 1rem var(--f-m); color: var(--fg-2); }
+
+  .contact { display: grid; gap: 48px; }
+  @media (min-width: 1000px) { .contact { grid-template-columns: 1fr 1fr; align-items: start; } }
+</style>
