@@ -1,15 +1,26 @@
 ---
-import { telHref, waHref } from '../data/impresa';
+// Contatto rapido: due bottoni tondi in basso a destra, WhatsApp ed email (il telefono resta in Contatti, nel menu e in fondo).
+import { waHref, mailHref } from '../data/impresa';
 ---
 <nav class="dock" aria-label="Contatto rapido">
-  <a href={telHref()} data-track="chiama"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>Chiama</a>
-  <a href={waHref()} data-track="whatsapp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.4-4A8 8 0 1 1 8 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>WhatsApp</a>
-  <a class="main" href="/contatti">Sopralluogo gratis</a>
+  <a class="em" href={mailHref()} data-track="email" aria-label="Scrivici una email"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 7l9 6 9-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+  <a class="wa" href={waHref()} data-track="whatsapp" aria-label="Scrivici su WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1.4-4A8 8 0 1 1 8 19z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9.5 9.5c0 2.5 2.5 5 5 5l1-1.5-1.8-.8-.7.7c-.9-.4-1.5-1-1.9-1.9l.7-.7-.8-1.8z" fill="currentColor"/></svg></a>
 </nav>
 <style>
-  .dock { position: fixed; inset-inline: 0; inset-block-end: 0; z-index: 45; display: grid; grid-template-columns: 1fr 1fr 1.35fr; gap: 1px; background: var(--line); padding-block-end: env(safe-area-inset-bottom, 0px); border-block-start: 1px solid var(--line); }
-  .dock a { background: var(--bg-2); min-height: 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font: 700 1rem var(--f-b); text-transform: uppercase; text-decoration: none; padding-inline: 4px; text-align: center; }
-  .dock svg { width: 20px; height: 20px; }
-  .dock a.main { background: var(--bronze); color: var(--ink); }
-  @media (min-width: 1000px) { .dock { display: none; } }
+  .dock { position: fixed; z-index: 45; inset-inline-end: max(16px, env(safe-area-inset-right, 0px)); inset-block-end: calc(16px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; justify-items: center; }
+  .dock a { display: grid; place-items: center; border-radius: 50%; text-decoration: none; box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.55); transition: transform .2s var(--mech); }
+  .dock a:hover { transform: translateY(-2px); }
+  .dock .wa { width: 60px; height: 60px; background: #1f8f4e; color: #fff; }
+  .dock .wa svg { width: 30px; height: 30px; }
+  .dock .em { width: 48px; height: 48px; background: #fff; color: var(--ink); border: 1px solid var(--line-chiara); }
+  .dock .em svg { width: 22px; height: 22px; }
+  /* finché si vedono i bottoni dell'hero, i tasti tondi restano nascosti (non coprono niente) */
+  .dock { transition: opacity .25s, transform .25s var(--mech), visibility .25s; }
+  .dock.via { opacity: 0; visibility: hidden; transform: translateY(16px); }
+  .dock a:focus-visible { outline: 3px solid var(--bronze); outline-offset: 3px; }
 </style>
+<script>
+  const dock = document.querySelector<HTMLElement>('.dock');
+  const cta = document.querySelector('[data-hero-cta]');
+  if (dock && cta) new IntersectionObserver(([e]) => dock.classList.toggle('via', e.isIntersecting)).observe(cta);
+</script>

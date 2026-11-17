@@ -30,5 +30,7 @@ export const impresa = {
 export const segnaposto = (v: string | null, testo = 'da ricevere') => v ?? `[${testo}]`;
 
 export const telHref = () => (impresa.telefono ? `tel:${impresa.telefono.replace(/\s/g, '')}` : '/contatti');
+export const mailHref = (oggetto = 'Richiesta sopralluogo (dal sito)') =>
+  impresa.email ? `mailto:${impresa.email}?subject=${encodeURIComponent(oggetto)}` : '/contatti';
 export const waHref = (testo = 'Buongiorno, vorrei un sopralluogo gratuito. (dal sito)') =>
   impresa.whatsapp ? `https://wa.me/${impresa.whatsapp}?text=${encodeURIComponent(testo)}` : '/contatti';

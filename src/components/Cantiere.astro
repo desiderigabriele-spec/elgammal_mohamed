@@ -41,7 +41,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         <p class="mono">Il lavoro, fase per fase</p>
         <h2 class="ih">Una stanza. Otto fasi. <b>Un'impresa sola.</b></h2>
         <p class="d">Questa è una stanza com'era prima. Scorri e guardala cambiare: ogni fase è uno dei nostri servizi.</p>
-        <p class="hint mono" aria-hidden="true">Scorri ↓</p>
+        <p class="hint" aria-hidden="true"><span class="fr"><i></i><i></i><i></i></span>Scorri</p>
       </div>
       <ol class="fasi" aria-label="Le fasi di una ristrutturazione">
         {fasi.map((f, i) => (
@@ -88,7 +88,12 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
   .fase h3 { font-size: clamp(2.2rem, 9vw, 3.4rem); }
   .fase .d { color: var(--fg-2); max-width: 40ch; }
   .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; justify-self: start; }
-  .hint { color: var(--fg-2); display: none; }
+  /* invito a scorrere: tre frecce che si accendono in cascata (sparisce con l'introduzione) */
+  .hint { display: none; align-items: center; gap: 10px; color: var(--bronze); font: 500 1rem/1 var(--f-m); letter-spacing: .1em; text-transform: uppercase; margin-block-start: 8px; }
+  .fr { display: grid; justify-items: center; gap: 0; }
+  .fr i { width: 12px; height: 12px; border-inline-end: 2.5px solid currentColor; border-block-end: 2.5px solid currentColor; transform: rotate(45deg); margin-block-start: -4px; opacity: .2; animation: cascata 1.5s infinite; }
+  .fr i:nth-child(2) { animation-delay: .2s; } .fr i:nth-child(3) { animation-delay: .4s; }
+  @keyframes cascata { 30% { opacity: 1; } 60%, 100% { opacity: .2; } }
 
   /* con JavaScript: la scena resta ferma e cambia mentre scorri */
   @media (prefers-reduced-motion: no-preference) {
@@ -104,7 +109,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .fase { opacity: 0; transform: translateY(12px); pointer-events: none; }
     :global(.js:not(.no-seq)) .fase.on { opacity: 1; transform: none; pointer-events: auto; }
     :global(.js:not(.no-seq)) .intro.off { opacity: 0; transform: translateY(-12px); pointer-events: none; }
-    :global(.js:not(.no-seq)) .hint { display: block; }
+    :global(.js:not(.no-seq)) .hint { display: flex; }
   }
   /* telefono: numero e titolo della fase stanno sull'immagine, come un sottotitolo; sotto solo la spiegazione */
   @media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
@@ -120,7 +125,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .txt { position: absolute; inset-block: 0; inset-inline-start: 0; width: min(46%, 620px); padding: 0; }
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { inset-block-start: auto; inset-block-end: 12vh; inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)) 0; }
     :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }
-    :global(.js:not(.no-seq)) .ill { inset-block-start: auto; inset-block-end: 18px; }
+    :global(.js:not(.no-seq)) .ill { inset-block-start: 48px; inset-inline-end: max(32px, calc((100vw - 1240px) / 2 + 16px)); }
     :global(.js:not(.no-seq)) .bar { inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-start: 20px; border-radius: 999px; }
   }
 </style>

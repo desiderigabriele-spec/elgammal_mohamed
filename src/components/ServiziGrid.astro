@@ -1,37 +1,45 @@
 ---
+// Servizi in fila orizzontale. Ogni scheda ha l'immagine della fase corrispondente nella stanza che cambia.
+import { Picture } from 'astro:assets';
 import { servizi } from '../data/servizi';
-const [base, ...altri] = servizi;
+import Scorrevole from './Scorrevole.astro';
+import facciata from '../assets/foto/facciata-condominio.webp';
+// fotogramma della sequenza (public/sequenza) che mostra la fase di ogni servizio
+const fotogramma: Record<string, number> = {
+  'muratura': 35, 'intonaci-imbiancatura': 59, 'rasatura-pareti': 81, 'cartongesso': 71, 'impianti': 47, 'ristrutturazioni-chiavi-in-mano': 99,
+};
+const pad = (i: number) => String(i).padStart(3, '0');
 ---
-<div class="sg">
-  <a class="card base rv" href={`/${base.slug}`}>
-    <span class="tag">Il nostro punto di partenza</span>
-    <span class="n" aria-hidden="true">{base.num}</span>
-    <h3>{base.nome}</h3>
-    <p>{base.breve}</p>
-    <span class="go">Scopri la muratura <span aria-hidden="true">→</span></span>
-  </a>
-  {altri.map((s) => (
-    <a class="card rv" href={`/${s.slug}`}>
-      <span class="n" aria-hidden="true">{s.num}</span>
-      <h3>{s.nome}</h3>
-      <p>{s.breve}</p>
-      <span class="go">Scopri <span aria-hidden="true">→</span></span>
-    </a>
-  ))}
-</div>
+<Scorrevole etichetta="Servizi" w="min(80%, 340px)">
+  {servizi.map((s) => {
+    const f = fotogramma[s.slug];
+    return (
+      <a class="card" href={`/${s.slug}`}>
+        <div class="f">
+          {f !== undefined
+            ? <img src={`/sequenza/sm/f${pad(f)}.webp`} srcset={`/sequenza/sm/f${pad(f)}.webp 960w, /sequenza/hd/f${pad(f)}.webp 1280w`} sizes="340px" width="960" height="540" alt="" loading="lazy" decoding="async" />
+            : <Picture src={facciata} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />}
+          <span class="tag">{f !== undefined ? 'Ricostruzione 3D' : 'Foto di esempio'}</span>
+        </div>
+        <div class="b">
+          <span class="n" aria-hidden="true">{s.num}</span>
+          <h3>{s.nome}</h3>
+          <p>{s.breve}</p>
+          <span class="go">Scopri <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+    );
+  })}
+</Scorrevole>
 <style>
-  .sg { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-  @media (min-width: 700px) { .sg { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1100px) { .sg { grid-template-columns: repeat(4, 1fr); } }
-  .card { background: var(--bg); padding: 28px 24px; display: grid; gap: 12px; align-content: start; text-decoration: none; min-height: 44px; transition: background .2s steps(2); }
-  .card:hover { background: var(--bg-2); }
-  .card .n { font: 800 3rem/1 var(--f-d); color: #737b80; }
-  .card h3 { font-size: 1.75rem; }
-  .card p { color: var(--fg-2); }
-  .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-  .base { background: var(--bg-2); outline: 2px solid var(--bronze); outline-offset: -2px; }
-  @media (min-width: 700px) { .base { grid-row: span 2; } }
-  .base .n { color: var(--bronze); font-size: 4.5rem; }
-  .base h3 { font-size: 2.5rem; }
-  .tag { justify-self: start; background: var(--bronze); color: var(--ink); font: 500 1rem/1 var(--f-m); letter-spacing: .04em; text-transform: uppercase; padding: 8px 10px; }
+  .card { display: grid; grid-template-rows: auto 1fr; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; transition: border-color .2s; }
+  .card:hover { border-color: var(--bronze); }
+  .f { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #2a2724; }
+  .f img, .f :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tag { position: absolute; inset-inline-end: 8px; inset-block-start: 8px; background: rgba(17,20,22,.75); color: var(--fg); font: 500 1rem/1.2 var(--f-m); padding: 2px 8px; border-radius: 4px; }
+  .b { padding: 16px 20px 24px; display: grid; gap: 8px; align-content: start; }
+  .n { font: 500 1rem/1 var(--f-m); color: var(--bronze); letter-spacing: .08em; }
+  h3 { font-size: 1.75rem; }
+  p { color: var(--fg-2); }
+  .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-block-start: 4px; }
 </style>

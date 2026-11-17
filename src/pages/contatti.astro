@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Mappa from '../components/Mappa.astro';
-import { impresa, waHref, telHref } from '../data/impresa';
+import { impresa, waHref, telHref, mailHref } from '../data/impresa';
 ---
 <Base title="Contatti e preventivo gratuito | El Gammal, impresa edile Sesto San Giovanni" description="Richiedi un sopralluogo e un preventivo gratuiti a El Gammal, impresa edile in Via Guglielmo Marconi 124 a Sesto San Giovanni. WhatsApp, telefono o modulo.">
   <section class="sec gridbg first">
@@ -13,8 +13,8 @@ import { impresa, waHref, telHref } from '../data/impresa';
         <p class="lead">Per lavori di qualsiasi dimensione. Il modo più veloce: mandaci una foto del lavoro su WhatsApp.</p>
         <div class="ways">
           <a class="way" href={waHref()}><span class="mono">WhatsApp</span><b>{impresa.whatsapp ? `+${impresa.whatsapp}` : <span class="todo">[numero]</span>}</b><span>Manda anche le foto</span></a>
+          <a class="way" href={mailHref()}><span class="mono">Email</span><b>{impresa.email ?? <span class="todo">[indirizzo]</span>}</b><span>Rispondiamo per iscritto</span></a>
           <a class="way" href={telHref()}><span class="mono">Telefono</span><b>{impresa.telefono ?? <span class="todo">[numero]</span>}</b><span>Orari <span class="todo">[da ricevere]</span></span></a>
-          <div class="way"><span class="mono">Email</span><b>{impresa.email ?? <span class="todo">[indirizzo]</span>}</b></div>
         </div>
       </div>
       <ContactForm id="contatti-form" />

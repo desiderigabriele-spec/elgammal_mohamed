@@ -1,0 +1,61 @@
+---
+// Fila di schede che si scorre di lato: col dito su telefono, con le frecce sul computer.
+// Le schede sono i figli diretti (slot). --w è la larghezza di una scheda.
+interface Props { etichetta: string; w?: string }
+const { etichetta, w = 'min(80%, 340px)' } = Astro.props;
+---
+<div class="scv" data-scv style={`--w:${w}`}>
+  <div class="trk" role="region" aria-label={etichetta} tabindex="0"><slot /></div>
+  <div class="ui">
+    <div class="dots" aria-hidden="true"></div>
+    <div class="btns">
+      <button type="button" class="b" data-dir="-1" aria-label="Schede precedenti"><span aria-hidden="true">←</span></button>
+      <button type="button" class="b" data-dir="1" aria-label="Schede successive"><span aria-hidden="true">→</span></button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .scv { display: grid; gap: 16px; }
+  .trk {
+    display: flex; gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory;
+    margin-inline: calc(-1 * var(--gutter-s)) calc(-1 * var(--gutter-e)); padding-inline: var(--gutter-s) var(--gutter-e);
+    scroll-padding-inline: var(--gutter-s) var(--gutter-e); padding-block: 4px; scrollbar-width: none;
+  }
+  .trk::-webkit-scrollbar { display: none; }
+  .trk:focus-visible { outline: 2px solid var(--bronze); outline-offset: 4px; }
+  .trk > :global(*) { flex: 0 0 var(--w); scroll-snap-align: start; min-width: 0; }
+  .ui { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; }
+  .dots { display: flex; gap: 6px; }
+  .dots :global(i) { width: 8px; height: 8px; border-radius: 4px; background: var(--line); transition: width .25s var(--mech), background .25s; }
+  .dots :global(i.on) { width: 24px; background: var(--bronze); }
+  .btns { display: none; gap: 8px; }
+  .b { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 700 1.25rem/1 var(--f-b); cursor: pointer; }
+  .b:hover:not(:disabled) { background: var(--bronze); color: var(--ink); border-color: var(--bronze); }
+  .b:disabled { opacity: .35; cursor: default; }
+  .scv.fit .ui { display: none; }
+  @media (min-width: 900px) { .btns { display: flex; } }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-scv]').forEach((scv) => {
+    const trk = scv.querySelector<HTMLElement>('.trk')!;
+    const dots = scv.querySelector<HTMLElement>('.dots')!;
+    const [prev, next] = [...scv.querySelectorAll<HTMLButtonElement>('.b')];
+    const items = [...trk.children] as HTMLElement[];
+    dots.innerHTML = '<i></i>'.repeat(items.length);
+    const passo = () => (items[1] ? items[1].offsetLeft - items[0].offsetLeft : trk.clientWidth);
+    const upd = () => {
+      const max = trk.scrollWidth - trk.clientWidth;
+      scv.classList.toggle('fit', max < 4);
+      const k = max < 4 ? 0 : Math.min(items.length - 1, Math.round(trk.scrollLeft / passo()));
+      const last = trk.scrollLeft >= max - 4;
+      [...dots.children].forEach((d, i) => d.classList.toggle('on', last ? i === items.length - 1 : i === k));
+      prev.disabled = trk.scrollLeft < 4; next.disabled = last;
+    };
+    [prev, next].forEach((b) => b.addEventListener('click', () => trk.scrollBy({ left: Number(b.dataset.dir) * passo(), behavior: 'smooth' })));
+    trk.addEventListener('scroll', upd, { passive: true });
+    addEventListener('resize', upd);
+    upd();
+  });
+</script>
