@@ -41,7 +41,6 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         <p class="mono">Il lavoro, fase per fase</p>
         <h2 class="ih">Una stanza. Otto fasi. <b>Un'impresa sola.</b></h2>
         <p class="d">Questa è una stanza com'era prima. Scorri e guardala cambiare: ogni fase è uno dei nostri servizi.</p>
-        <p class="hint" aria-hidden="true"><span class="fr"><i></i><i></i><i></i></span>Scorri</p>
       </div>
       <ol class="fasi" aria-label="Le fasi di una ristrutturazione">
         {fasi.map((f, i) => (
@@ -58,6 +57,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         ))}
       </ol>
     </div>
+    <p class="hint" aria-hidden="true"><span class="fr"><i></i><i></i><i></i></span>Scorri</p>
   </div>
   {n > 0 && (
     <noscript><img src={ultimo} alt="La stessa stanza dopo la ristrutturazione" width="1280" height="720" /></noscript>
@@ -109,7 +109,9 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .fase { opacity: 0; transform: translateY(12px); pointer-events: none; }
     :global(.js:not(.no-seq)) .fase.on { opacity: 1; transform: none; pointer-events: auto; }
     :global(.js:not(.no-seq)) .intro.off { opacity: 0; transform: translateY(-12px); pointer-events: none; }
-    :global(.js:not(.no-seq)) .hint { display: flex; }
+    /* resta visibile per tutta la stanza, in basso a sinistra (a destra ci sono i tasti WhatsApp ed email); sparisce all'ultima fase */
+    :global(.js:not(.no-seq)) .hint { display: flex; position: absolute; z-index: 4; inset-inline-start: var(--gutter-s); inset-block-end: 28px; margin: 0; transition: opacity .3s; }
+    :global(.js:not(.no-seq)) .cant.fine .hint { opacity: 0; }
   }
   /* telefono: numero e titolo della fase stanno sull'immagine, come un sottotitolo; sotto solo la spiegazione */
   @media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
@@ -127,6 +129,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }
     :global(.js:not(.no-seq)) .ill { inset-block-start: 48px; inset-inline-end: max(32px, calc((100vw - 1240px) / 2 + 16px)); }
     :global(.js:not(.no-seq)) .bar { inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-start: 20px; border-radius: 999px; }
+    :global(.js:not(.no-seq)) .hint { inset-inline-start: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-end: 4vh; color: #b7a58c; }
   }
 </style>
 
@@ -178,6 +181,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         intro.classList.toggle('off', fi >= 0);
         items.forEach((it, i) => it.classList.toggle('on', i === fi));
         bars.forEach((b, i) => { b.classList.toggle('fatto', i < fi); b.classList.toggle('ora', i === fi); });
+        sec!.classList.toggle('fine', fi === fasi.length - 1);
         draw();
       }
       const onScroll = () => { if (!ticking && visible) { ticking = true; requestAnimationFrame(update); } };
