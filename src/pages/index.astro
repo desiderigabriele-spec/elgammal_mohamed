@@ -1,6 +1,7 @@
 ---
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
 import Cantiere from '../components/Cantiere.astro';
 import ServiziGrid from '../components/ServiziGrid.astro';
 import Metodo from '../components/Metodo.astro';
@@ -25,14 +26,15 @@ const perChi = [
   title="El Gammal · Impresa edile a Sesto San Giovanni e Milano dal 2005"
   description="Impresa edile a Sesto San Giovanni dal 2005: muratura, intonaci, rasature, cartongesso, facciate e ristrutturazioni chiavi in mano a Milano. Sopralluogo e preventivo gratuiti."
 >
+  <Hero />
   <Cantiere />
 
   <section class="sec" id="servizi">
     <div class="wrap">
       <div class="sec-head">
         <p class="mono">Servizi</p>
-        <h2>Ogni strato del tuo muro, <b>una sola impresa</b>.</h2>
-        <p class="read">Muratura, intonaci, rasature, cartongesso, impianti e facciate. Sopralluogo e preventivo gratuiti, per lavori di qualsiasi dimensione.</p>
+        <h2>Ti serve un lavoro solo? <b>Va bene lo stesso.</b></h2>
+        <p class="read">Ogni fase che hai visto è anche un servizio a sé. E fuori casa rifacciamo le facciate di case e condomini.</p>
       </div>
       <ServiziGrid />
     </div>

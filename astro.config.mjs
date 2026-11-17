@@ -19,7 +19,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/404') && !page.includes('/anteprima'),
+      filter: (page) => !page.includes('/404'),
       i18n: { defaultLocale: 'it', locales: { it: 'it-IT' } },
     }),
   ],
