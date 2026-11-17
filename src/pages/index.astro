@@ -2,6 +2,7 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import Rotta from '../components/Rotta.astro';
 import Cantiere from '../components/Cantiere.astro';
 import ServiziGrid from '../components/ServiziGrid.astro';
 import Metodo from '../components/Metodo.astro';
@@ -31,6 +32,7 @@ const perChi = [
   description="Impresa edile a Sesto San Giovanni dal 2005: muratura, intonaci, rasature, cartongesso, facciate e ristrutturazioni chiavi in mano a Milano. Sopralluogo e preventivo gratuiti."
 >
   <Hero />
+  <Rotta />
   <Cantiere />
 
   <section class="sec" id="servizi">
@@ -105,21 +107,6 @@ const perChi = [
     </div>
   </section>
 
-  <section class="sec" id="estero">
-    <div class="wrap far">
-      <div class="stack">
-        <p class="mono">Dove lavoriamo</p>
-        <h2>Base a Sesto. <b>Cantieri anche all'estero.</b></h2>
-        <p class="read">Ogni giorno a Milano e nell'hinterland. Abbiamo lavorato anche in Germania, in Francia e nei Paesi arabi, con la stessa cura.</p>
-        <a class="btn btn-s" href="/dove-lavoriamo">Dove lavoriamo</a>
-      </div>
-      <ul class="coords">
-        <li class="home"><b>Sesto San Giovanni</b><span>la nostra sede</span></li>
-        <li><b>Milano e hinterland</b><span>ogni giorno</span></li>
-        {impresa.estero.map((p) => <li><b>{p}</b><span>lavori eseguiti</span></li>)}
-      </ul>
-    </div>
-  </section>
 
   <!-- "Cosa dicono i clienti": torna quando ci sono le recensioni vere su Google (componente Recensioni.astro) -->
 
@@ -159,15 +146,6 @@ const perChi = [
   .st-b h3 { font-size: 1.9rem; }
   .st-b p { color: #dfe2e4; margin: 0; }
   .st-b .ex { justify-self: start; margin-block-start: 6px; font: 500 1rem var(--f-m); background: rgba(236,234,230,.16); padding: 2px 8px; border-radius: 4px; }
-
-  .far { display: grid; gap: 40px; }
-  @media (min-width: 1000px) { .far { grid-template-columns: 1fr 1fr; align-items: start; } }
-  .far .btn { justify-self: start; }
-  .coords { list-style: none; padding: 0; border-block-start: 1px solid var(--line); }
-  .coords li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-block: 18px; border-block-end: 1px solid var(--line); }
-  .coords b { font: 800 clamp(1.8rem, 4vw, 2.75rem)/1 var(--f-d); text-transform: uppercase; }
-  .coords li.home b { color: var(--bronze); }
-  .coords span { font: 500 1rem var(--f-m); color: var(--fg-2); }
 
   .contact { display: grid; gap: 48px; }
   @media (min-width: 1000px) { .contact { grid-template-columns: 1fr 1fr; align-items: start; } }

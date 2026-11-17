@@ -1,9 +1,9 @@
 import type { ImageMetadata } from 'astro';
-import muratura from '../assets/foto/muratura-mattoni.webp';
-import imbianchino from '../assets/foto/imbianchino.webp';
-import rasato from '../assets/foto/soggiorno-rasato.webp';
-import controsoffitto from '../assets/foto/interno-controsoffitto.webp';
-import cantiere from '../assets/foto/cantiere-prima.webp';
+import muratura from '../assets/servizi/muratura.webp';
+import imbianchino from '../assets/servizi/intonaci.webp';
+import rasato from '../assets/servizi/rasatura.webp';
+import impianti from '../assets/servizi/impianti.webp';
+import controsoffitto from '../assets/servizi/cartongesso.webp';
 import facciata from '../assets/foto/facciata-condominio.webp';
 import soggiorno from '../assets/foto/soggiorno-bianco.webp';
 
@@ -18,6 +18,7 @@ export interface Servizio {
   spessore: string; // quota mostrata nel disegno
   foto: ImageMetadata;
   fotoAlt: string;
+  fotoNota?: string; // scritta sotto la foto (predefinita: "Foto di esempio")
   intro: string;
   problema: { titolo: string; testo: string; segni: string[] };
   soluzione: { titolo: string; testo: string; include: string[] };
@@ -55,7 +56,8 @@ export const servizi: Servizio[] = [
     h1: 'Muratura a Sesto San Giovanni e Milano',
     spessore: '8–30 cm',
     foto: muratura,
-    fotoAlt: 'Parete in mattoni appena costruita',
+    fotoAlt: 'Tramezzo nuovo in blocchi di laterizio con l\'apertura per la porta',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'Pareti nuove, tramezzi, aperture e chiusure. È lo strato che regge tutti gli altri: se il muro è dritto, intonaco, rasatura e pittura vengono meglio e durano di più.',
     problema: {
@@ -109,7 +111,8 @@ export const servizi: Servizio[] = [
     h1: 'Intonaci e imbiancatura a Sesto San Giovanni e Milano',
     spessore: '1,5–2 cm',
     foto: imbianchino,
-    fotoAlt: 'Imbianchino al lavoro su una parete',
+    fotoAlt: 'Parete con l\'intonaco grigio e la prima mano di bianco, scala e rullo',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'L\'intonaco prepara il muro, la pittura lo finisce, il sottofondo prepara il pavimento. Sono gli strati che si vedono di più: devono essere fatti bene.',
     problema: {
@@ -163,7 +166,8 @@ export const servizi: Servizio[] = [
     h1: 'Rasatura pareti a Sesto San Giovanni e Milano',
     spessore: '2–3 mm',
     foto: rasato,
-    fotoAlt: 'Soggiorno con pareti lisce e chiare',
+    fotoAlt: 'Parete rasata a stucco con spatole e lampada da cantiere',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'Pochi millimetri che fanno la differenza: pareti e soffitti lisci, senza onde e senza giunte che si vedono. Dentro e fuori casa.',
     problema: {
@@ -232,7 +236,8 @@ export const servizi: Servizio[] = [
     h1: 'Cartongesso a Sesto San Giovanni e Milano',
     spessore: 'lastra 12,5 mm',
     foto: controsoffitto,
-    fotoAlt: 'Interno luminoso con controsoffitto',
+    fotoAlt: 'Controparete e controsoffitto in cartongesso con i profili metallici',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'Pareti nuove, contropareti, controsoffitti con luci incassate, nicchie e velette. Il cartongesso cambia una stanza in pochi giorni e con poca polvere.',
     problema: {
@@ -289,8 +294,9 @@ export const servizi: Servizio[] = [
       'Impianti coordinati con le opere murarie nelle ristrutturazioni a Sesto San Giovanni e Milano: tracce, passaggi e rifacimento impianti. Preventivo gratuito.',
     h1: 'Impianti nelle ristrutturazioni a Sesto San Giovanni e Milano',
     spessore: 'dietro le pareti',
-    foto: cantiere,
-    fotoAlt: 'Stanza in ristrutturazione con le pareti aperte',
+    foto: impianti,
+    fotoAlt: 'Muro con le tracce aperte, tubi per acqua ed elettricità e scatole incassate',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'Gli impianti stanno dentro i muri: per questo vanno fatti insieme alle opere murarie, nello stesso cantiere e con lo stesso referente.',
     problema: {

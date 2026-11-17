@@ -60,7 +60,7 @@ const strato = s.num === '=' ? 'Tutti gli strati · un\'impresa sola' : `Strato 
         </div>
         <figure class="hero-img">
           <Picture src={s.foto} alt={s.fotoAlt} formats={['avif']} fallbackFormat="webp" widths={[480, 760, 960]} sizes="(min-width: 1000px) 46vw, 92vw" loading="eager" fetchpriority="high" />
-          <figcaption>Foto di esempio</figcaption>
+          <figcaption>{s.fotoNota ?? 'Foto di esempio'}</figcaption>
         </figure>
       </div>
     </div>

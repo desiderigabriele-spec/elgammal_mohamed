@@ -24,6 +24,7 @@ export const impresa = {
   // Indirizzo a cui inviare il modulo (es. Formspree, Web3Forms). Se vuoto, il modulo apre WhatsApp.
   moduloEndpoint: null as string | null,
   zone: ['Sesto San Giovanni', 'Milano', 'Cinisello Balsamo', 'Cologno Monzese', 'Bresso', 'Monza'],
+  italia: true, // lavora anche nel resto d'Italia (confermato dall'agenzia)
   estero: ['Germania', 'Francia', 'Paesi arabi'],
 };
 

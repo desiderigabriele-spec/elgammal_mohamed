@@ -44,7 +44,7 @@ const business: Record<string, unknown> = {
     addressCountry: i.paese,
   },
   geo: { '@type': 'GeoCoordinates', latitude: impresa.geo.lat, longitude: impresa.geo.lng },
-  areaServed: [...impresa.zone.map((z) => ({ '@type': 'City', name: z })), { '@type': 'Country', name: 'Germania' }, { '@type': 'Country', name: 'Francia' }],
+  areaServed: [...impresa.zone.map((z) => ({ '@type': 'City', name: z })), { '@type': 'Country', name: 'Italia' }, { '@type': 'Country', name: 'Germania' }, { '@type': 'Country', name: 'Francia' }],
   knowsAbout: servizi.map((s) => s.nome),
   hasOfferCatalog: {
     '@type': 'OfferCatalog',

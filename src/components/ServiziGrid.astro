@@ -1,25 +1,20 @@
 ---
-// Servizi in fila orizzontale. Ogni scheda ha l'immagine della fase corrispondente nella stanza che cambia.
+// Servizi in fila orizzontale, ognuno con la sua immagine.
+// Le ristrutturazioni chiavi in mano usano l'ultima immagine della stanza che cambia.
 import { Picture } from 'astro:assets';
 import { servizi } from '../data/servizi';
 import Scorrevole from './Scorrevole.astro';
-import facciata from '../assets/foto/facciata-condominio.webp';
-// fotogramma della sequenza (public/sequenza) che mostra la fase di ogni servizio
-const fotogramma: Record<string, number> = {
-  'muratura': 35, 'intonaci-imbiancatura': 59, 'rasatura-pareti': 81, 'cartongesso': 71, 'impianti': 47, 'ristrutturazioni-chiavi-in-mano': 99,
-};
-const pad = (i: number) => String(i).padStart(3, '0');
 ---
 <Scorrevole etichetta="Servizi" w="min(80%, 340px)">
   {servizi.map((s) => {
-    const f = fotogramma[s.slug];
+    const finale = s.slug === 'ristrutturazioni-chiavi-in-mano';
     return (
       <a class="card" href={`/${s.slug}`}>
         <div class="f">
-          {f !== undefined
-            ? <img src={`/sequenza/sm/f${pad(f)}.webp`} srcset={`/sequenza/sm/f${pad(f)}.webp 960w, /sequenza/hd/f${pad(f)}.webp 1280w`} sizes="340px" width="960" height="540" alt="" loading="lazy" decoding="async" />
-            : <Picture src={facciata} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />}
-          <span class="tag">{f !== undefined ? 'Ricostruzione 3D' : 'Foto di esempio'}</span>
+          {finale
+            ? <img src="/sequenza/sm/f099.webp" srcset="/sequenza/sm/f099.webp 960w, /sequenza/hd/f099.webp 1280w" sizes="340px" width="960" height="540" alt="" loading="lazy" decoding="async" />
+            : <Picture src={s.foto} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />}
+          <span class="tag">{finale ? 'Ricostruzione 3D' : (s.fotoNota ?? 'Foto di esempio')}</span>
         </div>
         <div class="b">
           <span class="n" aria-hidden="true">{s.num}</span>
