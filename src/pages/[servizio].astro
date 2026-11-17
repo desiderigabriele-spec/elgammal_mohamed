@@ -2,7 +2,6 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Faq from '../components/Faq.astro';
-import Recensioni from '../components/Recensioni.astro';
 import ContactForm from '../components/ContactForm.astro';
 import Cartello from '../components/Cartello.astro';
 import { servizi, type Servizio } from '../data/servizi';
@@ -127,11 +126,10 @@ const strato = s.num === '=' ? 'Tutti gli strati · un\'impresa sola' : `Strato 
     <div class="wrap">
       <div class="sec-head">
         <p class="mono">Le prove</p>
-        <h2>Lavori e <b>recensioni</b>.</h2>
+        <h2>Un lavoro <b>di questo tipo</b>.</h2>
       </div>
       <div class="proofs">
         <Cartello titolo={s.nome} foto={s.foto} alt={s.fotoAlt} luogo={'<span class="todo">[da inserire]</span>'} lavori={s.soluzione.include.slice(0, 2).join(', ')} committente="Esempio" />
-        <Recensioni />
       </div>
       <p><a class="more" href="/lavori">Vedi tutti i lavori →</a></p>
     </div>

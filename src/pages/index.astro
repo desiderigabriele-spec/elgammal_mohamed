@@ -6,7 +6,6 @@ import Cantiere from '../components/Cantiere.astro';
 import ServiziGrid from '../components/ServiziGrid.astro';
 import Metodo from '../components/Metodo.astro';
 import Cartello from '../components/Cartello.astro';
-import Recensioni from '../components/Recensioni.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { impresa, waHref, telHref } from '../data/impresa';
 import privati from '../assets/foto/soggiorno-luce.webp';
@@ -108,9 +107,7 @@ const perChi = [
     </div>
   </section>
 
-  <section class="sec gridbg" id="recensioni">
-    <div class="wrap"><Recensioni /></div>
-  </section>
+  <!-- "Cosa dicono i clienti": torna quando ci sono le recensioni vere su Google (componente Recensioni.astro) -->
 
   <section class="sec" id="contatti">
     <div class="wrap contact">
