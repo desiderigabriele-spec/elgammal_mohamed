@@ -1,5 +1,6 @@
 ---
 // Striscia di fiducia tra l'hero e la stanza 3D: da Sesto San Giovanni fino all'estero, su una linea tratteggiata.
+// Su telefono scorre da sola all'infinito (la seconda copia serve solo a far girare il nastro senza salti).
 const tappe = [
   { t: 'Sesto San Giovanni', s: 'la sede', casa: true },
   { t: 'Milano', s: 'e hinterland' },
@@ -11,30 +12,55 @@ const tappe = [
 <section class="rotta" aria-label="Dove lavoriamo">
   <div class="wrap in">
     <p class="k">Dal 2005 · base a Sesto, cantieri in tutta Italia e all'estero</p>
-    <ol class="linea">
-      {tappe.map((t, i) => (
-        <>
-          {i > 0 && <li class="tratto" aria-hidden="true"></li>}
-          <li class:list={['tappa', { casa: t.casa }]}><i aria-hidden="true"></i><b>{t.t}</b><span>{t.s}</span></li>
-        </>
-      ))}
-    </ol>
+    <div class="vista">
+      <div class="nastro">
+        {[0, 1].map((copia) => (
+          <ol class:list={['linea', { copia: copia === 1 }]} aria-hidden={copia === 1 ? 'true' : undefined}>
+            {tappe.map((t, i) => (
+              <>
+                {i > 0 && <li class="tratto" aria-hidden="true"></li>}
+                <li class:list={['tappa', { casa: t.casa }]}><i aria-hidden="true"></i><b>{t.t}</b><span>{t.s}</span></li>
+              </>
+            ))}
+            <li class="tratto giro" aria-hidden="true"></li>
+          </ol>
+        ))}
+      </div>
+    </div>
   </div>
 </section>
 <style>
   .rotta { background: var(--bg-2); border-block: 1px solid var(--line); }
   .in { padding-block: 20px 16px; display: grid; gap: 14px; }
   .k { font: 500 1rem/1.35 var(--f-m); letter-spacing: .04em; text-transform: uppercase; color: var(--fg-2); }
-  .linea { list-style: none; margin: 0; padding: 0 0 6px; display: flex; align-items: flex-start; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter-s)) calc(-1 * var(--gutter-e)); padding-inline: var(--gutter-s) var(--gutter-e); }
-  .linea::-webkit-scrollbar { display: none; }
+  .vista { overflow: hidden; margin-inline: calc(-1 * var(--gutter-s)) calc(-1 * var(--gutter-e)); }
+  .nastro { display: flex; width: max-content; animation: giro 24s linear infinite; }
+  .vista:hover .nastro, .vista:active .nastro { animation-play-state: paused; }
+  @keyframes giro { to { transform: translateX(-50%); } }
+  .linea { list-style: none; margin: 0; padding: 0 0 6px; display: flex; align-items: flex-start; }
   .tappa { flex: none; display: grid; justify-items: start; gap: 4px; max-width: 11rem; }
   .tappa i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bronze); background: var(--bg-2); }
   .tappa.casa i { background: var(--bronze); }
-  .tappa b { font: 800 1.25rem/1.05 var(--f-d); text-transform: uppercase; }
+  .tappa b { font: 800 1.25rem/1.05 var(--f-d); text-transform: uppercase; white-space: nowrap; }
   .tappa.casa b { color: var(--bronze); }
-  .tappa span { font-size: 1rem; color: var(--fg-2); line-height: 1.2; }
-  .tratto { flex: 1 0 40px; height: 2px; margin: 6px 10px 0; background: repeating-linear-gradient(90deg, var(--bronze-fill) 0 6px, transparent 6px 11px); background-size: 22px 2px; animation: punti 1.2s linear infinite; }
+  .tappa span { font-size: 1rem; color: var(--fg-2); line-height: 1.2; white-space: nowrap; }
+  .tratto { flex: none; width: 56px; height: 2px; margin: 6px 12px 0; background: repeating-linear-gradient(90deg, var(--bronze-fill) 0 6px, transparent 6px 11px); background-size: 22px 2px; animation: punti 1.2s linear infinite; }
   @keyframes punti { to { background-position: 22px 0; } }
-  @media (prefers-reduced-motion: reduce) { .tratto { animation: none; } }
-  @media (min-width: 900px) { .in { padding-block: 24px 20px; } .tappa b { font-size: 1.5rem; } }
+  /* chi chiede meno movimento: niente nastro automatico, si scorre col dito */
+  @media (prefers-reduced-motion: reduce) {
+    .vista { overflow-x: auto; scrollbar-width: none; }
+    .nastro, .tratto { animation: none; }
+    .copia, .giro { display: none; }
+    .linea { padding-inline: var(--gutter-s) var(--gutter-e); }
+  }
+  /* computer: tutto sta in una riga, quindi resta fermo */
+  @media (min-width: 900px) {
+    .in { padding-block: 24px 20px; }
+    .vista { margin-inline: 0; }
+    .nastro { width: auto; animation: none; }
+    .copia, .giro { display: none; }
+    .linea { width: 100%; }
+    .tratto { flex: 1 0 40px; width: auto; }
+    .tappa b { font-size: 1.5rem; }
+  }
 </style>
