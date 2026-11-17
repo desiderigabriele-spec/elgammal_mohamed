@@ -4,21 +4,20 @@
 // Se i fotogrammi mancano, la sezione mostra solo l'immagine fissa e i testi.
 import fs from 'node:fs';
 import path from 'node:path';
-import { waHref } from '../data/impresa';
 
 const dir = path.join(process.cwd(), 'public', 'sequenza', 'hd');
 const n = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.webp')).length : 0;
 const pad = (i: number) => String(i).padStart(3, '0');
 // fasi: [primo fotogramma, ultimo fotogramma] della sequenza (100 fotogrammi)
 const fasi = [
-  { a: 0, b: 7, n: 'Fase 1 di 8', t: 'Il sopralluogo', d: 'Veniamo a vedere com\'è oggi. Sopralluogo e preventivo gratuiti.', href: '/contatti', link: 'Richiedi il sopralluogo' },
-  { a: 8, b: 19, n: 'Fase 2 di 8', t: 'Si comincia', d: 'Proteggiamo il pavimento, togliamo il vecchio e portiamo via le macerie.', href: '/ristrutturazioni-chiavi-in-mano', link: 'Ristrutturazioni chiavi in mano' },
-  { a: 20, b: 35, n: 'Strato 01', t: 'La muratura', d: 'Il nuovo tramezzo sale fila dopo fila, a piombo. È la base di tutto.', href: '/muratura', link: 'Scopri la muratura' },
-  { a: 36, b: 47, n: 'Strato 05', t: 'Gli impianti', d: 'Tracce dritte e ordinate: ogni muro si apre una volta sola.', href: '/impianti', link: 'Scopri gli impianti' },
-  { a: 48, b: 59, n: 'Strato 02', t: 'Gli intonaci', d: 'L\'intonaco copre mattoni e tracce e regolarizza le pareti.', href: '/intonaci-imbiancatura', link: 'Scopri gli intonaci' },
-  { a: 60, b: 71, n: 'Strato 04', t: 'Il cartongesso', d: 'Profili e lastre: il controsoffitto con la veletta per le luci.', href: '/cartongesso', link: 'Scopri il cartongesso' },
-  { a: 72, b: 81, n: 'Strato 03', t: 'La rasatura', d: 'Pochi millimetri: pareti e soffitto lisci, senza onde.', href: '/rasatura-pareti', link: 'Scopri la rasatura' },
-  { a: 82, b: 99, n: 'Fase 8 di 8', t: 'Casa tua', d: 'L\'ultima mano di colore, il parquet, le luci. Un\'impresa sola dall\'inizio alla fine.', href: '/contatti', link: 'Apriamo il tuo cantiere' },
+  { a: 0, b: 7, t: 'Il sopralluogo', d: 'Veniamo a vedere la casa com\'è oggi e ascoltiamo cosa ti serve. Poi ti diamo un preventivo chiaro. Tutto gratis.', href: '/contatti', link: 'Prenota il sopralluogo' },
+  { a: 8, b: 19, t: 'Si comincia', d: 'Proteggiamo quello che resta, togliamo il vecchio e portiamo via le macerie.', href: '/ristrutturazioni-chiavi-in-mano', link: 'Ristrutturazioni chiavi in mano' },
+  { a: 20, b: 35, t: 'La muratura', d: 'Nuove pareti, aperture e chiusure, dritte e a piombo. Tutto quello che viene dopo si appoggia qui.', href: '/muratura', link: 'Scopri la muratura' },
+  { a: 36, b: 47, t: 'Gli impianti', d: 'Tracce ordinate per luce, acqua e riscaldamento, fatte insieme alle opere murarie.', href: '/impianti', link: 'Scopri gli impianti' },
+  { a: 48, b: 59, t: 'Gli intonaci', d: 'L\'intonaco chiude le tracce e rende le pareti regolari, pronte per la finitura.', href: '/intonaci-imbiancatura', link: 'Scopri gli intonaci' },
+  { a: 60, b: 71, t: 'Il cartongesso', d: 'Controsoffitti, velette e contropareti: nascondono gli impianti e portano la luce dove serve.', href: '/cartongesso', link: 'Scopri il cartongesso' },
+  { a: 72, b: 81, t: 'La rasatura', d: 'Pochi millimetri di stucco: pareti e soffitti lisci, senza onde, anche con la luce di lato.', href: '/rasatura-pareti', link: 'Scopri la rasatura' },
+  { a: 82, b: 99, t: 'Casa tua', d: 'L\'ultima mano di colore e la stanza è pronta. Dal primo mattone all\'ultima mano di colore, un\'impresa sola.', href: '/contatti', link: 'Prenota il sopralluogo gratuito', cta: true },
 ];
 const primo = n ? `/sequenza/hd/f000.webp` : '';
 const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
@@ -30,7 +29,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       {n > 0 && (
         <picture>
           <source media="(max-width: 899px)" srcset="/sequenza/sm/f000.webp" />
-          <img class="first" src={primo} alt="Una stanza di un appartamento anni '60 prima della ristrutturazione" width="1280" height="720" fetchpriority="high" decoding="async" />
+          <img class="first" src={primo} alt="Una stanza di un appartamento anni '60 prima della ristrutturazione" width="1280" height="720" loading="lazy" decoding="async" />
         </picture>
       )}
       <canvas aria-hidden="true"></canvas>
@@ -39,21 +38,20 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     </div>
     <div class="txt">
       <div class="intro" data-intro>
-        <p class="mono">Impresa edile · Sesto San Giovanni · dal 2005</p>
-        <h1>Dal primo <b>mattone</b> all'ultima mano di colore.</h1>
-        <div class="ctas">
-          <a class="btn btn-p" href="/contatti">Sopralluogo gratuito</a>
-          <a class="btn btn-s" href={waHref()}>Scrivi su WhatsApp</a>
-        </div>
-        <p class="hint mono" aria-hidden="true">Scorri: guarda la stanza che cambia ↓</p>
+        <p class="mono">Il lavoro, fase per fase</p>
+        <h2 class="ih">Una stanza. Otto fasi. <b>Un'impresa sola.</b></h2>
+        <p class="d">Questa è una stanza com'era prima. Scorri e guardala cambiare: ogni fase è uno dei nostri servizi.</p>
+        <p class="hint mono" aria-hidden="true">Scorri ↓</p>
       </div>
       <ol class="fasi" aria-label="Le fasi di una ristrutturazione">
         {fasi.map((f, i) => (
           <li class="fase" data-i={i}>
-            <p class="mono">{f.n}</p>
-            <h2>{f.t}</h2>
+            <p class="mono">Fase {i + 1} di {fasi.length}</p>
+            <h3>{f.t}</h3>
             <p class="d">{f.d}</p>
-            <a class="go" href={f.href}>{f.link} <span aria-hidden="true">→</span></a>
+            {f.cta
+              ? <a class="btn btn-p" href={f.href}>{f.link}</a>
+              : <a class="go" href={f.href}>{f.link} <span aria-hidden="true">→</span></a>}
           </li>
         ))}
       </ol>
@@ -78,9 +76,12 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
   .bar b { position: absolute; inset-block: 0; inset-inline-start: 0; width: calc(var(--p, 0) * 100%); background: var(--bronze); }
   .txt { padding: 24px var(--gutter-e) 48px var(--gutter-s); display: grid; gap: 32px; }
   .intro, .fase { display: grid; gap: 12px; }
-  .intro h1 { font-size: clamp(2.1rem, 9vw, 3rem); }
+  .intro .ih { font-size: clamp(2.1rem, 9vw, 3rem); }
+  .intro .ih b { color: var(--bronze); }
+  .intro .d { color: var(--fg-2); max-width: 40ch; }
+  .fase .btn { justify-self: start; }
   .fasi { list-style: none; margin: 0; padding: 0; display: grid; gap: 32px; }
-  .fase h2 { font-size: clamp(2.2rem, 9vw, 3.4rem); }
+  .fase h3 { font-size: clamp(2.2rem, 9vw, 3.4rem); }
   .fase .d { color: var(--fg-2); max-width: 40ch; }
   .go { color: var(--bronze); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; justify-self: start; }
   .hint { color: var(--fg-2); display: none; }
@@ -104,7 +105,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,20,22,.88) 0%, rgba(17,20,22,.6) 34%, rgba(17,20,22,0) 62%); pointer-events: none; }
     :global(.js:not(.no-seq)) .txt { position: absolute; inset-block: 0; inset-inline-start: 0; width: min(46%, 620px); padding: 0; }
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { inset-block-start: auto; inset-block-end: 12vh; inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)) 0; }
-    :global(.js:not(.no-seq)) .intro h1, :global(.js:not(.no-seq)) .fase h2 { font-size: clamp(3rem, 5vw, 4.6rem); }
+    :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }
     :global(.js:not(.no-seq)) .ill { inset-block-start: auto; inset-block-end: 18px; }
   }
 </style>
@@ -161,8 +162,10 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
           im.src = `/sequenza/${set}/f${pad(i)}.webp`; imgs[i] = im;
         }
       };
-      const start = () => { size(); load(); update(); };
-      if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true });
+      let started = false;
+      const start = () => { if (started) return; started = true; size(); load(); update(); };
+      const near = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { near.disconnect(); if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true }); } }, { rootMargin: '150% 0px' });
+      near.observe(sec);
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', size);
       new IntersectionObserver((es) => es.forEach((e) => { visible = e.isIntersecting; if (visible) onScroll(); })).observe(sec);
