@@ -18,7 +18,7 @@ export interface Servizio {
   spessore: string; // quota mostrata nel disegno
   foto: ImageMetadata;
   fotoAlt: string;
-  fotoNota?: string; // scritta sotto la foto (predefinita: "Foto di esempio")
+  fotoNota?: string; // scritta facoltativa sulla foto (es. "Foto di esempio")
   intro: string;
   problema: { titolo: string; testo: string; segni: string[] };
   soluzione: { titolo: string; testo: string; include: string[] };
@@ -57,7 +57,6 @@ export const servizi: Servizio[] = [
     spessore: '8–30 cm',
     foto: muratura,
     fotoAlt: 'Tramezzo nuovo in blocchi di laterizio con l\'apertura per la porta',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'Pareti nuove, tramezzi, aperture e chiusure. È lo strato che regge tutti gli altri: se il muro è dritto, intonaco, rasatura e pittura vengono meglio e durano di più.',
     problema: {
@@ -112,7 +111,6 @@ export const servizi: Servizio[] = [
     spessore: '1,5–2 cm',
     foto: imbianchino,
     fotoAlt: 'Parete con l\'intonaco grigio e la prima mano di bianco, scala e rullo',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'L\'intonaco prepara il muro, la pittura lo finisce, il sottofondo prepara il pavimento. Sono gli strati che si vedono di più: devono essere fatti bene.',
     problema: {
@@ -167,7 +165,6 @@ export const servizi: Servizio[] = [
     spessore: '2–3 mm',
     foto: rasato,
     fotoAlt: 'Parete rasata a stucco con spatole e lampada da cantiere',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'Pochi millimetri che fanno la differenza: pareti e soffitti lisci, senza onde e senza giunte che si vedono. Dentro e fuori casa.',
     problema: {
@@ -237,7 +234,6 @@ export const servizi: Servizio[] = [
     spessore: 'lastra 12,5 mm',
     foto: controsoffitto,
     fotoAlt: 'Controparete e controsoffitto in cartongesso con i profili metallici',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'Pareti nuove, contropareti, controsoffitti con luci incassate, nicchie e velette. Il cartongesso cambia una stanza in pochi giorni e con poca polvere.',
     problema: {
@@ -296,7 +292,6 @@ export const servizi: Servizio[] = [
     spessore: 'dietro le pareti',
     foto: impianti,
     fotoAlt: 'Muro con le tracce aperte, tubi per acqua ed elettricità e scatole incassate',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'Gli impianti stanno dentro i muri: per questo vanno fatti insieme alle opere murarie, nello stesso cantiere e con lo stesso referente.',
     problema: {
@@ -347,7 +342,6 @@ export const servizi: Servizio[] = [
     spessore: 'lato esterno',
     foto: facciata,
     fotoAlt: 'Facciata di condominio: una parte rifatta color sabbia, una parte rovinata e una col ponteggio',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'La facciata è il lato che vede tutto il quartiere. Ripristiniamo intonaci, rasiamo e tinteggiamo, per case singole e condomini.',
     problema: {
@@ -409,7 +403,6 @@ export const servizi: Servizio[] = [
     spessore: 'tutti gli strati',
     foto: soggiorno,
     fotoAlt: 'Stanza appena ristrutturata: pareti bianche, parquet in rovere, controsoffitto con faretti',
-    fotoNota: 'Immagine illustrativa',
     intro:
       'Muratura, impianti, intonaci, rasature, cartongesso e pittura: tutti gli strati della tua casa con un\'impresa sola e un referente solo.',
     problema: {

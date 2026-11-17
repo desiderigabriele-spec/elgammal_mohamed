@@ -9,7 +9,7 @@ import Scorrevole from './Scorrevole.astro';
       <a class="card" href={`/${s.slug}`}>
         <div class="f">
           <Picture src={s.foto} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />
-          <span class="tag">{s.fotoNota ?? 'Foto di esempio'}</span>
+          {s.fotoNota && <span class="tag">{s.fotoNota}</span>}
         </div>
         <div class="b">
           <span class="n" aria-hidden="true">{s.num}</span>
