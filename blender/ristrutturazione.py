@@ -299,7 +299,7 @@ for nm, loc, sz in [('bs_fondo_sx', (WIN_X0 / 2, RD - 0.006, 0.04), (WIN_X0, 0.0
 
 # modelli 3D veri (Poly Haven, CC0) in blender/modelli
 MOD = os.path.join(HERE, 'modelli')
-def importa(nome, loc, rz=0.0, scala=1.0, visible_from=None, hidden_from=None, rx=0.0):
+def importa(nome, loc, rz=0.0, scala=1.0, visible_from=None, hidden_from=None, rx=0.0, appoggia=None):
     import glob
     f = glob.glob(os.path.join(MOD, nome, '*.blend'))
     if not f: print('MANCA', nome); return []
@@ -311,6 +311,11 @@ def importa(nome, loc, rz=0.0, scala=1.0, visible_from=None, hidden_from=None, r
         scn.collection.objects.link(o)
         if o.parent is None: o.parent = root
     root.location = loc; root.rotation_euler = (rx, 0, rz); root.scale = (scala,) * 3
+    if appoggia is not None:  # porta il punto piu basso del modello esattamente a quota 'appoggia'
+        from mathutils import Vector
+        bpy.context.view_layer.update()
+        zmin = min((o.matrix_world @ Vector(c)).z for o in obs if o.type == 'MESH' for c in o.bound_box)
+        root.location.z += appoggia - zmin
     for o in obs:
         if o.type == 'MESH': key_hide(o, visible_from=visible_from, hidden_from=hidden_from)
     return obs
@@ -474,7 +479,7 @@ M_RAD_NEW = simple_mat('termosifone_nuovo', (0.93, 0.93, 0.92, 1), 0.3)
 rad = box('termosifone_nuovo', (2.15, RD - 0.07, 0.42), (1.0, 0.06, 0.5), M_RAD_NEW, bevel=0.01)
 key_hide(rad, visible_from=P['p7'][0] + 20)
 importa('Sofa_01', (1.95, 2.4, 0.01), rz=0.0, scala=1.3, visible_from=P['p7'][0] + 22)
-importa('throw_pillows_01', (1.25, 2.5, 0.5), rz=0.25, scala=0.85, visible_from=P['p7'][0] + 26)
+importa('throw_pillows_01', (1.55, 2.55, 0.5), rz=0.15, scala=0.8, appoggia=0.56, visible_from=P['p7'][0] + 26)
 M_RUG = fabric_mat('tappeto', (0.42, 0.38, 0.33, 1), 0.25)
 fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
 rug = box('tappeto', (1.95, 1.35, 0.008), (2.4, 1.7, 0.012), M_RUG, bevel=0.004)
@@ -492,7 +497,7 @@ LL = bpy.data.lights.new('luce_lampada', 'POINT'); LL.shadow_soft_size = 0.15; L
 LL.energy = 0; LL.keyframe_insert('energy', frame=P['p7'][0] + 24); LL.energy = 45; LL.keyframe_insert('energy', frame=P['p7'][0] + 32)
 lo = bpy.data.objects.new('luce_lampada', LL); scn.collection.objects.link(lo); lo.location = (3.9, 2.4, 1.5)
 # pianta
-importa('potted_plant_02', (0.5, 3.9, 0.17), rz=0.6, scala=1.7, visible_from=P['p7'][0] + 26)
+importa('potted_plant_02', (0.5, 3.6, 0.0), rz=0.6, scala=1.35, appoggia=0.01, visible_from=P['p7'][0] + 26)
 
 # ------------------------------------------------------------------ luce: mattina -> tramonto
 world = bpy.data.worlds.new('mondo'); scn.world = world; world.use_nodes = True
