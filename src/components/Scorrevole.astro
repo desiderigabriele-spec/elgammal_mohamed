@@ -31,7 +31,7 @@ const { etichetta, w = 'min(80%, 340px)' } = Astro.props;
   .dots :global(i.on) { width: 24px; background: var(--bronze); }
   .btns { display: none; gap: 8px; }
   .b { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--fg); font: 700 1.25rem/1 var(--f-b); cursor: pointer; }
-  .b:hover:not(:disabled) { background: var(--bronze); color: var(--ink); border-color: var(--bronze); }
+  .b:hover:not(:disabled) { background: var(--bronze-fill); color: var(--ink); border-color: var(--bronze); }
   .b:disabled { opacity: .35; cursor: default; }
   .scv.fit .ui { display: none; }
   @media (min-width: 900px) { .btns { display: flex; } }

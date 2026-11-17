@@ -66,17 +66,17 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
 
 <style>
   /* base (senza JavaScript o con "riduci movimento"): immagine e fasi in elenco */
-  .cant { position: relative; background: #111416; }
+  .cant { position: relative; background: var(--bg); }
   .stick { position: relative; }
   .frame { position: relative; aspect-ratio: 16 / 9; width: 100%; background: #2a2724; overflow: hidden; }
   .frame img, .frame canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .frame canvas { opacity: 0; }
   .frame.live canvas { opacity: 1; }
-  .ill { position: absolute; inset-inline-end: 8px; inset-block-start: 18px; background: rgba(17,20,22,.72); color: var(--fg-2); font: 500 1rem var(--f-m); padding: 2px 8px; }
+  .ill { position: absolute; inset-inline-end: 8px; inset-block-start: 18px; background: rgba(17,20,22,.72); color: #dfe2e4; font: 500 1rem var(--f-m); padding: 2px 8px; }
   .bar { position: absolute; inset-inline: 0; inset-block-start: 0; z-index: 2; display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; padding: 6px 8px; background: rgba(17,20,22,.6); }
   .bar i { height: 4px; border-radius: 2px; background: rgba(236,234,230,.25); transition: background .3s; }
   .bar i.fatto { background: #7d705d; }
-  .bar i.ora { background: var(--bronze); }
+  .bar i.ora { background: var(--bronze-fill); }
   .fh { display: grid; gap: 8px; }
   .txt { padding: 24px var(--gutter-e) 48px var(--gutter-s); display: grid; gap: 32px; }
   .intro, .fase { display: grid; gap: 12px; }
@@ -114,7 +114,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
   /* telefono: numero e titolo della fase stanno sull'immagine, come un sottotitolo; sotto solo la spiegazione */
   @media (prefers-reduced-motion: no-preference) and (max-width: 899px) {
     :global(.js:not(.no-seq)) .frame::after { content: ''; position: absolute; inset-inline: 0; inset-block-end: 0; height: 55%; background: linear-gradient(180deg, rgba(17,20,22,0), rgba(17,20,22,.9)); pointer-events: none; }
-    :global(.js:not(.no-seq)) .fh { position: absolute; inset-inline: 0; inset-block-end: calc(100% + 20px + 16px); z-index: 3; }
+    :global(.js:not(.no-seq)) .fh { position: absolute; inset-inline: 0; inset-block-end: calc(100% + 20px + 16px); z-index: 3; --fg: #eceae6; --fg-2: #c9cdd0; --bronze: #b7a58c; color: var(--fg); }
     :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(2.2rem, 10vw, 3rem); }
     :global(.js:not(.no-seq)) .fase .mono { color: var(--bronze); }
   }
@@ -122,7 +122,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .stick { display: block; }
     :global(.js:not(.no-seq)) .frame { position: absolute; inset: 0; aspect-ratio: auto; height: 100%; }
     :global(.js:not(.no-seq)) .frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,20,22,.88) 0%, rgba(17,20,22,.6) 34%, rgba(17,20,22,0) 62%); pointer-events: none; }
-    :global(.js:not(.no-seq)) .txt { position: absolute; inset-block: 0; inset-inline-start: 0; width: min(46%, 620px); padding: 0; }
+    :global(.js:not(.no-seq)) .txt { position: absolute; inset-block: 0; inset-inline-start: 0; width: min(46%, 620px); padding: 0; --fg: #eceae6; --fg-2: #c9cdd0; --bronze: #b7a58c; color: var(--fg); }
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { inset-block-start: auto; inset-block-end: 12vh; inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)) 0; }
     :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }
     :global(.js:not(.no-seq)) .ill { inset-block-start: 48px; inset-inline-end: max(32px, calc((100vw - 1240px) / 2 + 16px)); }

@@ -10,24 +10,26 @@
 @font-face { font-family: 'Barlow Riserva'; src: local('Arial'), local('Roboto'), local('Helvetica'); size-adjust: 96%; ascent-override: 100%; descent-override: 20%; }
 
 /* Marchio El Gammal · direzione B "Strato per strato".
-   Colori dal logo. Contrasti verificati: testo 13,2:1, secondario 8,1:1, bronzo 6,6:1, bottone 5,8:1.
+   Colori dal logo. Fondo chiaro color pietra; il bronzo scuro è per i testi, quello chiaro per i fondi dei bottoni.
    Proprietà logiche (inline/block) ovunque: il layout si gira da solo per l'arabo (dir="rtl"). */
 :root {
-  --bg: #1f2326;
-  --bg-2: #272c30;
-  --bg-3: #15181a;
-  --line: #3d4448;
-  --grid: rgba(183, 165, 140, 0.06);
-  --fg: #eceae6;
-  --fg-2: #b4babe;
-  --bronze: #b7a58c;
+  /* sito chiaro color pietra (come l'hero) */
+  --bg: #e9e7e2;
+  --bg-2: #f6f4f0;
+  --bg-3: #e0dcd5;
+  --line: #cfcac1;
+  --grid: rgba(110, 93, 71, 0.07);
+  --fg: #23272a;
+  --fg-2: #4a5055;
+  --bronze: #66563f;       /* bronzo scuro: testi e accenti su fondo chiaro */
+  --bronze-fill: #b7a58c;  /* bronzo chiaro: fondi di bottoni e barre, con testo scuro sopra */
   --bronze-hover: #cdbda6;
   --bronze-logo: #8b7962;
-  --paper: #e9e7e2;
+  --paper: #fbfaf8;
   --ink: #292d30;
   --ink-2: #4a5055;
   --line-chiara: #d3cec5;
-  --bronze-testo: #6e5d47; /* bronzo scuro per testo su fondo chiaro (5:1) */
+  --bronze-testo: #66563f;
   --brick: #a0704f;
   --todo-bg: #5a3d12;
   --todo-fg: #ffe3b8;
@@ -41,7 +43,7 @@
   --mech: cubic-bezier(0.7, 0, 0.2, 1);
   --gutter-s: max(16px, env(safe-area-inset-left, 0px));
   --gutter-e: max(16px, env(safe-area-inset-right, 0px));
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -75,7 +77,7 @@ h4 { font-size: 1.375rem; font-weight: 800; }
 h1 b, h2 b, h3 b { color: var(--bronze); font-weight: 800; }
 strong { font-weight: 700; color: var(--fg); }
 
-.skip { position: absolute; inset-inline-start: 16px; inset-block-start: -100px; background: var(--bronze); color: var(--ink); padding: 12px 16px; z-index: 100; font-weight: 700; }
+.skip { position: absolute; inset-inline-start: 16px; inset-block-start: -100px; background: var(--bronze-fill); color: var(--ink); padding: 12px 16px; z-index: 100; font-weight: 700; }
 .skip:focus { inset-block-start: 16px; }
 
 .wrap { max-width: 1240px; margin-inline: auto; padding-inline-start: var(--gutter-s); padding-inline-end: var(--gutter-e); }
@@ -102,10 +104,10 @@ strong { font-weight: 700; color: var(--fg); }
   text-decoration: none; border: 2px solid transparent; cursor: pointer; border-radius: 999px;
   transition: background 0.2s steps(2), color 0.2s steps(2), border-color 0.2s steps(2);
 }
-.btn-p { background: var(--bronze); color: var(--ink); }
+.btn-p { background: var(--bronze-fill); color: var(--ink); }
 .btn-p:hover { background: var(--bronze-hover); }
 .btn-s { border-color: var(--fg); color: var(--fg); background: transparent; }
-.btn-s:hover { background: var(--fg); color: var(--ink); }
+.btn-s:hover { background: var(--fg); color: var(--bg); }
 .btn-sm { min-height: 44px; padding-inline: 16px; }
 .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
 .gratis { font: 500 1rem var(--f-m); color: var(--fg-2); }
@@ -126,7 +128,7 @@ strong { font-weight: 700; color: var(--fg); }
 @media (prefers-reduced-motion: reduce) { .js .rv { opacity: 1; transform: none; transition: none; } }
 
 /* superfici chiare (moduli, cartelli) */
-.paper { background: var(--paper); color: var(--ink); }
+.paper { background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
 .paper .read, .paper p { color: var(--ink-2); }
 .paper strong { color: var(--ink); }
 
