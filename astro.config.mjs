@@ -9,7 +9,8 @@ const SITE = process.env.SITE_URL || 'https://elgammalmohamed.vercel.app';
 export default defineConfig({
   site: SITE,
   trailingSlash: 'never',
-  build: { format: 'file' },
+  // stili dentro la pagina: niente file CSS separato che blocca la prima visualizzazione
+  build: { format: 'file', inlineStylesheets: 'always' },
   // Lingue: italiano senza prefisso, le altre in /en, /fr, /de, /ar (pagine in src/pages/[lang]/).
   // L'arabo usa dir="rtl" (vedi src/i18n/lingue.ts).
   i18n: {
@@ -24,5 +25,6 @@ export default defineConfig({
     }),
   ],
   image: { responsiveStyles: false },
-  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
+  // precarica una pagina solo quando il dito o il mouse ci vanno sopra (niente consumo di dati inutile)
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
 });

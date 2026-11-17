@@ -195,9 +195,11 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       // carica prima il primo fotogramma di ogni fase, poi uno ogni 8, poi tutti gli altri
       const inizi = new Set(fasi.map(([a]) => a));
       const order = [...Array(n).keys()].sort((a, b) => Number(inizi.has(b)) - Number(inizi.has(a)) || (a % 8) - (b % 8) || a - b);
-      let next = 0, inflight = 0;
+      // a tappe: quando la sezione è vicina solo il primo fotogramma di ogni fase (8 immagini);
+      // tutti gli altri solo quando si scorre verso la stanza. Chi non ci arriva non scarica niente di più.
+      let next = 0, inflight = 0, limite = inizi.size;
       const load = () => {
-        while (inflight < 6 && next < order.length) {
+        while (inflight < 6 && next < Math.min(limite, order.length)) {
           const i = order[next++]; const im = new Image(); im.decoding = 'async';
           inflight++; im.onload = im.onerror = () => { inflight--; if (Math.abs(i - want) < 3) draw(); load(); };
           im.src = `/sequenza/${set}/f${pad(i)}.webp`; imgs[i] = im;
@@ -207,6 +209,12 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       const start = () => { if (started) return; started = true; size(); load(); update(); };
       const near = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { near.disconnect(); if (document.readyState === 'complete') start(); else addEventListener('load', start, { once: true }); } }, { rootMargin: '150% 0px' });
       near.observe(sec);
+      // seconda tappa: quando chi visita ha davvero scorso verso la stanza (il suo inizio è nella metà alta dello schermo)
+      const tutto = () => {
+        if (limite >= n || sec!.getBoundingClientRect().top > innerHeight * 0.6) return;
+        limite = n; removeEventListener('scroll', tutto); start(); load();
+      };
+      addEventListener('scroll', tutto, { passive: true });
       addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', size);
       new IntersectionObserver((es) => es.forEach((e) => { visible = e.isIntersecting; if (visible) onScroll(); })).observe(sec);
