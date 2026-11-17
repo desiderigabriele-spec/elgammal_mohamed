@@ -86,7 +86,7 @@ def new_mat(name):
     return m, m.node_tree
 
 # ------------------------------------------------------------------ materiale a strati con "passata"
-def layered_material(name, layers, tex_scale_m=1.0, base_transparent=False):
+def layered_material(name, layers, tex_scale_m=1.0, base_transparent=False, rough_add=0.0):
     """layers: lista di (nome_texture o colore, fotogramma_inizio, fotogramma_fine, tinta)
     Ogni strato copre il precedente con una passata lungo la lunghezza della superficie (coordinata Generated X)."""
     m, nt = new_mat(name); n, l = nt.nodes, nt.links
@@ -100,7 +100,10 @@ def layered_material(name, layers, tex_scale_m=1.0, base_transparent=False):
     col = rough = nor = None; alpha = None
     for i, (tname, f0, f1, tint) in enumerate(layers):
         if isinstance(tname, tuple):
-            c = n.new('ShaderNodeRGB'); c.outputs[0].default_value = tname; t = {'diff': c.outputs[0], 'rough': None, 'nor': None}
+            c = n.new('ShaderNodeRGB'); c.outputs[0].default_value = tname
+            rg = n.new('ShaderNodeRGB'); rg.outputs[0].default_value = (0.82, 0.82, 0.82, 1)   # pittura opaca
+            fn = n.new('ShaderNodeRGB'); fn.outputs[0].default_value = (0.5, 0.5, 1.0, 1)      # superficie liscia
+            t = {'diff': c.outputs[0], 'rough': rg.outputs[0], 'nor': fn.outputs[0]}
         else:
             t = tex_set(nt, tname, tex_scale_m, tc.outputs['Object'], x=-900 - i * 60)
         tcol = t['diff']
@@ -125,7 +128,9 @@ def layered_material(name, layers, tex_scale_m=1.0, base_transparent=False):
         if base_transparent and i == 1: alpha = fac.outputs[0]
     l.new(col, bsdf.inputs['Base Color'])
     if rough is not None:
-        rr = n.new('ShaderNodeSeparateColor'); l.new(rough, rr.inputs[0]); l.new(rr.outputs[0], bsdf.inputs['Roughness'])
+        rr = n.new('ShaderNodeSeparateColor'); l.new(rough, rr.inputs[0])
+        ra = n.new('ShaderNodeMath'); ra.operation = 'ADD'; ra.use_clamp = True; ra.inputs[1].default_value = rough_add
+        l.new(rr.outputs[0], ra.inputs[0]); l.new(ra.outputs[0], bsdf.inputs['Roughness'])
     if nor is not None:
         nm = n.new('ShaderNodeNormalMap'); nm.inputs['Strength'].default_value = 0.8
         l.new(nor, nm.inputs['Color']); l.new(nm.outputs['Normal'], bsdf.inputs['Normal'])
@@ -236,8 +241,8 @@ M_CEIL = layered_material('soffitto', [
 # pavimento: graniglia -> parquet
 M_FLOOR = layered_material('pavimento', [
     ('terrazzo_tiles', 0, 0, None),
-    ('herringbone_parquet', P['p7'][0] + 6, P['p7'][0] + 24, None),
-], 1.2)
+    ('laminate_floor_02', P['p7'][0] + 6, P['p7'][0] + 24, None),
+], 2.0, rough_add=0.1)
 
 # struttura (gusci) delle pareti, invisibili dall'interno ma servono a chiudere la luce
 M_SHELL = simple_mat('guscio', (0.5, 0.5, 0.5, 1), 0.9)
@@ -292,11 +297,23 @@ for nm, loc, sz in [('bs_fondo_sx', (WIN_X0 / 2, RD - 0.006, 0.04), (WIN_X0, 0.0
                     ('bs_sx', (0.006, RD / 2, 0.04), (0.012, RD, 0.08))]:
     key_hide(box(nm, loc, sz, M_SKIRT), visible_from=P['p7'][0] + 22)
 
-# vista dalla finestra: tetti e cielo (sagome lontane)
-M_CITY = tex_mat('palazzi', 'painted_plaster_wall', 3.0, tint=(0.75, 0.68, 0.6, 1))
-for i in range(9):
-    x = -6 + i * 2.1 + random.uniform(-0.5, 0.5); h = random.uniform(1.0, 5.5)
-    box(f'palazzo{i}', (x, 22 + random.uniform(0, 8), h / 2 - 2.0), (random.uniform(1.6, 3.2), 4, h), M_CITY)
+# modelli 3D veri (Poly Haven, CC0) in blender/modelli
+MOD = os.path.join(HERE, 'modelli')
+def importa(nome, loc, rz=0.0, scala=1.0, visible_from=None, hidden_from=None, rx=0.0):
+    import glob
+    f = glob.glob(os.path.join(MOD, nome, '*.blend'))
+    if not f: print('MANCA', nome); return []
+    with bpy.data.libraries.load(f[0], link=False) as (src, dst):
+        dst.objects = src.objects
+    obs = [o for o in dst.objects if o is not None and o.type in ('MESH', 'EMPTY')]
+    root = bpy.data.objects.new(nome, None); scn.collection.objects.link(root)
+    for o in obs:
+        scn.collection.objects.link(o)
+        if o.parent is None: o.parent = root
+    root.location = loc; root.rotation_euler = (rx, 0, rz); root.scale = (scala,) * 3
+    for o in obs:
+        if o.type == 'MESH': key_hide(o, visible_from=visible_from, hidden_from=hidden_from)
+    return obs
 
 # ------------------------------------------------------------------ fase 0: vecchio
 M_RAD_OLD = simple_mat('termosifone_vecchio', (0.62, 0.6, 0.56, 1), 0.45, metal=0.3)
@@ -314,12 +331,17 @@ sh = plane('telo', (RW / 2, RD / 2 - 0.2, 0.03), (RW - 0.1, RD - 0.2), (0, 0, 0)
 key_hide(sh, visible_from=P['p1'][0] + 1, hidden_from=P['p7'][0] + 11)
 md = sh.modifiers.new('sub', 'SUBSURF'); md.subdivision_type = 'SIMPLE'; md.levels = 5; md.render_levels = 6
 dsp = sh.modifiers.new('onde', 'DISPLACE'); tx = bpy.data.textures.new('onde_telo', 'CLOUDS'); tx.noise_scale = 0.6; dsp.texture = tx; dsp.strength = 0.02; dsp.mid_level = 0.0
-M_BAG = fabric_mat('sacco', (0.8, 0.8, 0.78, 1), 0.3)
-for i, (x, y) in enumerate([(0.35, 1.0), (0.75, 0.95), (0.4, 1.45), (0.55, 1.2)]):
-    o = box(f'sacco{i}', (x, y, 0.22), (0.42, 0.42, 0.44), M_BAG, bevel=0.1)
-    o.rotation_euler[2] = random.uniform(-0.4, 0.4)
-    md = o.modifiers.new('sub', 'SUBSURF'); md.levels = 1; md.render_levels = 2
-    key_hide(o, visible_from=P['p1'][0] + 10 + i * 3, hidden_from=P['p4'][0] + 2 + i)
+for i, (x, y, r) in enumerate([(0.4, 2.3, 0.3), (0.95, 2.15, -0.5), (0.45, 2.9, 1.2), (1.0, 2.75, 2.4)]):
+    importa('trashbag', (x, y, 0.03), rz=r, scala=0.95, visible_from=P['p1'][0] + 10 + i * 3, hidden_from=P['p4'][0] + 2 + i)
+# attrezzi di cantiere: compaiono con il lavoro, spariscono prima della consegna
+FINE = P['p7'][0]
+importa('cement_bag', (3.0, 2.25, 0.03), rz=0.2, visible_from=P['p2'][0], hidden_from=P['p4'][1])
+importa('cement_bag', (3.05, 2.2, 0.21), rz=-0.15, visible_from=P['p2'][0], hidden_from=P['p4'][0] + 12)
+importa('plastic_crate_01', (2.45, 2.5, 0.03), rz=0.5, visible_from=P['p2'][0] + 2, hidden_from=FINE)
+importa('trowel_01', (2.45, 2.5, 0.3), rz=1.9, rx=math.radians(90), visible_from=P['p2'][0] + 2, hidden_from=FINE)
+importa('Drill_01', (1.5, 3.3, 0.03), rz=2.2, visible_from=P['p3'][0], hidden_from=FINE)
+importa('wooden_ladder_02', (2.85, 3.25, 0.03), rz=0.9, visible_from=P['p3'][0] + 2, hidden_from=FINE)
+importa('cardboard_box_01', (0.5, 3.4, 0.2), rz=0.3, visible_from=P['p5'][0], hidden_from=FINE)
 
 # ------------------------------------------------------------------ fase 2: tramezzo in mattoni che sale fila per fila
 M_BRICKS = [simple_mat(f'mattone{i}', (0.42 + random.uniform(-.06, .05), 0.17 + random.uniform(-.03, .03), 0.09, 1), 0.85) for i in range(5)]
@@ -451,29 +473,14 @@ for k, x in enumerate([0.8, 1.9, 3.0, 4.0]):
 M_RAD_NEW = simple_mat('termosifone_nuovo', (0.93, 0.93, 0.92, 1), 0.3)
 rad = box('termosifone_nuovo', (2.15, RD - 0.07, 0.42), (1.0, 0.06, 0.5), M_RAD_NEW, bevel=0.01)
 key_hide(rad, visible_from=P['p7'][0] + 20)
-M_SOFA = fabric_mat('divano', (0.34, 0.29, 0.23, 1), 0.5)
-fade_material(M_SOFA, f_in=(P['p7'][0] + 22, P['p7'][0] + 30))
-sofa_parts = [
-    ('div_base', (1.9, 2.15, 0.22), (2.2, 0.95, 0.3)),
-    ('div_schienale', (1.9, 2.55, 0.55), (2.2, 0.22, 0.5)),
-    ('div_br_sx', (0.86, 2.15, 0.38), (0.2, 0.95, 0.42)),
-    ('div_br_dx', (2.94, 2.15, 0.38), (0.2, 0.95, 0.42)),
-    ('div_cuscino_a', (1.42, 2.05, 0.43), (0.9, 0.72, 0.14)),
-    ('div_cuscino_b', (2.38, 2.05, 0.43), (0.9, 0.72, 0.14)),
-]
-for nm, loc, sz in sofa_parts:
-    o = box(nm, loc, sz, M_SOFA, bevel=0.035)
-    key_hide(o, visible_from=P['p7'][0] + 22)
+importa('Sofa_01', (1.95, 2.4, 0.01), rz=0.0, scala=1.3, visible_from=P['p7'][0] + 22)
+importa('throw_pillows_01', (1.25, 2.5, 0.5), rz=0.25, scala=0.85, visible_from=P['p7'][0] + 26)
 M_RUG = fabric_mat('tappeto', (0.42, 0.38, 0.33, 1), 0.25)
 fade_material(M_RUG, f_in=(P['p7'][0] + 20, P['p7'][0] + 28))
 rug = box('tappeto', (1.95, 1.35, 0.008), (2.4, 1.7, 0.012), M_RUG, bevel=0.004)
 key_hide(rug, visible_from=P['p7'][0] + 20)
-M_WOOD = tex_mat('legno', 'herringbone_parquet', 0.4, tint=(0.6, 0.45, 0.32, 1))
-fade_material(M_WOOD, f_in=(P['p7'][0] + 24, P['p7'][0] + 32))
-for nm, loc, sz in [('tavolino', (1.95, 1.2, 0.36), (0.9, 0.5, 0.04)),
-                    ('tav_g1', (1.6, 1.0, 0.17), (0.04, 0.04, 0.34)), ('tav_g2', (2.3, 1.0, 0.17), (0.04, 0.04, 0.34)),
-                    ('tav_g3', (1.6, 1.4, 0.17), (0.04, 0.04, 0.34)), ('tav_g4', (2.3, 1.4, 0.17), (0.04, 0.04, 0.34))]:
-    key_hide(box(nm, loc, sz, M_WOOD, bevel=0.005), visible_from=P['p7'][0] + 24)
+importa('side_table_01', (3.45, 2.3, 0.01), rz=-0.3, scala=0.95, visible_from=P['p7'][0] + 24)
+importa('potted_plant_04', (3.45, 2.3, 0.53), scala=1.3, visible_from=P['p7'][0] + 28)
 M_BLACK = simple_mat('metallo_nero', (0.05, 0.05, 0.05, 1), 0.35, metal=0.8)
 fade_material(M_BLACK, f_in=(P['p7'][0] + 24, P['p7'][0] + 32))
 lamp = [cyl('lamp_base', (3.9, 2.4, 0.01), 0.14, 0.02, (0, 0, 0), M_BLACK), cyl('lamp_asta', (3.9, 2.4, 0.75), 0.012, 1.5, (0, 0, 0), M_BLACK)]
@@ -485,27 +492,24 @@ LL = bpy.data.lights.new('luce_lampada', 'POINT'); LL.shadow_soft_size = 0.15; L
 LL.energy = 0; LL.keyframe_insert('energy', frame=P['p7'][0] + 24); LL.energy = 45; LL.keyframe_insert('energy', frame=P['p7'][0] + 32)
 lo = bpy.data.objects.new('luce_lampada', LL); scn.collection.objects.link(lo); lo.location = (3.9, 2.4, 1.5)
 # pianta
-M_POT = simple_mat('vaso', (0.75, 0.72, 0.68, 1), 0.7)
-M_LEAF = simple_mat('foglie', (0.12, 0.25, 0.1, 1), 0.5)
-fade_material(M_POT, f_in=(P['p7'][0] + 26, P['p7'][0] + 34)); fade_material(M_LEAF, f_in=(P['p7'][0] + 26, P['p7'][0] + 34))
-plant = [cyl('vaso', (0.5, 3.8, 0.2), 0.18, 0.4, (0, 0, 0), M_POT)]
-for k in range(14):
-    a = k * 2.4; r = 0.08 + (k % 4) * 0.05; h = 0.55 + (k % 5) * 0.12
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=0.12, location=(0.5 + math.cos(a) * r, 3.8 + math.sin(a) * r, h))
-    lf = bpy.context.object; lf.scale = (1.0, 0.35, 0.12); lf.rotation_euler = (random.uniform(-.6, .6), random.uniform(-.6, .6), a)
-    lf.data.materials.append(M_LEAF); plant.append(lf)
-for o in plant: key_hide(o, visible_from=P['p7'][0] + 26)
+importa('potted_plant_02', (0.5, 3.9, 0.17), rz=0.6, scala=1.7, visible_from=P['p7'][0] + 26)
 
 # ------------------------------------------------------------------ luce: mattina -> tramonto
 world = bpy.data.worlds.new('mondo'); scn.world = world; world.use_nodes = True
 wn, wl = world.node_tree.nodes, world.node_tree.links
-sky = wn.new('ShaderNodeTexSky'); sky.sky_type = 'NISHITA'; sky.sun_disc = False
-sky.altitude = 120; sky.air_density = 1.2; sky.dust_density = 1.6
-bg = wn['Background']; wl.new(sky.outputs['Color'], bg.inputs['Color'])
-for f, el, st in [(0, 26, 0.55), (P['p7'][0], 26, 0.55), (P['p7'][0] + 26, 5, 1.6), (FEND, 4, 1.6)]:
-    sky.sun_elevation = math.radians(el); sky.keyframe_insert('sun_elevation', frame=f)
+env = wn.new('ShaderNodeTexEnvironment')
+env.image = bpy.data.images.load(os.path.join(HERE, 'hdri', 'piazza_bologni_4k.exr'))
+etc = wn.new('ShaderNodeTexCoord'); emp = wn.new('ShaderNodeMapping')
+emp.inputs['Rotation'].default_value = (0, 0, math.radians(float(arg('--hdri-rot', '0'))))
+wl.new(etc.outputs['Generated'], emp.inputs['Vector']); wl.new(emp.outputs['Vector'], env.inputs['Vector'])
+tint = wn.new('ShaderNodeMix'); tint.data_type = 'RGBA'; tint.blend_type = 'MULTIPLY'
+wl.new(env.outputs['Color'], tint.inputs['A'])
+bg = wn['Background']; wl.new(tint.outputs['Result'], bg.inputs['Color'])
+for f, st, col, fac in [(0, 0.9, (1, 1, 1, 1), 0.0), (P['p7'][0], 0.9, (1, 1, 1, 1), 0.0),
+                        (P['p7'][0] + 26, 0.75, (1.0, 0.62, 0.42, 1), 1.0), (FEND, 0.75, (1.0, 0.6, 0.4, 1), 1.0)]:
     bg.inputs['Strength'].default_value = st; bg.inputs['Strength'].keyframe_insert('default_value', frame=f)
-sky.sun_rotation = math.radians(200)
+    tint.inputs['B'].default_value = col; tint.inputs['B'].keyframe_insert('default_value', frame=f)
+    tint.inputs['Factor'].default_value = fac; tint.inputs['Factor'].keyframe_insert('default_value', frame=f)
 sun = bpy.data.lights.new('sole', 'SUN'); sun.angle = math.radians(1.2)
 so = bpy.data.objects.new('sole', sun); scn.collection.objects.link(so)
 for f, col, en, rx, rz in [(0, (1.0, 0.95, 0.88), 3.2, 62, 160), (P['p7'][0], (1.0, 0.95, 0.88), 3.2, 62, 160),
@@ -525,8 +529,6 @@ for f, en in [(0, 50), (P['p7'][0], 50), (P['p7'][0] + 26, 110), (FEND, 110)]:
 rfo = bpy.data.objects.new('riempimento', rf); scn.collection.objects.link(rfo)
 rfo.location = (RW / 2, 0.2, 2.2); rfo.rotation_euler = (math.radians(70), 0, 0); rfo.visible_camera = False
 
-for idb in [sky, bg, sun, so, fl, M_SPOT, M_SHADE, LL]:
-    pass
 for m in bpy.data.materials:
     if m.node_tree and m.node_tree.animation_data: smooth_keys(m.node_tree)
 for d in [world.node_tree, sun, so, fl]:
@@ -544,9 +546,9 @@ cam.shift_y = 0.02
 scn.render.engine = 'CYCLES'
 scn.cycles.device = 'CPU'
 scn.cycles.samples = SAMPLES
-scn.cycles.use_adaptive_sampling = True; scn.cycles.adaptive_threshold = 0.03
+scn.cycles.use_adaptive_sampling = True; scn.cycles.adaptive_threshold = 0.02
 scn.cycles.use_denoising = True; scn.cycles.denoiser = 'OPENIMAGEDENOISE'
-scn.cycles.max_bounces = 6; scn.cycles.diffuse_bounces = 3; scn.cycles.glossy_bounces = 2; scn.cycles.transparent_max_bounces = 16
+scn.cycles.max_bounces = 8; scn.cycles.diffuse_bounces = 4; scn.cycles.glossy_bounces = 2; scn.cycles.transparent_max_bounces = 16
 scn.cycles.blur_glossy = 1.0; scn.cycles.sample_clamp_indirect = 8
 if ASPECT == '9:16':
     scn.render.resolution_x = W; scn.render.resolution_y = int(W * 16 / 9)

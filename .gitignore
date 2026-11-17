@@ -7,3 +7,7 @@ test-results/
 # texture scaricate da Poly Haven (CC0): si riscaricano con blender/scarica_texture.sh
 blender/tex/*.jpg
 blender/out/
+
+# modelli e HDRI di Poly Haven (CC0): si riscaricano con python3 blender/scarica_modelli.py
+blender/modelli/*/
+blender/hdri/
