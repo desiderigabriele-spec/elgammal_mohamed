@@ -4,8 +4,8 @@ import imbianchino from '../assets/servizi/intonaci.webp';
 import rasato from '../assets/servizi/rasatura.webp';
 import impianti from '../assets/servizi/impianti.webp';
 import controsoffitto from '../assets/servizi/cartongesso.webp';
-import facciata from '../assets/foto/facciata-condominio.webp';
-import soggiorno from '../assets/foto/soggiorno-bianco.webp';
+import facciata from '../assets/servizi/facciate.webp';
+import soggiorno from '../assets/servizi/chiavi-in-mano.webp';
 
 export interface Servizio {
   slug: string;
@@ -346,7 +346,8 @@ export const servizi: Servizio[] = [
     h1: 'Rifacimento facciate a Sesto San Giovanni e Milano',
     spessore: 'lato esterno',
     foto: facciata,
-    fotoAlt: 'Facciata di un condominio vista dal basso',
+    fotoAlt: 'Facciata di condominio: una parte rifatta color sabbia, una parte rovinata e una col ponteggio',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'La facciata è il lato che vede tutto il quartiere. Ripristiniamo intonaci, rasiamo e tinteggiamo, per case singole e condomini.',
     problema: {
@@ -407,7 +408,8 @@ export const servizi: Servizio[] = [
     h1: 'Ristrutturazioni chiavi in mano a Sesto San Giovanni e Milano',
     spessore: 'tutti gli strati',
     foto: soggiorno,
-    fotoAlt: 'Soggiorno appena ristrutturato, bianco e ordinato',
+    fotoAlt: 'Stanza appena ristrutturata: pareti bianche, parquet in rovere, controsoffitto con faretti',
+    fotoNota: 'Immagine illustrativa',
     intro:
       'Muratura, impianti, intonaci, rasature, cartongesso e pittura: tutti gli strati della tua casa con un\'impresa sola e un referente solo.',
     problema: {

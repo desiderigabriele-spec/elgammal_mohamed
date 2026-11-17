@@ -1,20 +1,15 @@
 ---
 // Servizi in fila orizzontale, ognuno con la sua immagine.
-// Le ristrutturazioni chiavi in mano usano l'ultima immagine della stanza che cambia.
 import { Picture } from 'astro:assets';
 import { servizi } from '../data/servizi';
 import Scorrevole from './Scorrevole.astro';
 ---
 <Scorrevole etichetta="Servizi" w="min(80%, 340px)">
-  {servizi.map((s) => {
-    const finale = s.slug === 'ristrutturazioni-chiavi-in-mano';
-    return (
+  {servizi.map((s) => (
       <a class="card" href={`/${s.slug}`}>
         <div class="f">
-          {finale
-            ? <img src="/sequenza/sm/f099.webp" srcset="/sequenza/sm/f099.webp 960w, /sequenza/hd/f099.webp 1280w" sizes="340px" width="960" height="540" alt="" loading="lazy" decoding="async" />
-            : <Picture src={s.foto} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />}
-          <span class="tag">{finale ? 'Ricostruzione 3D' : (s.fotoNota ?? 'Foto di esempio')}</span>
+          <Picture src={s.foto} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />
+          <span class="tag">{s.fotoNota ?? 'Foto di esempio'}</span>
         </div>
         <div class="b">
           <span class="n" aria-hidden="true">{s.num}</span>
@@ -23,8 +18,7 @@ import Scorrevole from './Scorrevole.astro';
           <span class="go">Scopri <span aria-hidden="true">→</span></span>
         </div>
       </a>
-    );
-  })}
+  ))}
 </Scorrevole>
 <style>
   .card { display: grid; grid-template-rows: auto 1fr; background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; text-decoration: none; transition: border-color .2s; }
