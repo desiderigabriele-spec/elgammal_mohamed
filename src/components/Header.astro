@@ -1,45 +1,69 @@
 ---
 import Logo from './Logo.astro';
-import { servizi } from '../data/servizi';
+import Bandiera from './Bandiera.astro';
+import { serviziIn } from '../data/servizi-lingue';
 import { impresa, telHref, mailHref, waHref } from '../data/impresa';
+import { lingue, codici, linguaDi, percorso, percorsoNeutro } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const m = T.menu;
+const u = (p: string) => percorso(p, l);
+const neutro = percorsoNeutro(Astro.url.pathname);
 const path = Astro.url.pathname.replace(/\.html$/, '');
+const servizi = serviziIn(l);
+const wa = waHref(`${T.generale.waBase} ${T.generale.dalSito}`);
 const voci = [
-  { href: '/#servizi', t: 'Servizi' },
-  { href: '/lavori', t: 'Lavori' },
-  { href: '/chi-siamo', t: 'Chi siamo' },
-  { href: '/dove-lavoriamo', t: 'Dove lavoriamo' },
-  { href: '/contatti', t: 'Contatti' },
+  { href: u('/#servizi'), t: m.servizi },
+  { href: u('/lavori'), t: m.lavori },
+  { href: u('/chi-siamo'), t: m.chiSiamo },
+  { href: u('/dove-lavoriamo'), t: m.doveLavoriamo },
+  { href: u('/contatti'), t: m.contatti },
 ];
 ---
 <header class="top">
   <div class="wrap bar">
-    <a href="/" class="brand"><Logo altezza={48} chiaro /><span class="vh">El Gammal, impresa edile: home</span></a>
-    <nav class="menu" aria-label="Menu principale">
+    <a href={u('/')} class="brand"><Logo altezza={48} chiaro /><span class="vh">{m.home}</span></a>
+    <nav class="menu" aria-label={m.menuPrincipale}>
       {voci.slice(0, 4).map((v) => <a href={v.href} aria-current={path === v.href ? 'page' : undefined}>{v.t}</a>)}
-      <a class="btn btn-p btn-sm" href="/contatti">Sopralluogo gratuito</a>
+      <a class="btn btn-p btn-sm" href={u('/contatti')}>{m.sopralluogoGratuito}</a>
     </nav>
     <div class="mob">
-      <a class="btn btn-p btn-sm" href="/contatti">Sopralluogo</a>
+      <a class="btn btn-p btn-sm" href={u('/contatti')}>{m.sopralluogo}</a>
       <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer">
-        <span class="burger-i" aria-hidden="true"></span><span class="vh">Menu</span>
+        <span class="burger-i" aria-hidden="true"></span><span class="vh">{m.menu}</span>
       </button>
+    </div>
+    <div class="lng" data-lng>
+      <button type="button" class="lng-b" aria-expanded="false" aria-haspopup="true" aria-label={`${m.lingua}: ${lingue[l].nome}`}>
+        <Bandiera l={l} size={24} /><span class="lng-c" aria-hidden="true">{lingue[l].breve}</span>
+      </button>
+      <ul class="lng-l" hidden>
+        {codici.map((c) => (
+          <li><a href={percorso(neutro, c)} hreflang={c} lang={c} data-lingua={c} aria-current={c === l ? 'true' : undefined}><Bandiera l={c} size={22} /><span>{lingue[c].nome}</span></a></li>
+        ))}
+      </ul>
     </div>
   </div>
   <div class="drawer" id="drawer" hidden>
     <nav class="wrap" aria-label="Menu">
-      <p class="mono">Servizi</p>
+      <p class="mono">{m.servizi}</p>
       <ul>
-        {servizi.map((s) => <li><a href={`/${s.slug}`}><span class="n">{s.num}</span>{s.nome}</a></li>)}
+        {servizi.map((s) => <li><a href={u(`/${s.slug}`)}><span class="n">{s.num}</span>{s.nome}</a></li>)}
       </ul>
-      <p class="mono">Impresa</p>
+      <p class="mono">{m.impresa}</p>
       <ul>
         {voci.slice(1).map((v) => <li><a href={v.href}>{v.t}</a></li>)}
       </ul>
-      <p class="mono">Scrivici o chiamaci</p>
+      <p class="mono">{m.scrivici}</p>
       <ul>
-        <li><a href={waHref()}>WhatsApp</a></li>
-        <li><a href={mailHref()}>Email {impresa.email ? <span class="sec2">{impresa.email}</span> : <span class="todo">[email]</span>}</a></li>
-        <li><a href={telHref()}>Telefono {impresa.telefono ? <span class="sec2">{impresa.telefono}</span> : <span class="todo">[telefono]</span>}</a></li>
+        <li><a href={wa}>{m.whatsapp}</a></li>
+        <li><a href={mailHref(`${T.generale.oggettoMail} ${T.generale.dalSito}`)}>{m.email} {impresa.email ? <span class="sec2">{impresa.email}</span> : <span class="todo">[email]</span>}</a></li>
+        <li><a href={telHref()}>{m.telefono} {impresa.telefono ? <span class="sec2" dir="ltr">{impresa.telefono}</span> : <span class="todo">[telefono]</span>}</a></li>
+      </ul>
+      <p class="mono">{m.lingua}</p>
+      <ul>
+        {codici.map((c) => <li><a href={percorso(neutro, c)} hreflang={c} lang={c} data-lingua={c} aria-current={c === l ? 'true' : undefined}><Bandiera l={c} size={22} />{lingue[c].nome}</a></li>)}
       </ul>
     </nav>
   </div>
@@ -54,7 +78,14 @@ const voci = [
   .menu { display: none; align-items: center; gap: 4px; }
   .menu a:not(.btn) { text-decoration: none; font-weight: 600; padding: 12px 14px; min-height: 44px; display: inline-flex; align-items: center; }
   .menu a:not(.btn):hover, .menu a[aria-current='page'] { color: var(--bronze-testo); }
-  .mob { display: flex; align-items: center; gap: 8px; }
+  .mob { display: flex; align-items: center; gap: 8px; margin-inline-start: auto; }
+  .lng { position: relative; order: 3; }
+  .lng-b { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; min-width: 48px; justify-content: center; padding-inline: 10px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: 700 1rem/1 var(--f-b); cursor: pointer; }
+  .lng-c { display: none; }
+  .lng-l { position: absolute; inset-inline-end: 0; inset-block-start: calc(100% + 8px); z-index: 50; list-style: none; margin: 0; padding: 6px; min-width: 200px; background: #fff; border: 1px solid var(--line-chiara); border-radius: 16px; box-shadow: 0 16px 40px -16px rgba(0,0,0,.35); }
+  .lng-l a { display: flex; align-items: center; gap: 10px; min-height: 44px; padding-inline: 10px; border-radius: 10px; text-decoration: none; font-weight: 600; color: var(--ink); }
+  .lng-l a:hover, .lng-l a[aria-current] { background: var(--bg); }
+  .drawer a .band { margin-inline-end: 2px; }
   .burger { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; min-width: 48px; padding: 0; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); font: 700 1rem var(--f-b); text-transform: uppercase; cursor: pointer; }
   .burger-i, .burger-i::before, .burger-i::after { display: block; width: 18px; height: 2px; background: currentColor; position: relative; transition: transform 0.25s var(--mech); }
   .burger-i::before, .burger-i::after { content: ''; position: absolute; inset-inline-start: 0; }
@@ -62,7 +93,8 @@ const voci = [
   .burger[aria-expanded='true'] .burger-i { background: transparent; }
   .burger[aria-expanded='true'] .burger-i::before { transform: translateY(6px) rotate(45deg); }
   .burger[aria-expanded='true'] .burger-i::after { transform: translateY(-6px) rotate(-45deg); }
-  @media (min-width: 1000px) { .menu { display: flex; } .mob { display: none; } }
+  .bar { gap: 8px; }
+  @media (min-width: 1000px) { .menu { display: flex; margin-inline-start: auto; } .mob { display: none; } .lng-c { display: inline; } .bar { gap: 16px; } }
   .drawer { border-block-start: 1px solid var(--line-chiara); background: var(--paper); color: var(--ink); max-height: calc(100dvh - var(--header)); overflow-y: auto; padding-block: 16px 104px; }
   .drawer ul { list-style: none; padding: 0; margin-block: 8px 24px; }
   .drawer a { display: flex; gap: 12px; align-items: center; min-height: 52px; font-weight: 700; text-decoration: none; border-block-end: 1px solid var(--line-chiara); }
@@ -81,4 +113,16 @@ const voci = [
     d.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !d.hidden) { set(false); b.focus(); } });
   }
+  // tasto della lingua: apre l'elenco; la scelta viene ricordata
+  document.querySelectorAll<HTMLElement>('[data-lng]').forEach((w) => {
+    const btn = w.querySelector<HTMLButtonElement>('.lng-b')!;
+    const list = w.querySelector<HTMLElement>('.lng-l')!;
+    const set = (open: boolean) => { list.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+    btn.addEventListener('click', (e) => { e.stopPropagation(); set(list.hidden); });
+    document.addEventListener('click', (e) => { if (!w.contains(e.target as Node)) set(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !list.hidden) { set(false); btn.focus(); } });
+  });
+  document.querySelectorAll<HTMLAnchorElement>('a[data-lingua]').forEach((a) =>
+    a.addEventListener('click', () => { try { localStorage.setItem('elg-lingua', a.dataset.lingua || 'it'); } catch { /* storage bloccato */ } }),
+  );
 </script>

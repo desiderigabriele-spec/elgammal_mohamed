@@ -443,7 +443,7 @@ export const servizi: Servizio[] = [
       },
       {
         q: 'Lavorate anche fuori Milano?',
-        a: 'Lavoriamo ogni giorno a Milano e nell\'hinterland, e abbiamo già lavorato anche in Germania, in Francia e nei Paesi arabi.',
+        a: 'Sì. Lavoriamo ogni giorno a Milano e nell\'hinterland, anche in tutta Italia, e abbiamo già lavorato in Germania, in Francia e nei Paesi arabi.',
       },
       faqGratis,
     ],

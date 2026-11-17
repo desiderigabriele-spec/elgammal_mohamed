@@ -1,7 +1,16 @@
 ---
 import Logo from './Logo.astro';
-import { impresa, segnaposto } from '../data/impresa';
-import { servizi } from '../data/servizi';
+import Bandiera from './Bandiera.astro';
+import { impresa } from '../data/impresa';
+import { serviziIn } from '../data/servizi-lingue';
+import { lingue, codici, linguaDi, percorso, percorsoNeutro } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const m = T.menu, P = T.piede;
+const u = (p: string) => percorso(p, l);
+const neutro = percorsoNeutro(Astro.url.pathname);
+const servizi = serviziIn(l);
 const i = impresa.indirizzo;
 ---
 <footer class="foot">
@@ -9,31 +18,33 @@ const i = impresa.indirizzo;
     <div class="stack">
       <Logo altezza={60} chiaro />
       <p><strong>{impresa.ragioneSociale}</strong><br />{i.via}<br />{i.cap} {i.citta} ({i.provincia})</p>
-      <p>P.IVA {impresa.piva ?? <span class="todo">[da ricevere]</span>}</p>
+      <p>{P.piva} {impresa.piva ?? <span class="todo">[da ricevere]</span>}</p>
     </div>
-    <nav aria-label="Servizi">
-      <p class="mono">Servizi</p>
-      <ul>{servizi.map((s) => <li><a href={`/${s.slug}`}>{s.nome}</a></li>)}</ul>
+    <nav aria-label={m.servizi}>
+      <p class="mono">{m.servizi}</p>
+      <ul>{servizi.map((s) => <li><a href={u(`/${s.slug}`)}>{s.nome}</a></li>)}</ul>
     </nav>
-    <nav aria-label="Impresa">
-      <p class="mono">Impresa</p>
+    <nav aria-label={m.impresa}>
+      <p class="mono">{m.impresa}</p>
       <ul>
-        <li><a href="/lavori">Lavori</a></li>
-        <li><a href="/chi-siamo">Chi siamo</a></li>
-        <li><a href="/dove-lavoriamo">Dove lavoriamo</a></li>
-        <li><a href="/contatti">Contatti e preventivo</a></li>
+        <li><a href={u('/lavori')}>{m.lavori}</a></li>
+        <li><a href={u('/chi-siamo')}>{m.chiSiamo}</a></li>
+        <li><a href={u('/dove-lavoriamo')}>{m.doveLavoriamo}</a></li>
+        <li><a href={u('/contatti')}>{m.contattiPreventivo}</a></li>
       </ul>
     </nav>
     <div class="stack">
-      <p class="mono">Contatti</p>
-      <p>Telefono {impresa.telefono ?? <span class="todo">[da ricevere]</span>}<br />
-      WhatsApp {impresa.whatsapp ? impresa.telefono ?? `+${impresa.whatsapp}` : <span class="todo">[da ricevere]</span>}<br />
-      Email {impresa.email ?? <span class="todo">[da ricevere]</span>}</p>
+      <p class="mono">{m.contatti}</p>
+      <p>{m.telefono} {impresa.telefono ? <span dir="ltr">{impresa.telefono}</span> : <span class="todo">[da ricevere]</span>}<br />
+      {m.whatsapp} {impresa.whatsapp ? <span dir="ltr">{impresa.telefono ?? `+${impresa.whatsapp}`}</span> : <span class="todo">[da ricevere]</span>}<br />
+      {m.email} {impresa.email ?? <span class="todo">[da ricevere]</span>}</p>
+      <p class="mono">{P.lingue}</p>
+      <ul class="lingue">{codici.map((c) => <li><a href={percorso(neutro, c)} hreflang={c} lang={c} data-lingua={c}><Bandiera l={c} size={20} />{lingue[c].nome}</a></li>)}</ul>
     </div>
   </div>
   <div class="wrap legal">
-    <p>© {new Date().getFullYear()} {impresa.ragioneSociale} · Dal {impresa.dal}</p>
-    <p><a href="/privacy">Privacy policy</a> · <a href="/cookie">Cookie policy</a> · <button type="button" class="linkbtn" data-cookie-open>Preferenze cookie</button></p>
+    <p>© {new Date().getFullYear()} {impresa.ragioneSociale} · {P.dal} {impresa.dal}</p>
+    <p><a href={u('/privacy')}>{P.privacy}</a> · <a href={u('/cookie')}>{P.cookie}</a> · <button type="button" class="linkbtn" data-cookie-open>{P.preferenze}</button></p>
   </div>
 </footer>
 
@@ -46,6 +57,8 @@ const i = impresa.indirizzo;
   ul { list-style: none; padding: 0; margin-block-start: 8px; }
   li a { display: inline-flex; min-height: 44px; align-items: center; text-decoration: none; }
   li a:hover { color: var(--bronze); text-decoration: underline; }
+  .lingue { display: flex; flex-wrap: wrap; gap: 0 16px; }
+  .lingue a { gap: 8px; }
   .legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-block-start: 48px; padding-block-start: 24px; border-block-start: 1px solid var(--line); }
   .legal a, .linkbtn { display: inline-flex; min-height: 44px; align-items: center; }
   .linkbtn { background: none; border: 0; color: inherit; font: inherit; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; padding: 0; }

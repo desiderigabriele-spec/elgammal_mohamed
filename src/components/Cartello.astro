@@ -3,18 +3,22 @@
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 interface Props { titolo: string; foto: ImageMetadata; alt: string; luogo: string; lavori: string; committente: string; esempio?: boolean; tipo?: string }
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
 const { titolo, foto, alt, luogo, lavori, committente, esempio = true, tipo = '' } = Astro.props;
+const T = testi(linguaDi(Astro));
+const C = T.cartello;
 ---
 <article class="sign" data-tipo={tipo}>
   <p class="title">{titolo}</p>
   <div class="ph">
     <Picture src={foto} alt={alt} formats={['avif']} fallbackFormat="webp" widths={[480, 760, 960]} sizes="(min-width: 1000px) 380px, 92vw" loading="lazy" />
-    {esempio && <span class="ex">Foto di esempio</span>}
+    {esempio && <span class="ex">{T.generale.fotoEsempio}</span>}
   </div>
   <dl>
-    <dt>Luogo</dt><dd set:html={luogo} />
-    <dt>Lavori</dt><dd>{lavori}</dd>
-    <dt>Committente</dt><dd>{committente}</dd>
+    <dt>{C.luogo}</dt><dd set:html={luogo} />
+    <dt>{C.lavori}</dt><dd>{lavori}</dd>
+    <dt>{C.committente}</dt><dd>{committente}</dd>
   </dl>
 </article>
 <style>

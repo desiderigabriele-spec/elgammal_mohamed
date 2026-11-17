@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Mappa from '../components/Mappa.astro';
+import { impresa } from '../data/impresa';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi, f as riempi } from '../i18n/testi';
+import { serviziIn } from '../data/servizi-lingue';
+const l = linguaDi(Astro);
+const T = testi(l);
+const u = (p: string) => percorso(p, l);
+const D = T.dove;
+const servizi = serviziIn(l);
+---
+<Base title={D.title} description={D.description}>
+  <section class="sec gridbg first">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">{D.sopra}</p>
+        <h1>{D.titolo}<b>{D.titoloForte}</b></h1>
+        <p class="lead">{riempi(D.lead, { via: impresa.indirizzo.via })}</p>
+        <div class="ctas"><a class="btn btn-p" href={u('/contatti')}>{D.cta}</a></div>
+      </div>
+      <Mappa />
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap two top">
+      <div class="stack">
+        <p class="mono">{D.zona}</p>
+        <h2>{D.zonaTitolo}<b>{D.zonaForte}</b>.</h2>
+        <p class="read">{D.zonaTesto}</p>
+        <p class="todo" style="justify-self:start;padding:6px 10px">{D.zonaTodo}</p>
+      </div>
+      <ul class="places">
+        {impresa.zone.map((z, i) => <li class:list={{ home: i === 0 }}><b>{z}</b><span>{i === 0 ? D.sede : D.servita}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec gridbg">
+    <div class="wrap two top">
+      <div class="stack">
+        <p class="mono">{D.estero}</p>
+        <h2>{D.esteroTitolo}<b>{D.esteroForte}</b>.</h2>
+        <p class="read">{D.esteroTesto}</p>
+        <p class="todo" style="justify-self:start;padding:6px 10px">{D.esteroTodo}</p>
+      </div>
+      <ul class="places">
+        {D.paesi.map((p) => <li><b>{p}</b><span>{D.eseguiti}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><p class="mono">{D.servizi}</p><h2>{D.serviziTitolo}<b>{D.serviziForte}</b>.</h2></div>
+      <ul class="svc">
+        {servizi.map((s) => <li><a href={u(`/${s.slug}`)}><span class="mono">{s.num}</span><span class="t">{s.nome}</span><span class="freccia" aria-hidden="true">→</span></a></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .two { display: grid; gap: 40px; align-items: center; }
+  .two.top { align-items: start; }
+  @media (min-width: 1000px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 50ch; }
+  .places { list-style: none; padding: 0; border-block-start: 1px solid var(--line); }
+  .places li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding-block: 16px; border-block-end: 1px solid var(--line); }
+  .places b { font: 800 clamp(1.6rem, 3.4vw, 2.4rem)/1 var(--f-d); text-transform: uppercase; }
+  .places .home b { color: var(--bronze); }
+  .places span { font: 500 1rem var(--f-m); color: var(--fg-2); }
+  .svc { list-style: none; padding: 0; border-block-start: 1px solid var(--line); }
+  .svc a { display: grid; grid-template-columns: 3ch 1fr auto; gap: 16px; align-items: center; min-height: 64px; border-block-end: 1px solid var(--line); text-decoration: none; }
+  .svc .t { font: 800 1.5rem/1.1 var(--f-d); text-transform: uppercase; }
+  .svc a:hover .t { color: var(--bronze); }
+</style>

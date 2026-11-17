@@ -1,0 +1,85 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PrimaDopo from '../components/PrimaDopo.astro';
+import prima from '../assets/foto/cantiere-prima.webp';
+import dopo from '../assets/foto/stanza-porte.webp';
+import f1 from '../assets/foto/soggiorno-rasato.webp';
+import f2 from '../assets/foto/facciata-condominio.webp';
+import f3 from '../assets/foto/interno-controsoffitto.webp';
+import f4 from '../assets/foto/muro-mattoni.webp';
+import f5 from '../assets/foto/intonaco-esterno.webp';
+import f6 from '../assets/foto/balconi-condominio.webp';
+import f7 from '../assets/foto/ufficio-bianco.webp';
+import f8 from '../assets/foto/soggiorno-bianco.webp';
+import f9 from '../assets/foto/bagno-moderno.webp';
+
+import { linguaDi } from '../i18n/lingue';
+import { t as testi, f as riempi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const W = testi(l).lavori;
+// Quando arrivano le foto vere: sostituire qui foto e tipo, e i testi in src/i18n/testi (lavori.voci), e togliere "esempio".
+const base = [
+  { foto: f1, t: 'rasatura' }, { foto: f2, t: 'facciate' }, { foto: f3, t: 'cartongesso' },
+  { foto: f4, t: 'muratura' }, { foto: f5, t: 'intonaci' }, { foto: f6, t: 'facciate' },
+  { foto: f7, t: 'cartongesso' }, { foto: f8, t: 'chiavi' }, { foto: f9, t: 'chiavi' },
+];
+const lavori = base.map((b, i) => ({ ...b, ...W.voci[i] }));
+const filtri = Object.entries(W.filtri);
+const mostrati = W.mostrati;
+---
+<Base title={W.title} description={W.description} noindex={true}>
+  <section class="sec gridbg first">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{W.sopra}</p>
+        <h1>{W.titolo}<b>{W.titoloForte}</b>.</h1>
+        <p class="read">{W.testo}</p>
+        <p class="todo" style="justify-self:start;padding:6px 10px">{W.todo}</p>
+      </div>
+      <PrimaDopo prima={prima} dopo={dopo} altPrima={W.altPrima} altDopo={W.altDopo} />
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="chips" role="group" aria-label={W.filtra}>
+        {filtri.map(([k, v], i) => <button type="button" class="chip" data-f={k} aria-pressed={i === 0 ? 'true' : 'false'}>{v}</button>)}
+      </div>
+      <p class="vh" aria-live="polite" id="conteggio" data-testo={mostrati}></p>
+      <ul class="grid" id="griglia">
+        {lavori.map((l) => (
+          <li data-t={l.t}>
+            <figure>
+              <Picture src={l.foto} alt={l.alt} formats={['avif']} fallbackFormat="webp" widths={[400, 700]} sizes="(min-width: 1000px) 380px, (min-width: 600px) 46vw, 92vw" loading="lazy" />
+              <figcaption><span>{l.d}</span><span class="ex">{W.esempio}</span></figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+      <p class="video">{W.video} <span class="todo">[video in arrivo dal cliente]</span></p>
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-block-end: 32px; }
+  .chip { min-height: 44px; padding-inline: 18px; border: 1px solid var(--fg-2); background: transparent; color: var(--fg); font: 600 1rem var(--f-b); cursor: pointer; }
+  .chip[aria-pressed='true'] { background: var(--bronze-fill); border-color: var(--bronze-fill); color: var(--ink); }
+  .grid { list-style: none; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+  figure { margin: 0; background: var(--bg-2); border: 1px solid var(--line); }
+  figure :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  figcaption { display: flex; justify-content: space-between; gap: 8px; padding: 12px 14px; font-weight: 600; }
+  .ex { font: 500 1rem var(--f-m); color: var(--fg-2); }
+  .video { margin-block-start: 32px; color: var(--fg-2); }
+</style>
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+  const items = document.querySelectorAll<HTMLElement>('#griglia li');
+  const out = document.getElementById('conteggio');
+  chips.forEach((c) => c.addEventListener('click', () => {
+    chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+    let n = 0;
+    items.forEach((i) => { const ok = c.dataset.f === 'tutti' || i.dataset.t === c.dataset.f; i.hidden = !ok; if (ok) n++; });
+    if (out) out.textContent = (out.dataset.testo || '{n}').replace('{n}', String(n));
+  }));
+</script>

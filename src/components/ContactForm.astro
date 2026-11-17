@@ -1,31 +1,36 @@
 ---
 import { impresa } from '../data/impresa';
-import { servizi } from '../data/servizi';
+import { serviziIn } from '../data/servizi-lingue';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
 interface Props { servizio?: string; id?: string }
 const { servizio = '', id = 'preventivo' } = Astro.props;
-const conf = { endpoint: impresa.moduloEndpoint, wa: impresa.whatsapp };
+const l = linguaDi(Astro);
+const M = testi(l).modulo;
+const servizi = serviziIn(l);
+const conf = { endpoint: impresa.moduloEndpoint, wa: impresa.whatsapp, testi: M.js };
 ---
 <form class="form paper" id={id} data-form novalidate data-conf={JSON.stringify(conf)}>
-  <p class="form-t">Richiedi il sopralluogo <strong>gratuito</strong></p>
-  <label class="field" for={`${id}-nome`}>Nome
+  <p class="form-t">{M.titolo} <strong>{M.titoloForte}</strong></p>
+  <label class="field" for={`${id}-nome`}>{M.nome}
     <input id={`${id}-nome`} name="nome" autocomplete="name" required />
   </label>
-  <label class="field" for={`${id}-contatto`}>Telefono o email
-    <input id={`${id}-contatto`} name="contatto" autocomplete="tel" inputmode="tel" required />
+  <label class="field" for={`${id}-contatto`}>{M.contatto}
+    <input id={`${id}-contatto`} name="contatto" autocomplete="tel" inputmode="tel" required dir="auto" />
   </label>
-  <label class="field" for={`${id}-tipo`}>Che lavoro ti serve?
+  <label class="field" for={`${id}-tipo`}>{M.tipo}
     <select id={`${id}-tipo`} name="tipo">
-      <option value="">Scegli (facoltativo)</option>
+      <option value="">{M.scegli}</option>
       {servizi.map((s) => <option value={s.nome} selected={s.slug === servizio}>{s.nome}</option>)}
-      <option value="Altro">Altro</option>
+      <option value={M.altro}>{M.altro}</option>
     </select>
   </label>
-  <label class="field" for={`${id}-msg`}>Due righe sul lavoro <small>(facoltativo: dove, quanto è grande)</small>
-    <textarea id={`${id}-msg`} name="messaggio" rows="3"></textarea>
+  <label class="field" for={`${id}-msg`}>{M.messaggio} <small>{M.messaggioNota}</small>
+    <textarea id={`${id}-msg`} name="messaggio" rows="3" dir="auto"></textarea>
   </label>
   <p class="err" data-err role="alert" hidden></p>
-  <button class="btn btn-ink" type="submit">Invia la richiesta</button>
-  <p class="small">Sopralluogo e preventivo gratuiti. Le foto puoi mandarle su WhatsApp. Usiamo i tuoi dati solo per risponderti: <a href="/privacy">privacy</a>.</p>
+  <button class="btn btn-ink" type="submit">{M.invia}</button>
+  <p class="small">{M.piccolo} <a href={percorso('/privacy', l)}>{M.privacy}</a>.</p>
   <p class="ok" data-ok role="status" hidden></p>
 </form>
 
@@ -47,35 +52,36 @@ const conf = { endpoint: impresa.moduloEndpoint, wa: impresa.whatsapp };
     const ok = f.querySelector<HTMLElement>('[data-ok]')!;
     f.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const conf = JSON.parse(f.dataset.conf || '{}') as { endpoint: string | null; wa: string | null };
+      const conf = JSON.parse(f.dataset.conf || '{}') as { endpoint: string | null; wa: string | null; testi: Record<string, string> };
+      const T = conf.testi;
       err.hidden = true; ok.hidden = true;
       const d = Object.fromEntries(new FormData(f)) as Record<string, string>;
       const mancano: string[] = [];
-      if (!d.nome?.trim()) mancano.push('il nome');
-      if (!d.contatto?.trim()) mancano.push('un telefono o una email');
+      if (!d.nome?.trim()) mancano.push(T.ilNome);
+      if (!d.contatto?.trim()) mancano.push(T.ilContatto);
       if (mancano.length) {
-        err.textContent = `Manca ${mancano.join(' e ')}: ci serve per risponderti.`;
+        err.textContent = T.manca.replace('{x}', mancano.join(` ${T.e} `));
         err.hidden = false;
         (f.querySelector(!d.nome?.trim() ? '[name=nome]' : '[name=contatto]') as HTMLElement).focus();
         return;
       }
-      const testo = `Richiesta sopralluogo (dal sito)\nNome: ${d.nome}\nContatto: ${d.contatto}\nLavoro: ${d.tipo || '-'}\nMessaggio: ${d.messaggio || '-'}\nPagina: ${location.pathname}`;
+      const testo = `${T.intestazione}\n${T.campoNome}: ${d.nome}\n${T.campoContatto}: ${d.contatto}\n${T.campoLavoro}: ${d.tipo || '-'}\n${T.campoMessaggio}: ${d.messaggio || '-'}\n${T.campoPagina}: ${location.pathname}`;
       if (conf.endpoint) {
         try {
-          const r = await fetch(conf.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ ...d, _subject: 'Richiesta sopralluogo (dal sito)', pagina: location.pathname }) });
+          const r = await fetch(conf.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ ...d, _subject: T.intestazione, pagina: location.pathname }) });
           if (!r.ok) throw new Error(String(r.status));
-          ok.textContent = 'Richiesta inviata. Ti ricontattiamo al più presto.'; ok.hidden = false; f.reset();
+          ok.textContent = T.inviata; ok.hidden = false; f.reset();
         } catch {
-          err.textContent = 'Non siamo riusciti a inviare la richiesta. Riprova, oppure scrivici su WhatsApp.'; err.hidden = false;
+          err.textContent = T.errore; err.hidden = false;
         }
         return;
       }
       if (conf.wa) {
-        ok.textContent = 'Ti stiamo portando su WhatsApp con il messaggio già scritto: premi Invia.'; ok.hidden = false;
+        ok.textContent = T.versoWa; ok.hidden = false;
         location.href = `https://wa.me/${conf.wa}?text=${encodeURIComponent(testo)}`;
         return;
       }
-      err.textContent = 'Il modulo non è ancora collegato: mancano numero WhatsApp o indirizzo di invio dell\'impresa.';
+      err.textContent = T.nonCollegato;
       err.hidden = false;
     });
   });

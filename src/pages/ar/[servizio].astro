@@ -1,0 +1,9 @@
+---
+// Pagina generata: il contenuto sta in src/views/Servizio.astro (testi in src/data/servizi*.ts).
+import Servizio from '../../views/Servizio.astro';
+import { servizi } from '../../data/servizi';
+export function getStaticPaths() {
+  return servizi.map((s) => ({ params: { servizio: s.slug } }));
+}
+---
+<Servizio slug={Astro.params.servizio!} />

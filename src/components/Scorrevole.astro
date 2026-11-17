@@ -1,16 +1,19 @@
 ---
 // Fila di schede che si scorre di lato: col dito su telefono, con le frecce sul computer.
 // Le schede sono i figli diretti (slot). --w è la larghezza di una scheda.
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
 interface Props { etichetta: string; w?: string }
 const { etichetta, w = 'min(80%, 340px)' } = Astro.props;
+const G = testi(linguaDi(Astro)).generale;
 ---
 <div class="scv" data-scv style={`--w:${w}`}>
   <div class="trk" role="region" aria-label={etichetta} tabindex="0"><slot /></div>
   <div class="ui">
     <div class="dots" aria-hidden="true"></div>
     <div class="btns">
-      <button type="button" class="b" data-dir="-1" aria-label="Schede precedenti"><span aria-hidden="true">←</span></button>
-      <button type="button" class="b" data-dir="1" aria-label="Schede successive"><span aria-hidden="true">→</span></button>
+      <button type="button" class="b" data-dir="-1" aria-label={G.precedenti}><span class="freccia" aria-hidden="true">←</span></button>
+      <button type="button" class="b" data-dir="1" aria-label={G.successive}><span class="freccia" aria-hidden="true">→</span></button>
     </div>
   </div>
 </div>
@@ -44,16 +47,19 @@ const { etichetta, w = 'min(80%, 340px)' } = Astro.props;
     const [prev, next] = [...scv.querySelectorAll<HTMLButtonElement>('.b')];
     const items = [...trk.children] as HTMLElement[];
     dots.innerHTML = '<i></i>'.repeat(items.length);
-    const passo = () => (items[1] ? items[1].offsetLeft - items[0].offsetLeft : trk.clientWidth);
+    // in arabo (da destra a sinistra) scrollLeft è negativo: si lavora con il valore assoluto
+    const rtl = getComputedStyle(trk).direction === 'rtl';
+    const pos = () => Math.abs(trk.scrollLeft);
+    const passo = () => (items[1] ? Math.abs(items[1].offsetLeft - items[0].offsetLeft) : trk.clientWidth);
     const upd = () => {
       const max = trk.scrollWidth - trk.clientWidth;
       scv.classList.toggle('fit', max < 4);
-      const k = max < 4 ? 0 : Math.min(items.length - 1, Math.round(trk.scrollLeft / passo()));
-      const last = trk.scrollLeft >= max - 4;
+      const k = max < 4 ? 0 : Math.min(items.length - 1, Math.round(pos() / passo()));
+      const last = pos() >= max - 4;
       [...dots.children].forEach((d, i) => d.classList.toggle('on', last ? i === items.length - 1 : i === k));
-      prev.disabled = trk.scrollLeft < 4; next.disabled = last;
+      prev.disabled = pos() < 4; next.disabled = last;
     };
-    [prev, next].forEach((b) => b.addEventListener('click', () => trk.scrollBy({ left: Number(b.dataset.dir) * passo(), behavior: 'smooth' })));
+    [prev, next].forEach((b) => b.addEventListener('click', () => trk.scrollBy({ left: Number(b.dataset.dir) * passo() * (rtl ? -1 : 1), behavior: 'smooth' })));
     trk.addEventListener('scroll', upd, { passive: true });
     addEventListener('resize', upd);
     upd();

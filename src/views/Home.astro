@@ -1,0 +1,151 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Rotta from '../components/Rotta.astro';
+import Cantiere from '../components/Cantiere.astro';
+import ServiziGrid from '../components/ServiziGrid.astro';
+import Metodo from '../components/Metodo.astro';
+import Scorrevole from '../components/Scorrevole.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { impresa, waHref, telHref, mailHref } from '../data/impresa';
+import privati from '../assets/foto/soggiorno-luce.webp';
+import condomini from '../assets/foto/balconi-condominio.webp';
+import aziende from '../assets/foto/ufficio-bianco.webp';
+import fFacciata from '../assets/foto/facciata-condominio.webp';
+import fMuro from '../assets/foto/muratura-mattoni.webp';
+import fUfficio from '../assets/foto/interno-controsoffitto.webp';
+
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const H = T.home;
+const u = (p: string) => percorso(p, l);
+const fotoCantieri = [fFacciata, fMuro, fUfficio];
+const cantieri = H.cantieri.schede.map((c, i) => ({ ...c, foto: fotoCantieri[i] }));
+const fotoPerChi = [privati, condomini, aziende];
+const linkPerChi = ['/ristrutturazioni-chiavi-in-mano', '/facciate', '/cartongesso'];
+const perChi = H.perChi.schede.map((c, i) => ({ ...c, foto: fotoPerChi[i], href: u(linkPerChi[i]) }));
+const wa = waHref(`${T.generale.waBase} ${T.generale.dalSito}`);
+---
+<Base title={H.title} description={H.description}>
+  <Hero />
+  <Rotta />
+  <Cantiere />
+
+  <section class="sec" id="servizi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{H.servizi.sopra}</p>
+        <h2>{H.servizi.titolo}<b>{H.servizi.titoloForte}</b></h2>
+        <p class="read">{H.servizi.testo}</p>
+      </div>
+      <ServiziGrid />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="per-chi">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{H.perChi.sopra}</p>
+        <h2>{H.perChi.titolo}<b>{H.perChi.titoloForte}</b>.</h2>
+        <p class="read">{H.perChi.testo}</p>
+      </div>
+      <Scorrevole etichetta={H.perChi.sopra} w="min(84%, 380px)">
+        {perChi.map((c) => (
+          <article class="who">
+            <Picture src={c.foto} alt={c.alt} formats={['avif']} fallbackFormat="webp" widths={[480, 760]} sizes="(min-width: 1000px) 400px, 92vw" loading="lazy" />
+            <div class="who-b">
+              <p class="mono">{c.tag}</p>
+              <h3>{c.t}</h3>
+              <ul class="tick">{c.li.map((l) => <li>{l}</li>)}</ul>
+              <a class="btn btn-s btn-sm" href={c.href}>{c.cta}</a>
+            </div>
+          </article>
+        ))}
+      </Scorrevole>
+      <p class="ex-note">{H.perChi.nota}</p>
+    </div>
+  </section>
+
+  <section class="sec" id="metodo">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{H.metodo.sopra}</p>
+        <h2>{H.metodo.titolo}<b>{H.metodo.titoloForte}</b>{H.metodo.titoloFine}</h2>
+        <p class="read">{H.metodo.testo}</p>
+      </div>
+      <Metodo />
+    </div>
+  </section>
+
+  <section class="sec gridbg" id="cantieri">
+    <div class="wrap">
+      <div class="sec-head row-head">
+        <div class="stack" style="gap:16px">
+          <p class="mono">{H.cantieri.sopra}</p>
+          <h2>{H.cantieri.titolo}<b>{H.cantieri.titoloForte}</b>{H.cantieri.titoloFine}</h2>
+        </div>
+        <a class="btn btn-s" href={u('/lavori')}>{H.cantieri.tutti}</a>
+      </div>
+      <Scorrevole etichetta={H.cantieri.sopra} w="min(76%, 340px)">
+        {cantieri.map((c, i) => (
+          <article class="storia">
+            <Picture src={c.foto} alt={c.alt} formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />
+            <div class="st-top"><span>{c.per}</span><span>{i + 1} / {cantieri.length}</span></div>
+            <div class="st-b">
+              <h3>{c.titolo}</h3>
+              <p>{c.luogo} <span class="todo">{H.cantieri.daConfermare}</span></p>
+              <p>{c.lavori}</p>
+              <span class="ex">{T.generale.fotoEsempio}</span>
+            </div>
+          </article>
+        ))}
+      </Scorrevole>
+    </div>
+  </section>
+
+
+  <!-- "Cosa dicono i clienti": torna quando ci sono le recensioni vere su Google (componente Recensioni.astro) -->
+
+  <section class="sec" id="contatti">
+    <div class="wrap contact">
+      <div class="stack">
+        <p class="mono">{H.contatti.sopra}</p>
+        <h2>{H.contatti.titolo}<b>{H.contatti.titoloForte}</b>{H.contatti.titoloFine}</h2>
+        <p class="read">{H.contatti.testo}</p>
+        <div class="ctas">
+          <a class="btn btn-p" href={wa}>{T.menu.whatsapp}</a>
+          <a class="btn btn-s" href={mailHref(`${T.generale.oggettoMail} ${T.generale.dalSito}`)}>{T.menu.email}</a>
+        </div>
+        <p class="gratis">{H.contatti.parlare} <a href={telHref()} dir="ltr">{impresa.telefono ?? <span class="todo">[telefono]</span>}</a></p>
+        <p class="mono">{impresa.indirizzo.via} · {impresa.indirizzo.cap} {impresa.indirizzo.citta} ({impresa.indirizzo.provincia})</p>
+      </div>
+      <ContactForm id="home-form" />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .who { background: var(--bg-2); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+  .who :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+  .who-b { padding: 20px; display: grid; gap: 14px; align-content: start; }
+  .who-b .btn { justify-self: start; margin-block-start: 8px; }
+  .ex-note { margin-block-start: 12px; font: 500 1rem var(--f-m); color: var(--fg-2); }
+
+  .row-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; }
+  /* cantieri come "storie": foto alta, testo sopra */
+  .storia { position: relative; aspect-ratio: 4 / 5; border-radius: 16px; overflow: hidden; display: grid; align-content: space-between; background: #2a2724; color: #fff; }
+  .storia :global(picture), .storia :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .storia::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(17,20,22,.6) 0, rgba(17,20,22,0) 24%, rgba(17,20,22,0) 40%, rgba(17,20,22,.94)); }
+  .st-top, .st-b { position: relative; z-index: 1; padding: 14px 16px; }
+  .st-top { display: flex; justify-content: space-between; font: 500 1rem/1.2 var(--f-m); text-transform: uppercase; letter-spacing: .06em; }
+  .st-b { display: grid; gap: 6px; padding-block-end: 18px; }
+  .st-b h3 { font-size: 1.9rem; }
+  .st-b p { color: #dfe2e4; margin: 0; }
+  .st-b .ex { justify-self: start; margin-block-start: 6px; font: 500 1rem var(--f-m); background: rgba(236,234,230,.16); padding: 2px 8px; border-radius: 4px; }
+
+  .contact { display: grid; gap: 48px; }
+  @media (min-width: 1000px) { .contact { grid-template-columns: 1fr 1fr; align-items: start; } }
+</style>

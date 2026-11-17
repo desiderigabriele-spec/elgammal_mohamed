@@ -2,31 +2,36 @@
 // Hero della home (versione A, chiara): chi siamo, cosa facciamo, dove, e come contattarci. Poi rimanda alla stanza che cambia.
 import { Picture } from 'astro:assets';
 import { waHref } from '../data/impresa';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
 import finita from '../assets/render/stanza-finita.png';
-const punti = ['Case, condomini e uffici, anche per lavori piccoli'];
+const l = linguaDi(Astro);
+const T = testi(l);
+const H = T.hero;
 // micro-fiducia: chi vede un sito curato può pensare a un'impresa cara. Non lo è.
-const fiducia = ['Prezzi onesti', 'Tempi rapidi'];
+const fiducia = H.fiducia;
+const punti = H.punti;
 ---
 <section class="hero">
   <div class="wrap hg">
     <div class="ht">
-      <p class="etichetta"><span class="lungo">Impresa edile · </span>Sesto San Giovanni · dal 2005</p>
-      <h1>Ristrutturiamo casa tua, <b>dall'inizio alla fine</b>.</h1>
+      <p class="etichetta"><span class="lungo">{H.etichettaLunga}</span>{H.etichetta}</p>
+      <h1>{H.titolo}<b>{H.titoloForte}</b>.</h1>
       <ul class="fid">{fiducia.map((f) => <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" /><path d="M5.5 10.5l3 3 6-6.5" /></svg>{f}</li>)}</ul>
       <figure class="hv">
         <div class="foto">
-          <Picture src={finita} alt="Soggiorno ristrutturato: pareti color sabbia, divano, poltrona, tende di lino e parquet chiaro" formats={['avif']} fallbackFormat="webp" widths={[640, 960, 1280]} sizes="(min-width: 960px) 54vw, 100vw" loading="eager" fetchpriority="high" />
-          <span class="badge"><i aria-hidden="true"></i>Sopralluogo e preventivo gratuiti</span>
-          <span class="ill">Ricostruzione 3D</span>
+          <Picture src={finita} alt={H.alt} formats={['avif']} fallbackFormat="webp" widths={[640, 960, 1280]} sizes="(min-width: 960px) 54vw, 100vw" loading="eager" fetchpriority="high" />
+          <span class="badge"><i aria-hidden="true"></i>{H.badge}</span>
+          <span class="ill">{T.generale.ricostruzione3d}</span>
         </div>
         <figcaption>
-          <a class="next" href="#cantiere">Guarda come ci arriviamo <span aria-hidden="true">↓</span></a>
+          <a class="next" href="#cantiere">{H.avanti} <span aria-hidden="true">↓</span></a>
         </figcaption>
       </figure>
-      <p class="sub">Muri, impianti, intonaci, cartongesso, rasature e pittura: tutti i lavori li fa un'impresa sola, nell'ordine giusto. Tu hai un solo preventivo e una sola persona a cui chiedere.</p>
+      <p class="sub">{H.sotto}</p>
       <div class="ctas" data-hero-cta>
-        <a class="btn btn-scuro" href="/contatti">Sopralluogo gratuito</a>
-        <a class="btn btn-linea" href={waHref()}>Scrivi su WhatsApp</a>
+        <a class="btn btn-scuro" href={percorso('/contatti', l)}>{H.cta}</a>
+        <a class="btn btn-linea" href={waHref(`${T.generale.waBase} ${T.generale.dalSito}`)}>{H.wa}</a>
       </div>
       <ul class="tick">{punti.map((p) => <li>{p}</li>)}</ul>
     </div>

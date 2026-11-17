@@ -10,17 +10,17 @@ export default defineConfig({
   site: SITE,
   trailingSlash: 'never',
   build: { format: 'file' },
-  // Lingue: per ora solo italiano. Per aggiungere fr, de, ar basta inserirle qui
-  // e creare le pagine in src/pages/<lingua>/. L'arabo usa dir="rtl" (vedi src/i18n/lingue.ts).
+  // Lingue: italiano senza prefisso, le altre in /en, /fr, /de, /ar (pagine in src/pages/[lang]/).
+  // L'arabo usa dir="rtl" (vedi src/i18n/lingue.ts).
   i18n: {
     defaultLocale: 'it',
-    locales: ['it'],
+    locales: ['it', 'en', 'fr', 'de', 'ar'],
     routing: { prefixDefaultLocale: false },
   },
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),
-      i18n: { defaultLocale: 'it', locales: { it: 'it-IT' } },
+      i18n: { defaultLocale: 'it', locales: { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', de: 'de-DE', ar: 'ar' } },
     }),
   ],
   image: { responsiveStyles: false },

@@ -1,11 +1,8 @@
 ---
 // Come lavoriamo: quattro promesse, una parola grande ciascuna.
-const promesse = [
-  { t: 'Gratis', d: 'Sopralluogo e preventivo, senza impegno.' },
-  { t: 'Per iscritto', d: 'Preventivo voce per voce, prima di iniziare. Sai cosa è compreso.' },
-  { t: 'Uno solo', d: 'Una persona risponde per tutti i lavori, dall\'inizio alla fine.' },
-  { t: 'Insieme', d: 'Alla fine guardiamo con te il lavoro finito, stanza per stanza.' },
-];
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const promesse = testi(linguaDi(Astro)).metodo;
 ---
 <ul class="prom">
   {promesse.map((p, i) => (

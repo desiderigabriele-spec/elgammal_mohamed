@@ -1,18 +1,21 @@
 ---
 // Mappa Google caricata solo dopo il consenso o dopo un clic esplicito: prima nessuna chiamata a Google.
 import { impresa } from '../data/impresa';
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const M = testi(linguaDi(Astro)).mappa;
 const i = impresa.indirizzo;
 const q = encodeURIComponent(`${i.via}, ${i.cap} ${i.citta}`);
 const src = `https://www.google.com/maps?q=${q}&output=embed`;
 const link = `https://www.google.com/maps/search/?api=1&query=${q}`;
 ---
-<div class="map" data-map data-src={src}>
+<div class="map" data-map data-src={src} data-titolo={M.titolo}>
   <div class="map-ph">
     <p><strong>{i.via}</strong><br />{i.cap} {i.citta} ({i.provincia})</p>
-    <p class="read">La mappa è di Google e può usare cookie. La carichiamo solo se lo chiedi.</p>
+    <p class="read">{M.nota}</p>
     <div class="ctas">
-      <button type="button" class="btn btn-s btn-sm" data-map-load>Mostra la mappa</button>
-      <a class="btn btn-s btn-sm" href={link} rel="noopener" target="_blank">Apri in Google Maps</a>
+      <button type="button" class="btn btn-s btn-sm" data-map-load>{M.mostra}</button>
+      <a class="btn btn-s btn-sm" href={link} rel="noopener" target="_blank">{M.apri}</a>
     </div>
   </div>
 </div>
@@ -25,7 +28,7 @@ const link = `https://www.google.com/maps/search/?api=1&query=${q}`;
   const carica = (m: HTMLElement) => {
     if (m.querySelector('iframe')) return;
     const f = document.createElement('iframe');
-    f.src = m.dataset.src || ''; f.title = 'Mappa della sede El Gammal'; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.src = m.dataset.src || ''; f.title = m.dataset.titolo || ''; f.loading = 'lazy'; f.referrerPolicy = 'no-referrer-when-downgrade';
     m.querySelector('.map-ph')?.remove(); m.appendChild(f);
   };
   document.querySelectorAll<HTMLElement>('[data-map]').forEach((m) => {

@@ -1,27 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
+// Pagina generata: il contenuto sta in src/views/Cookie.astro (testi in src/i18n/testi).
+import Cookie from '../views/Cookie.astro';
 ---
-<Base title="Cookie policy | El Gammal, impresa edile" description="Quali cookie usa il sito di El Gammal e come scegliere: solo cookie tecnici, mappa Google solo con il tuo consenso.">
-  <article class="sec first">
-    <div class="wrap legal">
-      <p class="todo note">[Testo base da far verificare da un consulente privacy prima della pubblicazione definitiva]</p>
-      <h1>Cookie <b>policy</b></h1>
-      <h2>Cookie tecnici</h2>
-      <p>Il sito salva nel tuo browser solo la tua scelta sui cookie, per non chiedertela a ogni pagina. Non servono il tuo consenso.</p>
-      <h2>Contenuti di terze parti</h2>
-      <p>La mappa della sede è fornita da Google Maps, che può usare cookie propri. La mappa si carica solo se accetti nel banner o se premi "Mostra la mappa".</p>
-      <h2>Statistiche e pubblicità</h2>
-      <p>Oggi il sito non usa statistiche né pixel pubblicitari. Se in futuro li aggiungeremo, li attiveremo solo dopo il tuo consenso.</p>
-      <h2>Cambiare scelta</h2>
-      <p>Puoi cambiare la tua scelta quando vuoi.</p>
-      <p><button type="button" class="btn btn-s" data-cookie-open>Preferenze cookie</button></p>
-    </div>
-  </article>
-</Base>
-<style>
-  .first { border-block-start: 0; }
-  .legal { max-width: 760px; display: grid; gap: 16px; }
-  .legal h2 { font-size: 1.75rem; margin-block-start: 24px; }
-  .legal p { color: var(--fg-2); max-width: 62ch; }
-  .legal .note { justify-self: start; padding: 6px 10px; color: var(--todo-fg); }
-</style>
+<Cookie />

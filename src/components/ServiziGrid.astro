@@ -1,12 +1,17 @@
 ---
 // Servizi in fila orizzontale, ognuno con la sua immagine.
 import { Picture } from 'astro:assets';
-import { servizi } from '../data/servizi';
+import { serviziIn } from '../data/servizi-lingue';
 import Scorrevole from './Scorrevole.astro';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const servizi = serviziIn(l);
 ---
-<Scorrevole etichetta="Servizi" w="min(80%, 340px)">
+<Scorrevole etichetta={T.menu.servizi} w="min(80%, 340px)">
   {servizi.map((s) => (
-      <a class="card" href={`/${s.slug}`}>
+      <a class="card" href={percorso(`/${s.slug}`, l)}>
         <div class="f">
           <Picture src={s.foto} alt="" formats={['avif']} fallbackFormat="webp" widths={[480, 680]} sizes="340px" loading="lazy" />
           {s.fotoNota && <span class="tag">{s.fotoNota}</span>}
@@ -15,7 +20,7 @@ import Scorrevole from './Scorrevole.astro';
           <span class="n" aria-hidden="true">{s.num}</span>
           <h3>{s.nome}</h3>
           <p>{s.breve}</p>
-          <span class="go">Scopri <span aria-hidden="true">→</span></span>
+          <span class="go">{T.generale.scopri} <span class="freccia" aria-hidden="true">→</span></span>
         </div>
       </a>
   ))}

@@ -8,17 +8,23 @@ import path from 'node:path';
 const dir = path.join(process.cwd(), 'public', 'sequenza', 'hd');
 const n = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.webp')).length : 0;
 const pad = (i: number) => String(i).padStart(3, '0');
-// fasi: [primo fotogramma, ultimo fotogramma] della sequenza (100 fotogrammi)
-const fasi = [
-  { a: 0, b: 7, t: 'Il sopralluogo', d: 'Veniamo a vedere la casa com\'è oggi e ascoltiamo cosa ti serve. Poi ti diamo un preventivo chiaro. Tutto gratis.', href: '/contatti', link: 'Prenota il sopralluogo' },
-  { a: 8, b: 19, t: 'Si comincia', d: 'Proteggiamo quello che resta, togliamo il vecchio e portiamo via le macerie.', href: '/ristrutturazioni-chiavi-in-mano', link: 'Ristrutturazioni chiavi in mano' },
-  { a: 20, b: 35, t: 'La muratura', d: 'Nuove pareti, aperture e chiusure, dritte e a piombo. Tutto quello che viene dopo si appoggia qui.', href: '/muratura', link: 'Scopri la muratura' },
-  { a: 36, b: 47, t: 'Gli impianti', d: 'Tracce ordinate per luce, acqua e riscaldamento, fatte insieme alle opere murarie.', href: '/impianti', link: 'Scopri gli impianti' },
-  { a: 48, b: 59, t: 'Gli intonaci', d: 'L\'intonaco chiude le tracce e rende le pareti regolari, pronte per la finitura.', href: '/intonaci-imbiancatura', link: 'Scopri gli intonaci' },
-  { a: 60, b: 71, t: 'Il cartongesso', d: 'Controsoffitti, velette e contropareti: nascondono gli impianti e portano la luce dove serve.', href: '/cartongesso', link: 'Scopri il cartongesso' },
-  { a: 72, b: 81, t: 'La rasatura', d: 'Pochi millimetri di stucco: pareti e soffitti lisci, senza onde, anche con la luce di lato.', href: '/rasatura-pareti', link: 'Scopri la rasatura' },
-  { a: 82, b: 99, t: 'Casa tua', d: 'L\'ultima mano di colore e la stanza è pronta. Dal primo mattone all\'ultima mano di colore, un\'impresa sola.', href: '/contatti', link: 'Prenota il sopralluogo gratuito', cta: true },
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi, f as riempi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const C = T.cantiere;
+// fasi: [primo fotogramma, ultimo fotogramma] della sequenza (100 fotogrammi); i testi vengono dalla lingua
+const base = [
+  { a: 0, b: 7, href: '/contatti' },
+  { a: 8, b: 19, href: '/ristrutturazioni-chiavi-in-mano' },
+  { a: 20, b: 35, href: '/muratura' },
+  { a: 36, b: 47, href: '/impianti' },
+  { a: 48, b: 59, href: '/intonaci-imbiancatura' },
+  { a: 60, b: 71, href: '/cartongesso' },
+  { a: 72, b: 81, href: '/rasatura-pareti' },
+  { a: 82, b: 99, href: '/contatti', cta: true },
 ];
+const fasi = base.map((x, i) => ({ ...x, ...C.fasi[i], href: percorso(x.href, l) }));
 const primo = n ? `/sequenza/hd/f000.webp` : '';
 const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
 ---
@@ -29,38 +35,38 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       {n > 0 && (
         <picture>
           <source media="(max-width: 899px)" srcset="/sequenza/sm/f000.webp" />
-          <img class="first" src={primo} alt="Una stanza di un appartamento anni '60 prima della ristrutturazione" width="1280" height="720" loading="lazy" decoding="async" />
+          <img class="first" src={primo} alt={C.altPrima} width="1280" height="720" loading="lazy" decoding="async" />
         </picture>
       )}
       <canvas aria-hidden="true"></canvas>
-      <span class="ill">Ricostruzione 3D illustrativa</span>
+      <span class="ill">{T.generale.ricostruzione3dIll}</span>
       <div class="bar" aria-hidden="true">{fasi.map(() => <i></i>)}</div>
     </div>
     <div class="txt">
       <div class="intro" data-intro>
-        <p class="mono">Il lavoro, fase per fase</p>
-        <h2 class="ih">Una stanza. Otto fasi. <b>Un'impresa sola.</b></h2>
-        <p class="d">Questa è una stanza com'era prima. Scorri e guardala cambiare: ogni fase è uno dei nostri servizi.</p>
+        <p class="mono">{C.sopra}</p>
+        <h2 class="ih">{C.titolo}<b>{C.titoloForte}</b></h2>
+        <p class="d">{C.testo}</p>
       </div>
-      <ol class="fasi" aria-label="Le fasi di una ristrutturazione">
+      <ol class="fasi" aria-label={C.fasiEtichetta}>
         {fasi.map((f, i) => (
           <li class="fase" data-i={i}>
             <div class="fh">
-              <p class="mono">Fase {i + 1} di {fasi.length}</p>
+              <p class="mono">{riempi(C.fase, { n: i + 1, t: fasi.length })}</p>
               <h3>{f.t}</h3>
             </div>
             <p class="d">{f.d}</p>
             {f.cta
               ? <a class="btn btn-p" href={f.href}>{f.link}</a>
-              : <a class="go" href={f.href}>{f.link} <span aria-hidden="true">→</span></a>}
+              : <a class="go" href={f.href}>{f.link} <span class="freccia" aria-hidden="true">→</span></a>}
           </li>
         ))}
       </ol>
     </div>
-    <p class="hint" aria-hidden="true"><span class="fr"><i></i><i></i><i></i></span>Scorri</p>
+    <p class="hint" aria-hidden="true"><span class="fr"><i></i><i></i><i></i></span>{C.scorri}</p>
   </div>
   {n > 0 && (
-    <noscript><img src={ultimo} alt="La stessa stanza dopo la ristrutturazione" width="1280" height="720" /></noscript>
+    <noscript><img src={ultimo} alt={C.altDopo} width="1280" height="720" /></noscript>
   )}
 </section>
 
@@ -124,6 +130,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .stick { display: block; }
     :global(.js:not(.no-seq)) .frame { position: absolute; inset: 0; aspect-ratio: auto; height: 100%; }
     :global(.js:not(.no-seq)) .frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(17,20,22,.88) 0%, rgba(17,20,22,.6) 34%, rgba(17,20,22,0) 62%); pointer-events: none; }
+    :global([dir='rtl'].js:not(.no-seq)) .frame::after { background: linear-gradient(270deg, rgba(17,20,22,.88) 0%, rgba(17,20,22,.6) 34%, rgba(17,20,22,0) 62%); }
     :global(.js:not(.no-seq)) .txt { position: absolute; inset-block: 0; inset-inline-start: 0; width: min(46%, 620px); padding: 0; --fg: #eceae6; --fg-2: #c9cdd0; --bronze: #b7a58c; color: var(--fg); }
     :global(.js:not(.no-seq)) .intro, :global(.js:not(.no-seq)) .fase { inset-block-start: auto; inset-block-end: 12vh; inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)) 0; }
     :global(.js:not(.no-seq)) .intro .ih, :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(3rem, 5vw, 4.6rem); }

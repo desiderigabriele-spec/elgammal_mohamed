@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const T = testi(linguaDi(Astro));
+const C = T.cookiePagina;
+---
+<Base title={C.title} description={C.description}>
+  <article class="sec first">
+    <div class="wrap legal">
+      <p class="todo note">{T.legale.verifica}</p>
+      <h1>{C.titolo}<b>{C.titoloForte}</b></h1>
+      {C.sezioni.map((x) => (
+        <>
+          <h2>{x.h}</h2>
+          <p>{x.p}</p>
+        </>
+      ))}
+      <p><button type="button" class="btn btn-s" data-cookie-open>{T.piede.preferenze}</button></p>
+    </div>
+  </article>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .legal { max-width: 760px; display: grid; gap: 16px; }
+  .legal h2 { font-size: 1.75rem; margin-block-start: 24px; }
+  .legal p { color: var(--fg-2); max-width: 62ch; }
+  .legal .note { justify-self: start; padding: 6px 10px; color: var(--todo-fg); }
+</style>

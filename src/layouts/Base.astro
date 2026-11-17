@@ -5,8 +5,10 @@ import Footer from '../components/Footer.astro';
 import Dock from '../components/Dock.astro';
 import CookieBanner from '../components/CookieBanner.astro';
 import { impresa } from '../data/impresa';
-import { servizi } from '../data/servizi';
-import { lingue, type Lingua } from '../i18n/lingue';
+import Benvenuto from '../components/Benvenuto.astro';
+import { serviziIn } from '../data/servizi-lingue';
+import { lingue, codici, linguaDi, percorso, percorsoNeutro, linguaPredefinita } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
 import fTitoli600 from '@fontsource/barlow-condensed/files/barlow-condensed-latin-600-normal.woff2?url';
 import fTitoli800 from '@fontsource/barlow-condensed/files/barlow-condensed-latin-800-normal.woff2?url';
 import fTesto400 from '@fontsource/barlow/files/barlow-latin-400-normal.woff2?url';
@@ -14,13 +16,17 @@ import fTesto400 from '@fontsource/barlow/files/barlow-latin-400-normal.woff2?ur
 interface Props {
   title: string;
   description: string;
-  lingua?: Lingua;
   jsonld?: Record<string, unknown>[];
   noindex?: boolean;
   ogImage?: string;
 }
-const { title, description, lingua = 'it', jsonld = [], noindex = false, ogImage = '/og-image.jpg' } = Astro.props;
+const { title, description, jsonld = [], noindex = false, ogImage = '/og-image.jpg' } = Astro.props;
+const lingua = linguaDi(Astro);
 const L = lingue[lingua];
+const T = testi(lingua);
+const servizi = serviziIn(lingua);
+const neutro = percorsoNeutro(Astro.url.pathname);
+const alternative = codici.map((c) => ({ c, href: new URL(percorso(neutro, c), Astro.site!).href }));
 const site = Astro.site!;
 const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), site).href;
 const i = impresa.indirizzo;
@@ -29,7 +35,7 @@ const business: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': ['GeneralContractor', 'LocalBusiness'],
   '@id': new URL('/#impresa', site).href,
-  name: 'El Gammal · Impresa edile',
+  name: T.generale.nomeSito,
   legalName: impresa.ragioneSociale,
   url: site.href,
   logo: new URL('/icons/icon-512.png', site).href,
@@ -48,8 +54,8 @@ const business: Record<string, unknown> = {
   knowsAbout: servizi.map((s) => s.nome),
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'Servizi',
-    itemListElement: servizi.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.nome, url: new URL(`/${s.slug}`, site).href } })),
+    name: T.menu.servizi,
+    itemListElement: servizi.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.nome, url: new URL(percorso(`/${s.slug}`, lingua), site).href } })),
   },
 };
 if (impresa.telefono) business.telephone = impresa.telefono;
@@ -69,6 +75,8 @@ const blocks = [business, ...jsonld];
     <link rel="preload" href={fTesto400} as="font" type="font/woff2" crossorigin />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {!noindex && alternative.map((a) => <link rel="alternate" hreflang={a.c} href={a.href} />)}
+    {!noindex && <link rel="alternate" hreflang="x-default" href={alternative.find((a) => a.c === linguaPredefinita)!.href} />}
     {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="theme-color" content="#1F2326" />
     <link rel="icon" href="/icons/favicon.ico" sizes="any" />
@@ -77,8 +85,9 @@ const blocks = [business, ...jsonld];
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={L.locale.replace('-', '_')} />
-    <meta property="og:site_name" content="El Gammal · Impresa edile" />
+    <meta property="og:locale" content={L.og} />
+    {codici.filter((c) => c !== lingua).map((c) => <meta property="og:locale:alternate" content={lingue[c].og} />)}
+    <meta property="og:site_name" content={T.generale.nomeSito} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -90,7 +99,8 @@ const blocks = [business, ...jsonld];
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
-    <a class="skip" href="#contenuto">Vai al contenuto</a>
+    <Benvenuto />
+    <a class="skip" href="#contenuto">{T.generale.salta}</a>
     <Header />
     <main id="contenuto">
       <slot />

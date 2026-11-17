@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Mappa from '../components/Mappa.astro';
+import { impresa, waHref, telHref, mailHref } from '../data/impresa';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi, f as riempi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const u = (p: string) => percorso(p, l);
+const C = T.contatti;
+---
+<Base title={C.title} description={C.description}>
+  <section class="sec gridbg first">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">{C.sopra}</p>
+        <h1>{C.titolo}<b>{C.titoloForte}</b>.</h1>
+        <p class="lead">{C.lead}</p>
+        <div class="ways">
+          <a class="way" href={waHref(`${T.generale.waBase} ${T.generale.dalSito}`)}><span class="mono">{T.menu.whatsapp}</span><b dir="ltr">{impresa.whatsapp ? impresa.telefono ?? `+${impresa.whatsapp}` : <span class="todo">[numero]</span>}</b><span>{C.waNota}</span></a>
+          <a class="way" href={mailHref(`${T.generale.oggettoMail} ${T.generale.dalSito}`)}><span class="mono">{T.menu.email}</span><b>{impresa.email ?? <span class="todo">[indirizzo]</span>}</b><span>{C.mailNota}</span></a>
+          <a class="way" href={telHref()}><span class="mono">{T.menu.telefono}</span><b dir="ltr">{impresa.telefono ?? <span class="todo">[numero]</span>}</b><span>{C.orari} <span class="todo">[da ricevere]</span></span></a>
+        </div>
+      </div>
+      <ContactForm id="contatti-form" />
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">{C.sede}</p>
+        <h2 dir="ltr">{impresa.indirizzo.via}</h2>
+        <p class="read"><span dir="ltr">{impresa.indirizzo.cap} {impresa.indirizzo.citta} ({impresa.indirizzo.provincia})</span>. {C.sedeTesto}</p>
+      </div>
+      <Mappa />
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .two { display: grid; gap: 40px; align-items: start; }
+  @media (min-width: 1000px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 50ch; }
+  .ways { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .way { background: var(--bg); padding: 18px 20px; display: grid; gap: 4px; text-decoration: none; min-height: 44px; }
+  a.way:hover { background: var(--bg-2); }
+  .way b { font: 800 1.6rem/1.1 var(--f-d); text-transform: uppercase; }
+  .way > span:last-child:not(.mono) { color: var(--fg-2); }
+</style>

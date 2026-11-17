@@ -6,10 +6,14 @@ const { chromium } = require('playwright');
 const axeSource = readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 
 const BASE = process.env.BASE_URL || 'http://localhost:4321';
-const PAGINE = ['/', '/muratura', '/intonaci-imbiancatura', '/rasatura-pareti', '/cartongesso', '/impianti', '/facciate', '/ristrutturazioni-chiavi-in-mano', '/lavori', '/chi-siamo', '/dove-lavoriamo', '/contatti', '/privacy', '/cookie'];
+const PAGINE = ['/', '/muratura', '/intonaci-imbiancatura', '/rasatura-pareti', '/cartongesso', '/impianti', '/facciate', '/ristrutturazioni-chiavi-in-mano', '/lavori', '/chi-siamo', '/dove-lavoriamo', '/contatti', '/privacy', '/cookie',
+  // un campione delle altre lingue (l'arabo si legge da destra a sinistra)
+  '/en', '/fr/muratura', '/de/contatti', '/ar', '/ar/rasatura-pareti', '/en/chi-siamo'];
 const MOBILE = { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true };
 const DESKTOP = { viewport: { width: 1440, height: 900 } };
-const CONSENSO = (v) => () => { try { localStorage.setItem('elg-consenso-v1', JSON.stringify({ esterni: v, data: 'test' })); } catch {} };
+// script iniettati prima di ogni pagina (come testo: una funzione perderebbe le variabili esterne)
+const CONSENSO = (v) => ({ content: `try { localStorage.setItem('elg-lingua', 'it'); localStorage.setItem('elg-consenso-v1', JSON.stringify({ esterni: ${v ? 'true' : 'false'}, data: 'test' })); } catch (e) {}` });
+const SOLO_LINGUA = { content: `try { localStorage.setItem('elg-lingua', 'it'); } catch (e) {}` };
 
 let ok = 0, ko = 0;
 const check = (cond, nome, info = '') => { if (cond) { ok++; console.log('  ✓', nome); } else { ko++; console.log('  ✗', nome, info); } };
@@ -97,7 +101,7 @@ console.log('\n4 · Modulo');
   await f.locator('[name=tipo]').selectOption('Facciate');
   await f.locator('[name=messaggio]').fill('Facciata di un condominio di 4 piani');
   // numero di prova: simula il sito con WhatsApp configurato
-  await p.evaluate(() => document.querySelector('#contatti-form').dataset.conf = JSON.stringify({ endpoint: null, wa: '390000000000' }));
+  await p.evaluate(() => { const el = document.querySelector('#contatti-form'); el.dataset.conf = JSON.stringify({ ...JSON.parse(el.dataset.conf), endpoint: null, wa: '390000000000' }); });
   let waUrl = '';
   await p.route('https://wa.me/**', (r) => { waUrl = r.request().url(); r.abort(); });
   await f.locator('button[type=submit]').click(); await p.waitForTimeout(500);
@@ -108,7 +112,7 @@ console.log('\n4 · Modulo');
   const p2 = await ctx.newPage(); await p2.goto(BASE + '/contatti');
   let corpo = null;
   await p2.route('https://invio.example/**', async (r) => { corpo = JSON.parse(r.request().postData()); await r.fulfill({ status: 200, body: '{}', contentType: 'application/json' }); });
-  await p2.evaluate(() => document.querySelector('#contatti-form').dataset.conf = JSON.stringify({ endpoint: 'https://invio.example/f', wa: null }));
+  await p2.evaluate(() => { const el = document.querySelector('#contatti-form'); el.dataset.conf = JSON.stringify({ ...JSON.parse(el.dataset.conf), endpoint: 'https://invio.example/f', wa: null }); });
   const f2 = p2.locator('#contatti-form');
   await f2.locator('[name=nome]').fill('Anna'); await f2.locator('[name=contatto]').fill('anna@example.com');
   await f2.locator('button[type=submit]').click(); await p2.waitForTimeout(500);
@@ -119,7 +123,7 @@ console.log('\n4 · Modulo');
 
 console.log('\n5 · Cookie');
 {
-  const ctx = await b.newContext(MOBILE);
+  const ctx = await b.newContext(MOBILE); await ctx.addInitScript(SOLO_LINGUA);
   const p = await ctx.newPage(); const google = [];
   p.on('request', (r) => { if (/google\.com|gstatic|googleapis|facebook|analytics/.test(r.url())) google.push(r.url()); });
   await p.goto(BASE + '/contatti', { waitUntil: 'networkidle' });
@@ -159,6 +163,28 @@ console.log('\n6 · SEO di base');
   check(PAGINE.filter((x) => x !== '/lavori').every((x) => sm.includes(x === '/' ? '</loc>' : x)), 'sitemap con tutte le pagine');
   const rb = await (await fetch(BASE + '/robots.txt')).text();
   check(rb.includes('Sitemap:'), 'robots.txt con la sitemap');
+  await ctx.close();
+}
+
+console.log('\n7 · Lingue');
+{
+  const ctx = await b.newContext(MOBILE);
+  const p = await ctx.newPage();
+  await p.goto(BASE + '/');
+  const bv = p.locator('#bv');
+  check(await bv.isVisible(), 'alla prima visita compare la scelta della lingua');
+  check((await bv.locator('[data-scegli]').count()) === 5, 'cinque lingue con bandiera', String(await bv.locator('[data-scegli]').count()));
+  await bv.locator('[data-scegli=en]').click(); await p.waitForURL('**/en'); await p.waitForLoadState();
+  check(await p.evaluate(() => document.documentElement.lang) === 'en', 'scegliendo English si va al sito in inglese');
+  check(await p.locator('#bv').isHidden(), 'la scelta viene ricordata (il benvenuto non ricompare)');
+  check(await p.locator('header [data-lng] .lng-b').isVisible(), 'nell\'intestazione c\'è il tasto della lingua');
+  await p.locator('header [data-lng] .lng-b').click();
+  check((await p.locator('header .lng-l a').count()) === 5, 'il tasto apre le cinque lingue');
+  await p.goto(BASE + '/ar/muratura');
+  check(await p.evaluate(() => document.documentElement.dir) === 'rtl', 'l\'arabo si legge da destra a sinistra');
+  check(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'in arabo niente scorrimento laterale della pagina');
+  const alt = await p.locator('link[rel=alternate][hreflang]').count();
+  check(alt === 6, 'ogni pagina indica a Google le sue versioni nelle altre lingue', String(alt));
   await ctx.close();
 }
 

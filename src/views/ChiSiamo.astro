@@ -1,0 +1,83 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Metodo from '../components/Metodo.astro';
+import { impresa } from '../data/impresa';
+import foto from '../assets/foto/imbianchino.webp';
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi, f as riempi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const T = testi(l);
+const u = (p: string) => percorso(p, l);
+const C = T.chiSiamo;
+---
+<Base title={C.title} description={C.description}>
+  <section class="sec gridbg first">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">{C.sopra}</p>
+        <h1>{C.titolo}<b>{riempi(C.titoloForte, { anno: impresa.dal })}</b>.</h1>
+        <p class="lead">{riempi(C.lead, { via: impresa.indirizzo.via })}</p>
+        <p class="quota"><span>{impresa.dal} <span class="freccia" aria-hidden="true">→</span> {C.oggi}</span></p>
+      </div>
+      <figure class="img">
+        <Picture src={foto} alt={C.alt} formats={['avif']} fallbackFormat="webp" widths={[480, 760, 960]} sizes="(min-width: 1000px) 46vw, 92vw" loading="eager" />
+        <figcaption>{T.generale.fotoEsempio}</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap two">
+      <div class="stack">
+        <p class="mono">{C.pensiamo}</p>
+        <h2>{C.pensiamoTitolo}<b>{C.pensiamoForte}</b>.</h2>
+        <p class="read">{C.pensiamoTesto}</p>
+        <p class="todo" style="justify-self:start;padding:6px 10px">{C.storia}</p>
+      </div>
+      <ul class="values">
+        {C.valori.map((v) => <li><h3>{v.t}</h3><p>{v.d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec gridbg">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{C.sicurezza}</p>
+        <h2>{C.sicurezzaTitolo}<b>{C.sicurezzaForte}</b>.</h2>
+        <p class="read">{C.sicurezzaTesto}</p>
+      </div>
+      <div class="certs" aria-label={C.certificazioni}>
+        <div class="cert"><span class="todo">[logo certificazione]</span><p>{C.cert[0]}</p></div>
+        <div class="cert"><span class="todo">[logo certificazione]</span><p>{C.cert[1]}</p></div>
+        <div class="cert"><span class="todo">[logo iscrizione]</span><p>{C.cert[2]}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="mono">{C.come}</p>
+        <h2>{C.comeTitolo}<b>{C.comeForte}</b>.</h2>
+      </div>
+      <Metodo />
+      <div class="ctas" style="margin-block-start:40px"><a class="btn btn-p" href={u('/contatti')}>{C.cta}</a></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .first { border-block-start: 0; }
+  .two { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 1000px) { .two { grid-template-columns: 1fr 1fr; gap: 64px; } }
+  .lead { font-size: 1.25rem; color: var(--fg-2); max-width: 50ch; }
+  .img { margin: 0; position: relative; border: 1px solid var(--line); aspect-ratio: 3 / 2; overflow: hidden; }
+  .img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .img figcaption { position: absolute; inset-inline-start: 8px; inset-block-end: 8px; background: var(--paper); color: var(--ink); font: 500 1rem var(--f-m); padding: 4px 8px; }
+  .values { list-style: none; padding: 0; display: grid; border-block-start: 1px solid var(--line); }
+  .values li { padding-block: 20px; border-block-end: 1px solid var(--line); display: grid; gap: 8px; }
+  .values p { color: var(--fg-2); }
+  .certs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .cert { border: 2px dashed var(--line); padding: 24px; display: grid; gap: 12px; justify-items: start; color: var(--fg-2); }
+</style>

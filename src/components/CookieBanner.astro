@@ -2,16 +2,20 @@
 // Consenso: "Accetta" e "Rifiuta" uguali per forma e posizione, nessuna casella già spuntata.
 // Oggi il sito non usa statistiche né pixel: il consenso riguarda solo i contenuti esterni (mappa Google).
 // Se in futuro si aggiungono statistiche, vanno caricate solo dentro onConsenso('statistiche').
+import { linguaDi, percorso } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const C = testi(l).cookie;
 ---
 <div class="ck" id="ck" role="dialog" aria-modal="false" aria-labelledby="ck-t" hidden>
   <div class="wrap ck-in">
     <div class="stack ck-txt">
-      <p id="ck-t"><strong>Cookie e contenuti esterni</strong></p>
-      <p>Usiamo solo cookie tecnici, necessari al sito. Con il tuo consenso carichiamo anche contenuti di terze parti, come la mappa di Google, che possono usare cookie propri. <a href="/cookie">Cookie policy</a></p>
+      <p id="ck-t"><strong>{C.titolo}</strong></p>
+      <p>{C.testo} <a href={percorso('/cookie', l)}>{C.link}</a></p>
     </div>
     <div class="ck-btns">
-      <button type="button" class="btn btn-s" data-ck="no">Rifiuta</button>
-      <button type="button" class="btn btn-s" data-ck="si">Accetta</button>
+      <button type="button" class="btn btn-s" data-ck="no">{C.rifiuta}</button>
+      <button type="button" class="btn btn-s" data-ck="si">{C.accetta}</button>
     </div>
   </div>
 </div>

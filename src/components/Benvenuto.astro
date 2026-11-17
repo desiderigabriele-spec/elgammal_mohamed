@@ -1,0 +1,69 @@
+---
+// Schermata di benvenuto alla prima visita: logo in alto e le cinque lingue, ognuna con la sua bandiera.
+// Compare solo se non è ancora stata scelta una lingua (salvata nel browser, chiave "elg-lingua").
+// La lingua del telefono viene messa in evidenza. Dopo la scelta non ricompare più.
+import Logo from './Logo.astro';
+import Bandiera from './Bandiera.astro';
+import { lingue, codici, linguaDi, percorso, percorsoNeutro } from '../i18n/lingue';
+import { testi } from '../i18n/testi';
+const l = linguaDi(Astro);
+const neutro = percorsoNeutro(Astro.url.pathname);
+---
+<div class="bv" id="bv" role="dialog" aria-modal="true" aria-labelledby="bv-t" data-attuale={l} hidden>
+  <div class="bv-in">
+    <div class="bv-logo"><Logo altezza={88} chiaro /></div>
+    <p class="bv-t" id="bv-t">{testi[l].benvenuto.titolo}<span>{testi[l].benvenuto.sotto}</span></p>
+    <ul class="bv-l">
+      {codici.map((c) => (
+        <li>
+          <a href={percorso(neutro, c)} hreflang={c} lang={c} dir={lingue[c].dir} data-scegli={c}>
+            <Bandiera l={c} size={32} />
+            <span class="nm">{lingue[c].nome}</span>
+            <span class="cd" aria-hidden="true">{lingue[c].breve}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<script is:inline>
+  // subito, prima che la pagina si veda: se manca la scelta della lingua, mostra il benvenuto
+  (function () {
+    var bv = document.getElementById('bv');
+    var scelta = null;
+    try { scelta = localStorage.getItem('elg-lingua'); } catch (e) { scelta = 'ignota'; }
+    if (!bv || scelta) return;
+    bv.hidden = false;
+    document.documentElement.classList.add('bv-aperto');
+    var tel = (navigator.language || '').slice(0, 2).toLowerCase();
+    var att = bv.getAttribute('data-attuale');
+    var evid = bv.querySelector('[data-scegli="' + tel + '"]') || bv.querySelector('[data-scegli="' + att + '"]');
+    if (evid) evid.classList.add('ev');
+    bv.querySelectorAll('[data-scegli]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var c = a.getAttribute('data-scegli');
+        try { localStorage.setItem('elg-lingua', c); } catch (err) { /* storage bloccato */ }
+        if (c === att) { e.preventDefault(); bv.hidden = true; document.documentElement.classList.remove('bv-aperto'); }
+      });
+    });
+    setTimeout(function () { if (evid) evid.focus(); }, 0);
+  })();
+</script>
+
+<style>
+  .bv { position: fixed; inset: 0; z-index: 80; background: var(--bg); display: grid; place-items: center; overflow-y: auto; padding: max(24px, env(safe-area-inset-top, 0px)) var(--gutter-e) max(24px, env(safe-area-inset-bottom, 0px)) var(--gutter-s); }
+  .bv[hidden] { display: none; }
+  :global(html.bv-aperto) { overflow: hidden; }
+  .bv-in { width: min(100%, 420px); display: grid; gap: 24px; justify-items: center; }
+  .bv-logo { padding-block-end: 8px; }
+  .bv-t { text-align: center; font: 800 2rem/1.05 var(--f-d); text-transform: uppercase; color: var(--ink); display: grid; gap: 6px; }
+  .bv-t span { font: 500 1rem/1.3 var(--f-m); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); }
+  .bv-l { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; gap: 10px; }
+  .bv-l a { display: flex; align-items: center; gap: 14px; min-height: 60px; padding-inline: 16px 20px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); text-decoration: none; transition: border-color .2s, background .2s; }
+  .bv-l a:hover, .bv-l a:focus-visible { border-color: var(--ink); }
+  .bv-l a.ev { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .bv-l a.ev .cd { color: #c9cdd0; }
+  .nm { flex: 1; font: 700 1.125rem/1 var(--f-b); }
+  .cd { font: 500 1rem/1 var(--f-m); color: var(--ink-2); }
+</style>

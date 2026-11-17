@@ -141,3 +141,9 @@ strong { font-weight: 700; color: var(--fg); }
 }
 .field textarea { min-height: 112px; resize: vertical; }
 .field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible { outline: 3px solid var(--ink); outline-offset: 1px; }
+
+/* arabo (da destra a sinistra): le frecce dei link si girano */
+:root[dir='rtl'] .freccia { display: inline-block; transform: scaleX(-1); }
+/* arabo: i caratteri latini condensati non hanno l'arabo; titoli senza maiuscolo forzato e un po' più ariosi */
+:root[dir='rtl'] h1, :root[dir='rtl'] h2, :root[dir='rtl'] h3, :root[dir='rtl'] h4 { line-height: 1.2; letter-spacing: 0; }
+:root[dir='rtl'] .mono { letter-spacing: 0; }

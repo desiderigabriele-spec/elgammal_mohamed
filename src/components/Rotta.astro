@@ -1,17 +1,14 @@
 ---
 // Striscia di fiducia tra l'hero e la stanza 3D: da Sesto San Giovanni fino all'estero, su una linea tratteggiata.
 // Su telefono scorre da sola all'infinito (la seconda copia serve solo a far girare il nastro senza salti).
-const tappe = [
-  { t: 'Sesto San Giovanni', s: 'la sede', casa: true },
-  { t: 'Milano', s: 'e hinterland' },
-  { t: 'Tutta Italia', s: 'anche fuori Milano' },
-  { t: 'Germania e Francia', s: 'lavori eseguiti' },
-  { t: 'Paesi arabi', s: 'lavori eseguiti' },
-];
+import { linguaDi } from '../i18n/lingue';
+import { t as testi } from '../i18n/testi';
+const R = testi(linguaDi(Astro)).rotta;
+const tappe = R.tappe.map((x, i) => ({ ...x, casa: i === 0 }));
 ---
-<section class="rotta" aria-label="Dove lavoriamo">
+<section class="rotta" aria-label={R.etichetta}>
   <div class="wrap in">
-    <p class="k">Dal 2005 · base a Sesto, cantieri in tutta Italia e all'estero</p>
+    <p class="k">{R.titolo}</p>
     <div class="vista">
       <div class="nastro">
         {[0, 1].map((copia) => (
@@ -37,6 +34,8 @@ const tappe = [
   .nastro { display: flex; width: max-content; animation: giro 24s linear infinite; }
   .vista:hover .nastro, .vista:active .nastro { animation-play-state: paused; }
   @keyframes giro { to { transform: translateX(-50%); } }
+  @keyframes giro-rtl { to { transform: translateX(50%); } }
+  :global([dir='rtl']) .nastro { animation-name: giro-rtl; }
   .linea { list-style: none; margin: 0; padding: 0 0 6px; display: flex; align-items: flex-start; }
   .tappa { flex: none; display: grid; justify-items: start; gap: 4px; max-width: 11rem; }
   .tappa i { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bronze); background: var(--bg-2); }
@@ -61,6 +60,8 @@ const tappe = [
     .copia, .giro { display: none; }
     .linea { width: 100%; }
     .tratto { flex: 1 0 40px; width: auto; }
-    .tappa b { font-size: 1.5rem; }
+    .tappa b { font-size: 1.5rem; white-space: normal; }
+    .tappa span { white-space: normal; }
+    .tappa { min-width: 0; flex: 0 1 auto; }
   }
 </style>
