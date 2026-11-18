@@ -50,6 +50,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         <h2 class="ih">{C.titolo}<b>{C.titoloForte}</b></h2>
         <p class="d d-scorri">{C.testo}</p>
         <p class="d d-chiusa">{C.testoChiusa}</p>
+        <button type="button" class="play-tx" data-play2><span class="tri" aria-hidden="true"></span><span class="play-tx-t">{C.guarda1}</span></button>
       </div>
       <ol class="fasi" aria-label={C.fasiEtichetta}>
         {fasi.map((f, i) => (
@@ -82,7 +83,11 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
   .frame canvas { opacity: 0; }
   .frame.live canvas { opacity: 1; }
   /* tasti: "Salta" durante lo scorrimento, Play e Ferma nella versione chiusa (solo con JavaScript) */
-  .salta, .play, .stop, .d-chiusa { display: none; }
+  .salta, .play, .stop, .d-chiusa, .play-tx { display: none; }
+  .play-tx { justify-self: start; align-items: center; gap: 10px; min-height: 48px; padding-inline: 20px; margin-block-start: 8px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font: 700 1rem/1 var(--f-b); text-transform: uppercase; letter-spacing: .04em; cursor: pointer; }
+  .play-tx:hover { background: #000; }
+  .play-tx .tri { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent currentColor; }
+  :global([dir='rtl']) .play-tx .tri { transform: scaleX(-1); }
   .salta { position: absolute; z-index: 5; inset-inline-end: var(--gutter-e); inset-block-start: 24px; align-items: center; gap: 6px; min-height: 44px; padding-inline: 16px; border-radius: 999px; background: rgba(17,20,22,.72); color: #fff; font: 700 1rem/1 var(--f-b); text-transform: uppercase; letter-spacing: .04em; text-decoration: none; backdrop-filter: blur(6px); }
   .salta:hover { background: rgba(17,20,22,.9); }
   .play { position: absolute; z-index: 4; inset-inline-start: 50%; inset-block-start: 50%; transform: translate(-50%, -50%); flex-direction: column; align-items: center; gap: 10px; border: 0; background: none; cursor: pointer; color: #fff; font: 700 1rem/1.2 var(--f-b); text-transform: uppercase; letter-spacing: .04em; text-shadow: 0 2px 10px rgba(0,0,0,.6); }
@@ -149,6 +154,14 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .fh { position: absolute; inset-inline: 0; inset-block-end: calc(100% + 20px + 16px); z-index: 3; --fg: #eceae6; --fg-2: #c9cdd0; --bronze: #b7a58c; color: var(--fg); }
     :global(.js:not(.no-seq)) .fase h3 { font-size: clamp(2.2rem, 10vw, 3rem); }
     :global(.js:not(.no-seq)) .fase .mono { color: var(--bronze); }
+    /* versione chiusa su telefono: alta quanto serve, senza spazio vuoto sotto il testo */
+    :global(.js:not(.no-seq)) .cant.chiusa .stick { height: auto; }
+    :global(.js:not(.no-seq)) .cant.chiusa .txt { display: grid; padding-block: 20px 40px; }
+    :global(.js:not(.no-seq)) .cant.chiusa .play { inset-block-start: 38%; }
+    :global(.js:not(.no-seq)) .cant.chiusa .fh { inset-inline: var(--gutter-s) var(--gutter-e); inset-block-end: calc(100% + 16px); }
+    :global(.js:not(.no-seq)) .cant.chiusa .intro, :global(.js:not(.no-seq)) .cant.chiusa .fasi { grid-area: 1 / 1; position: static; }
+    :global(.js:not(.no-seq)) .cant.chiusa .fasi { display: grid; }
+    :global(.js:not(.no-seq)) .cant.chiusa .fase { grid-area: 1 / 1; position: static; }
   }
   @media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
     :global(.js:not(.no-seq)) .stick { display: block; }
@@ -162,6 +175,20 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .play { inset-inline-start: 66%; }
     :global(.js:not(.no-seq)) .play-i { width: 88px; height: 88px; }
     :global(.js:not(.no-seq)) .bar { inset-inline: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-start: 20px; border-radius: 999px; }
+    /* versione chiusa sul computer: testo a sinistra sul fondo chiaro, la stanza in un riquadro più piccolo a destra */
+    :global(.js:not(.no-seq)) .cant.chiusa .stick { display: grid; grid-template-columns: 5fr 7fr; gap: 56px; align-items: center; height: auto; overflow: visible; max-width: 1272px; margin-inline: auto; padding-block: 88px; padding-inline: max(32px, var(--gutter-s)) max(32px, var(--gutter-e)); }
+    :global(.js:not(.no-seq)) .cant.chiusa .frame { position: relative; inset: auto; order: 2; height: auto; aspect-ratio: 16 / 10; border-radius: 20px; box-shadow: 0 24px 48px -26px rgba(0,0,0,.55); }
+    :global(.js:not(.no-seq)) .cant.chiusa .frame::after { display: none; }
+    :global(.js:not(.no-seq)) .cant.chiusa .txt { position: relative; inset: auto; order: 1; width: auto; display: grid; --fg: #23272a; --fg-2: #4a5055; --bronze: #66563f; color: var(--fg); }
+    :global(.js:not(.no-seq)) .cant.chiusa .intro, :global(.js:not(.no-seq)) .cant.chiusa .fasi { grid-area: 1 / 1; position: static; }
+    :global(.js:not(.no-seq)) .cant.chiusa .fasi { display: grid; }
+    :global(.js:not(.no-seq)) .cant.chiusa .fase { grid-area: 1 / 1; position: static; }
+    :global(.js:not(.no-seq)) .cant.chiusa .intro .ih, :global(.js:not(.no-seq)) .cant.chiusa .fase h3 { font-size: clamp(2.6rem, 4vw, 3.6rem); }
+    :global(.js:not(.no-seq)) .cant.chiusa .play-tx { display: inline-flex; }
+    :global(.js:not(.no-seq)) .cant.chiusa .bar { inset-inline: 14px; inset-block-start: 12px; }
+    :global(.js:not(.no-seq)) .cant.chiusa .play { inset-inline-start: 50%; }
+    :global(.js:not(.no-seq)) .cant.chiusa .stop { inset-block-start: 28px; inset-inline-end: 16px; }
+    :global(.js:not(.no-seq)) .cant.chiusa .play-t { display: none; }
     :global(.js:not(.no-seq)) .hint { inset-inline-start: max(32px, calc((100vw - 1240px) / 2 + 16px)); inset-block-end: 4vh; color: #b7a58c; }
   }
 </style>
@@ -208,7 +235,11 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       let chiusa = false, suona = false, vistaFine = false;
       const playBtn = sec.querySelector<HTMLButtonElement>('[data-play]')!;
       const playT = playBtn.querySelector<HTMLElement>('.play-t')!;
-      const etichettaPlay = () => { playT.textContent = (vistaFine ? playBtn.dataset.t2 : playBtn.dataset.t1) || ''; };
+      const play2 = sec.querySelector<HTMLButtonElement>('[data-play2]');
+      const etichettaPlay = () => {
+        const t = (vistaFine ? playBtn.dataset.t2 : playBtn.dataset.t1) || '';
+        playT.textContent = t; const t2 = play2?.querySelector('.play-tx-t'); if (t2) t2.textContent = t;
+      };
 
       // mostra lo stato a un punto della timeline (stessa timeline per lo scorrimento e per il Play)
       function applica(uu: number) {
@@ -268,6 +299,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         if (uuPlay >= U) { applica(U - 0.001); ferma(true); return; }
         applica(uuPlay); requestAnimationFrame(passo);
       };
+      play2?.addEventListener('click', () => playBtn.click());
       playBtn.addEventListener('click', () => {
         limite = n; start(); load();
         suona = true; sec!.classList.add('suona'); uuPlay = INTRO; ultimo = 0;
