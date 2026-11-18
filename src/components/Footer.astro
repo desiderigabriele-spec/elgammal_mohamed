@@ -18,7 +18,7 @@ const i = impresa.indirizzo;
     <div class="stack">
       <Logo altezza={60} chiaro />
       <p><strong>{impresa.ragioneSociale}</strong><br />{i.via}<br />{i.cap} {i.citta} ({i.provincia})</p>
-      <p>{P.piva} {impresa.piva ?? <span class="todo">[da ricevere]</span>}</p>
+      <p>{P.piva} {impresa.piva ?? <span class="todo">[da ricevere]</span>}<br />REA {impresa.rea}</p>
     </div>
     <nav aria-label={m.servizi}>
       <p class="mono">{m.servizi}</p>
