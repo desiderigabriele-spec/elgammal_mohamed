@@ -29,7 +29,6 @@ const primo = n ? `/sequenza/hd/f000.webp` : '';
 const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
 ---
 {n === 0 && <script is:inline>document.documentElement.classList.add('no-seq');</script>}
-<script is:inline>try { if (localStorage.getItem('elg-stanza-vista')) document.documentElement.classList.add('stanza-vista'); } catch (e) {}</script>
 <section class="cant" id="cantiere" data-n={n} data-fasi={JSON.stringify(fasi.map((f) => [f.a, f.b]))}>
   <div class="stick">
     <div class="frame">
@@ -133,14 +132,14 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
     :global(.js:not(.no-seq)) .hint { display: flex; position: absolute; z-index: 4; inset-inline-start: var(--gutter-s); inset-block-end: 28px; margin: 0; transition: opacity .3s; }
     :global(.js:not(.no-seq)) .cant.fine .hint { opacity: 0; }
     :global(.js:not(.no-seq)) .salta { display: inline-flex; }
-    /* versione chiusa: dopo averla vista una volta la stanza è alta uno schermo, con il tasto Play */
-    :global(.js:not(.no-seq)) .cant.chiusa, :global(html.stanza-vista.js:not(.no-seq)) .cant { height: auto; }
-    :global(.js:not(.no-seq)) .cant.chiusa .stick, :global(html.stanza-vista.js:not(.no-seq)) .cant .stick { position: relative; inset-block-start: 0; }
-    :global(.js:not(.no-seq)) .cant.chiusa .salta, :global(html.stanza-vista.js:not(.no-seq)) .cant .salta,
-    :global(.js:not(.no-seq)) .cant.chiusa .hint, :global(html.stanza-vista.js:not(.no-seq)) .cant .hint,
-    :global(.js:not(.no-seq)) .cant.chiusa .d-scorri, :global(html.stanza-vista.js:not(.no-seq)) .cant .d-scorri { display: none; }
-    :global(.js:not(.no-seq)) .cant.chiusa .d-chiusa, :global(html.stanza-vista.js:not(.no-seq)) .cant .d-chiusa { display: block; }
-    :global(.js:not(.no-seq)) .cant.chiusa .play, :global(html.stanza-vista.js:not(.no-seq)) .cant .play { display: inline-flex; }
+    /* versione chiusa (solo durante la visita, dopo averla vista o saltata): alta uno schermo, con il tasto Play */
+    :global(.js:not(.no-seq)) .cant.chiusa { height: auto; }
+    :global(.js:not(.no-seq)) .cant.chiusa .stick { position: relative; inset-block-start: 0; }
+    :global(.js:not(.no-seq)) .cant.chiusa .salta,
+    :global(.js:not(.no-seq)) .cant.chiusa .hint,
+    :global(.js:not(.no-seq)) .cant.chiusa .d-scorri { display: none; }
+    :global(.js:not(.no-seq)) .cant.chiusa .d-chiusa { display: block; }
+    :global(.js:not(.no-seq)) .cant.chiusa .play { display: inline-flex; }
     :global(.js:not(.no-seq)) .cant.suona .play { display: none; }
     :global(.js:not(.no-seq)) .cant.suona .stop { display: inline-flex; }
   }
@@ -205,16 +204,11 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         const w = im.naturalWidth * s, h = im.naturalHeight * s;
         ctx.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); current = k; frame.classList.add('live');
       }
-      const KEY = 'elg-stanza-vista';
-      const ricorda = (v: string) => { try { if (localStorage.getItem(KEY) !== 'vista') localStorage.setItem(KEY, v); } catch { /* storage bloccato */ } };
-      const letta = () => { try { return localStorage.getItem(KEY); } catch { return null; } };
-      let chiusa = document.documentElement.classList.contains('stanza-vista');
-      if (chiusa) sec.classList.add('chiusa');
-      let suona = false, vistaFine = false;
+      // a ogni apertura della pagina la stanza riparte con lo scorrimento; si chiude solo durante questa visita
+      let chiusa = false, suona = false, vistaFine = false;
       const playBtn = sec.querySelector<HTMLButtonElement>('[data-play]')!;
       const playT = playBtn.querySelector<HTMLElement>('.play-t')!;
-      const etichettaPlay = () => { playT.textContent = (letta() === 'vista' ? playBtn.dataset.t2 : playBtn.dataset.t1) || ''; };
-      if (chiusa) etichettaPlay();
+      const etichettaPlay = () => { playT.textContent = (vistaFine ? playBtn.dataset.t2 : playBtn.dataset.t1) || ''; };
 
       // mostra lo stato a un punto della timeline (stessa timeline per lo scorrimento e per il Play)
       function applica(uu: number) {
@@ -225,7 +219,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
         items.forEach((it, i) => it.classList.toggle('on', i === fi));
         bars.forEach((b, i) => { b.classList.toggle('fatto', i < fi); b.classList.toggle('ora', i === fi); });
         sec!.classList.toggle('fine', fi === fasi.length - 1);
-        if (fi === fasi.length - 1 && !vistaFine) { vistaFine = true; ricorda('vista'); }
+        if (fi === fasi.length - 1) vistaFine = true;
         draw();
       }
       // versione chiusa a riposo: la stanza finita, il titolo e il tasto Play
@@ -255,7 +249,7 @@ const ultimo = n ? `/sequenza/hd/f${pad(n - 1)}.webp` : '';
       }
       // "Salta": chiude la stanza e porta ai servizi
       sec.querySelector('[data-salta]')?.addEventListener('click', (e) => {
-        e.preventDefault(); ricorda('saltata');
+        e.preventDefault();
         chiudi(() => document.getElementById('servizi')?.scrollIntoView({ behavior: 'instant' as ScrollBehavior, block: 'start' }));
       });
       // passata la fine della stanza (vista tutta), si chiude da sola: tornando su non va riscorsa
